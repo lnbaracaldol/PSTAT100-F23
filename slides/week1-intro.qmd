@@ -153,7 +153,6 @@ Week | Topic | Lab | Homework | Project
 * **Deadlines and late work**
     + One-hour grace period on all deadlines
     + 24-hour late submissions
-    + Two free lates on any assignment (except last assignment)
     + 75% partial credit thereafter for late work
 
 ## Policies
@@ -173,6 +172,5 @@ Week | Topic | Lab | Homework | Project
 ## Getting started
 
 - Lab this week will introduce you to computing and course infrastructure
-- Please fill out intake survey ASAP
 - Check access to Gradescope, LSIT, course page
 - Review syllabus
