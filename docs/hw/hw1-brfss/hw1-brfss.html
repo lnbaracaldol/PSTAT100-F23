@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>PSTAT100 - Background</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">PSTAT100</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Course syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../content.html" rel="" target="">
+ <span class="menu-text">Materials</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-import-and-assessment" id="toc-data-import-and-assessment" class="nav-link active" data-scroll-target="#data-import-and-assessment">Data import and assessment</a>
+  <ul class="collapse">
+  <li><a href="#question-1-data-dimensions" id="toc-question-1-data-dimensions" class="nav-link" data-scroll-target="#question-1-data-dimensions">Question 1: Data dimensions</a></li>
+  <li><a href="#question-2-row-and-column-information" id="toc-question-2-row-and-column-information" class="nav-link" data-scroll-target="#question-2-row-and-column-information">Question 2: Row and column information</a></li>
+  <li><a href="#question-3-sampling-design-and-data-collection" id="toc-question-3-sampling-design-and-data-collection" class="nav-link" data-scroll-target="#question-3-sampling-design-and-data-collection">Question 3: Sampling design and data collection</a></li>
+  <li><a href="#question-4-variable-descriptions" id="toc-question-4-variable-descriptions" class="nav-link" data-scroll-target="#question-4-variable-descriptions">Question 4: Variable descriptions</a></li>
+  </ul></li>
+  <li><a href="#subsampling" id="toc-subsampling" class="nav-link" data-scroll-target="#subsampling">Subsampling</a></li>
+  <li><a href="#tidying" id="toc-tidying" class="nav-link" data-scroll-target="#tidying">Tidying</a>
+  <ul class="collapse">
+  <li><a href="#question-5-recoding-variables" id="toc-question-5-recoding-variables" class="nav-link" data-scroll-target="#question-5-recoding-variables">Question 5: Recoding variables</a></li>
+  <li><a href="#question-6-value-replacement" id="toc-question-6-value-replacement" class="nav-link" data-scroll-target="#question-6-value-replacement">Question 6: Value replacement</a></li>
+  <li><a href="#question-7-define-ace-indicator-variable" id="toc-question-7-define-ace-indicator-variable" class="nav-link" data-scroll-target="#question-7-define-ace-indicator-variable">Question 7: Define ACE indicator variable</a></li>
+  <li><a href="#question-8-define-missingness-indicator-variable" id="toc-question-8-define-missingness-indicator-variable" class="nav-link" data-scroll-target="#question-8-define-missingness-indicator-variable">Question 8: Define missingness indicator variable</a></li>
+  <li><a href="#question-9-filter-respondents-who-did-not-answer-ace-questions" id="toc-question-9-filter-respondents-who-did-not-answer-ace-questions" class="nav-link" data-scroll-target="#question-9-filter-respondents-who-did-not-answer-ace-questions">Question 9: Filter respondents who did not answer ACE questions</a></li>
+  <li><a href="#question-10-define-depression-indicator-variable" id="toc-question-10-define-depression-indicator-variable" class="nav-link" data-scroll-target="#question-10-define-depression-indicator-variable">Question 10: Define depression indicator variable</a></li>
+  <li><a href="#question-11-final-dataset" id="toc-question-11-final-dataset" class="nav-link" data-scroll-target="#question-11-final-dataset">Question 11: Final dataset</a></li>
+  </ul></li>
+  <li><a href="#descriptive-analysis" id="toc-descriptive-analysis" class="nav-link" data-scroll-target="#descriptive-analysis">Descriptive analysis</a>
+  <ul class="collapse">
+  <li><a href="#question-12-proportion-of-respondents-reporting-aces" id="toc-question-12-proportion-of-respondents-reporting-aces" class="nav-link" data-scroll-target="#question-12-proportion-of-respondents-reporting-aces">Question 12: Proportion of respondents reporting ACEs</a></li>
+  <li><a href="#question-13-association-between-smoking-status-and-aces" id="toc-question-13-association-between-smoking-status-and-aces" class="nav-link" data-scroll-target="#question-13-association-between-smoking-status-and-aces">Question 13: Association between smoking status and ACEs</a></li>
+  <li><a href="#question-14-association-between-depression-and-aces" id="toc-question-14-association-between-depression-and-aces" class="nav-link" data-scroll-target="#question-14-association-between-depression-and-aces">Question 14: Association between depression and ACEs</a></li>
+  <li><a href="#question-15-exploring-subgroupings" id="toc-question-15-exploring-subgroupings" class="nav-link" data-scroll-target="#question-15-exploring-subgroupings">Question 15: Exploring subgroupings</a></li>
+  <li><a href="#question-16-visualization" id="toc-question-16-visualization" class="nav-link" data-scroll-target="#question-16-visualization">Question 16: Visualization</a></li>
+  </ul></li>
+  <li><a href="#communicating-results" id="toc-communicating-results" class="nav-link" data-scroll-target="#communicating-results">Communicating results</a>
+  <ul class="collapse">
+  <li><a href="#question-17-summary" id="toc-question-17-summary" class="nav-link" data-scroll-target="#question-17-summary">Question 17: Summary</a></li>
+  <li><a href="#question-18-scope-of-inference" id="toc-question-18-scope-of-inference" class="nav-link" data-scroll-target="#question-18-scope-of-inference">Question 18: Scope of inference</a></li>
+  <li><a href="#question-19-bias" id="toc-question-19-bias" class="nav-link" data-scroll-target="#question-19-bias">Question 19: Bias</a></li>
+  <li><a href="#comment" id="toc-comment" class="nav-link" data-scroll-target="#comment">Comment</a></li>
+  </ul></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Background</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize Otter</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> otter</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>grader <span class="op">=</span> otter.Notebook(<span class="st">"hw1-brfss.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># disable row limit for plotting</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>alt.data_transformers.disable_max_rows()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># uncomment to ensure graphics display with pdf export</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># alt.renderers.enable('mimetype')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <a href="https://www.cdc.gov/brfss/index.html">Behavioral Risk Factor Surveillance System</a> (BRFSS) is a long-term effort administered by the CDC to collect data on behaviors affecting physical and mental health, past and present health conditions, and access to healthcare among U.S. residents. The BRFSS comprises telephone surveys of U.S. residents conducted annually since 1984; in the last decade, over half a million interviews have been conducted each year. This is the largest such data collection effort in the world, and many countries have developed similar programs. The objective of the program is to support monitoring and analysis of factors influencing public health in the United States.</p>
+<p>Each year, a standard survey questionnaire is developed that includes a core component comprising questions about: demographic and household information; health-related perceptions, conditions, and behaviors; substance use; and diet. Trained interviewers in each state call randomly selected telephone (landline and cell) numbers and administer the questionnaire; the phone numbers are chosen so as to obtain a representative sample of all households with telephone numbers. Take a moment to <a href="https://www.cdc.gov/brfss/annual_data/annual_2019.html">read about the 2019 survey here</a>.</p>
+<p>In this assignment you’ll import and subsample the BRFSS 2019 data and perform a simple descriptive analysis exploring associations between adverse childhood experiences, health perceptions, tobacco use, and depressive disorders. This is an opportunity to practice:</p>
+<ul>
+<li>review of data documentation</li>
+<li>data assessment and critical thinking about data collection</li>
+<li>dataframe transformations in pandas</li>
+<li>communicating and interpreting grouped summaries</li>
+</ul>
+<section id="data-import-and-assessment" class="level1">
+<h1>Data import and assessment</h1>
+<p>The cell below imports select columns from the 2019 dataset as a pandas DataFrame. The file is big, so this may take a few moments. Run the cell and then have a quick look at the first few rows and columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># store variable names of interest</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>selected_vars <span class="op">=</span> [<span class="st">'_SEX'</span>, <span class="st">'_AGEG5YR'</span>, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                 <span class="st">'GENHLTH'</span>, <span class="st">'ACEPRISN'</span>, </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">'ACEDRUGS'</span>, <span class="st">'ACEDRINK'</span>, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                 <span class="st">'ACEDEPRS'</span>, <span class="st">'ADDEPEV3'</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">'_SMOKER3'</span>, <span class="st">'_LLCPWT'</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># import full 2019 BRFSS dataset</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>brfss <span class="op">=</span> pd.read_csv(<span class="st">'data/brfss2019.zip'</span>, compression <span class="op">=</span> <span class="st">'zip'</span>, usecols <span class="op">=</span> selected_vars)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># invert sampling weights</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>brfss[<span class="st">'_LLCPWT'</span>] <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>brfss._LLCPWT</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># print first few rows</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>brfss.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="question-1-data-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="question-1-data-dimensions">Question 1: Data dimensions</h3>
+<p>Check the dimensions of the dataset. Store the dimensions as <code>nrows</code> and <code>ncolumns</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>nrows, ncolumns <span class="op">=</span> ...</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nrows, ncolumns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-2-row-and-column-information" class="level3">
+<h3 class="anchored" data-anchor-id="question-2-row-and-column-information">Question 2: Row and column information</h3>
+<p>Now that you’ve imported the data, you should verify that the dimensions conform to the format you expect based on data documentation and ensure you understand what each row and each column represents.</p>
+<p>Check the number of records (interviews conducted) reported and variables measured for 2019 by reviewing the <a href="https://www.cdc.gov/brfss/annual_data/all_years/states_data.htm">surveillance summaries by year</a>, and then answer the following questions in a few sentences:</p>
+<ul>
+<li>Does the number of rows match the number of reported records?</li>
+<li>How many columns were imported, and how many columns are reported in the full dataset?</li>
+<li>What does each row in the <code>brfss</code> dataframe represent?</li>
+<li>What does each column in the <code>brfss</code> dataframe represent</li>
+</ul>
+<p><em>Type your answer here, replacing this text.</em></p>
+<!-- END QUESTION -->
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-3-sampling-design-and-data-collection" class="level3">
+<h3 class="anchored" data-anchor-id="question-3-sampling-design-and-data-collection">Question 3: Sampling design and data collection</h3>
+<p>Skim the <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/overview-2019-508.pdf">overview documentation</a> for the 2019 BRFSS data. Focus specifically the ‘Background’ and ‘Data Collection’ sections, read selectively for relevant details, and answer the following questions in a few sentences:</p>
+<ol type="i">
+<li><p>Who conducts the interviews and how long does a typical interview last?</p></li>
+<li><p>Who does an interviewer speak to in each household?</p></li>
+<li><p>What criteria must a person meet to be interviewed?</p></li>
+<li><p>Who <em>can’t</em> appear in the survey? Give two examples.</p></li>
+<li><p>What is the study population (<em>i.e.</em>, all individuals who could possibly be sampled)?</p></li>
+<li><p>Does the data contain any identifying information?</p></li>
+</ol>
+<p><em>Type your answer here, replacing this text.</em></p>
+<!-- END QUESTION -->
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-4-variable-descriptions" class="level3">
+<h3 class="anchored" data-anchor-id="question-4-variable-descriptions">Question 4: Variable descriptions</h3>
+<p>You’ll work with the small subset variables imported above: sex, age, general health self-assessment, smoking status, depressive disorder, and adverse childhood experiences (ACEs). The names of these variables as they appear in the raw dataset are defined in the cell in which you imported the data as <code>selected_vars</code>. It is often useful, and therefore good practice, to include a brief description of each variable at the outset of any reported analyses, both for your own clarity and for that of any potential readers. Open the <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">2019 BRFSS codebook</a> in your browser and use text searching to locate each of the variable names of interest. Read the codebook entries and fill in the second column in the table below with a one-sentence description of each variable identified in <code>selected_vars</code>. Rephrase the descriptions in your own words – do not copy the codebook descriptions verbatim.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Variable name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>GENHLTH</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>_SEX</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>_AGEG5YR</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>ACEPRISN</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>ACEDRUGS</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>ACEDRINK</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>ACEDEPRS</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>ADDEPEV3</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>_SMOKER3</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<!-- END QUESTION -->
+</section>
+</section>
+<section id="subsampling" class="level1">
+<h1>Subsampling</h1>
+<p>To simplify life a little, we’ll draw a large random sample of the rows and work with that in place of the full dataset. This is known as <strong>subsampling</strong>.</p>
+<p>The cell below draws a random subsample of 10k records. Because the subsample is randomly drawn, we should not expect it to vary in any systematic way from the overall dataset, and distinct subsamples should have similar properties – therefore, results downstream should be similar to an analysis of the full dataset, and should also be possible to replicate using distinct subsamples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for reproducibility</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">32221</span>) </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># randomly sample 10k records</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>samp <span class="op">=</span> brfss.sample(n <span class="op">=</span> <span class="dv">10000</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                    replace <span class="op">=</span> <span class="va">False</span>, </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                    weights <span class="op">=</span> <span class="st">'_LLCPWT'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Asides:</em></p>
+<ul>
+<li><p>Notice that the random number generator seed is set before carrying out this task – this ensures that every time the cell is run, the same subsample is drawn. As a result, the computations in this notebook are <em>reproducible</em>: when I run the notebook on my computer, I get the same results as you get when you run the notebook on your computer.</p></li>
+<li><p>Notice also that <em>sampling weights</em> provided with the dataset are used to draw a weighted sample. Some respondents are more likely to be selected than others from the general population of U.S. adults with phone numbers, so the BRFSS calculates derived weights that are inversely proportional to estimates of the probability that the respondent is included in the survey. This is a somewhat sophisticated calculation, however if you’re interested, you can read about how these weights are calculated and why in the overview documentation you used to answer the questions above. We use the sampling weights in drawing the subsample so that we get a representative sample of U.S. adults with phone numbers.</p></li>
+<li><p>Notice the missing values. How many entries are missing in each column? The cell below computes the proportion of missing values for each of the selected variables. We’ll return to this issue later on.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># proportions of missingness </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samp.isna().mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tidying" class="level1">
+<h1>Tidying</h1>
+<p>In the following series of questions you’ll tidy up the subsample by performing these steps:</p>
+<ul>
+<li>selecting columns of interest;</li>
+<li>replacing coded values of question responses with responses;</li>
+<li>defining new variables based on existing ones;</li>
+<li>renaming columns.</li>
+</ul>
+<p>The goal of this is to produce a clean version of the dataset that is well-organized, intuitive to navigate, and ready for analysis.</p>
+<p>The variable entries are coded numerically to represent certain responses. These should be replaced by more informative entries. We can use the codebook to determine which number means what, and replace the values accordingly.</p>
+<p>The cell below replaces the numeric values for <code>_AGEG5YR</code> by their meanings, illustrating how to use <code>.replace()</code> with a dictionary to convert the numeric coding to interpretable values. The basic strategy is:</p>
+<ol type="1">
+<li>Store the variable coding for <code>VAR</code> as a dictionary <code>var_codes</code>.</li>
+<li>Use <code>.replace({'VAR': var_codes})</code> to modify values.</li>
+</ol>
+<p>If you need additional examples, check the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.replace.html">pandas documentation</a> for <code>.replace()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dictionary representing variable coding</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>age_codes <span class="op">=</span> {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="st">'18-24'</span>, <span class="dv">2</span>: <span class="st">'25-29'</span>, <span class="dv">3</span>: <span class="st">'30-34'</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="dv">4</span>: <span class="st">'35-39'</span>, <span class="dv">5</span>: <span class="st">'40-44'</span>, <span class="dv">6</span>: <span class="st">'45-49'</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">7</span>: <span class="st">'50-54'</span>, <span class="dv">8</span>: <span class="st">'55-59'</span>, <span class="dv">9</span>: <span class="st">'60-64'</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">10</span>: <span class="st">'65-69'</span>, <span class="dv">11</span>: <span class="st">'70-74'</span>, <span class="dv">12</span>: <span class="st">'75-79'</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">13</span>: <span class="st">'80+'</span>, <span class="dv">14</span>: <span class="st">'Unsure/refused/missing'</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># recode age categories</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>samp_mod1 <span class="op">=</span> samp.replace({<span class="st">'_AGEG5YR'</span>: age_codes})</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># check result</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>samp_mod1.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="question-5-recoding-variables" class="level3">
+<h3 class="anchored" data-anchor-id="question-5-recoding-variables">Question 5: Recoding variables</h3>
+<p>Following the example immediately above and referring to the <a href="https://www.cdc.gov/brfss/annual_data/2019/pdf/codebook19_llcp-v2-508.HTML">2019 BRFSS codebook</a>, replace the numeric codings with response categories for each of the following variables:</p>
+<ul>
+<li><code>_SEX</code></li>
+<li><code>GENHLTH</code></li>
+<li><code>_SMOKER3</code></li>
+</ul>
+<p>Notice that above, the first modification (slicing) was stored as <code>samp_mod1</code>, and was a function of <code>samp</code>. You’ll follow this pattern, creating <code>samp_mod2</code>, <code>samp_mod3</code>, and so on so that each step (modification) of your data manipulations is stored separately, for easy troubleshooting.</p>
+<ol type="i">
+<li><p>Recode <code>_SEX</code>: define a new dataframe <code>samp_mod2</code> that is the same as <code>samp_mod1</code> but with the <code>_SEX</code> variable recoded as <code>M</code> and <code>F</code>.</p></li>
+<li><p>Recode <code>GENHLTH</code>: define a new dataframe <code>samp_mod3</code> that is the same as <code>samp_mod2</code> but with the <code>GENHLTH</code> variable recoded as <code>Excellent</code>, <code>Very good</code>, <code>Good</code>, <code>Fair</code>, <code>Poor</code>, <code>Unsure</code>, and <code>Refused</code>.</p></li>
+<li><p>Recode <code>_SMOKER3</code>: define a new dataframe <code>samp_mod4</code> that is the same as <code>samp_mod3</code> but with <code>_SMOKER3</code> recoded as <code>Daily</code>, <code>Some days</code>, <code>Former</code>, <code>Never</code>, and <code>Unsure/refused/missing</code>.</p></li>
+<li><p>Print the first few rows of <code>samp_mod4</code>.</p></li>
+</ol>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define dictionary for sex</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sex_codes <span class="op">=</span> ...</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># recode sex</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>samp_mod2 <span class="op">=</span> ...</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># define dictionary for health</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>health_codes <span class="op">=</span> ...</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># recode health</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>samp_mod3 <span class="op">=</span> ...</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># define dictionary for smoking</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>smoke_codes <span class="op">=</span> ...</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># recode smoking</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>samp_mod4 <span class="op">=</span> ...</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># print a few rows</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-6-value-replacement" class="level3">
+<h3 class="anchored" data-anchor-id="question-6-value-replacement">Question 6: Value replacement</h3>
+<p>Now all the variables <em>except</em> the adverse childhood experience and depressive disorder question responses are represented interpretably. In the codebook that the answer key is identical for these remaining variables.</p>
+<p>The numeric codings can be replaced all at once by applying <code>.replace()</code> to the dataframe with an argument of the form</p>
+<ul>
+<li><code>df.replace({'var1': varcodes1, 'var2': varcodes1, ..., 'varp': varcodesp})</code></li>
+</ul>
+<p>Define a new dataframe <code>samp_mod5</code> that is the same as <code>samp_mod4</code> but with the remaining variables recoded according to the answer key <code>Yes</code>, <code>No</code>, <code>Unsure</code>, <code>Refused</code>. Print the first few rows of the result using <code>.head()</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define dictionary</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>answer_codes <span class="op">=</span> ...</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># recode</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>samp_mod5 <span class="op">=</span> ...</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check using head()</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q6"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, all the variables in the dataset are categorical. Notice that the current data types do not reflect this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>samp_mod5.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s coerce the variables to <code>category</code> data types using <code>.astype()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coerce to categorical</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>samp_mod6 <span class="op">=</span> samp_mod5.astype(<span class="st">'category'</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check new data types</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>samp_mod6.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-7-define-ace-indicator-variable" class="level3">
+<h3 class="anchored" data-anchor-id="question-7-define-ace-indicator-variable">Question 7: Define ACE indicator variable</h3>
+<p>Downstream analysis of ACEs will be facilitated by having an indicator variable that is a <code>1</code> if the respondent answered ‘Yes’ to any ACE question, and a <code>0</code> otherwise – that way, you can easily count the number of respondents reporting ACEs by summing up the indicator or compute the proportion by taking an average.</p>
+<p>To this end, define a new logical variable:</p>
+<ul>
+<li><code>adverse_conditions</code>: did the respondent answer yes to any of the adverse childhood condition questions?</li>
+</ul>
+<p>You can accomplish this task in several steps:</p>
+<ol type="1">
+<li>Obtain a logical array indicating the positions of the ACE variables (hint: use <code>.columns</code> to obtain the column index and operate on the result with <code>.str.startswith(...)</code>.). Store this as <code>ace_positions</code>.</li>
+<li>Use the logical array <code>ace_positions</code> to select the ACE columns via <code>.loc[]</code>. Store this as <code>ace_data</code>.</li>
+<li>Obtain a dataframe that indicates whether each entry is a ‘Yes’ (hint: use the boolean operator <code>==</code>, which is a vectorized operation). Store this as <code>ace_yes</code>.</li>
+<li>Compute the row sums using <code>.sum()</code>. Store this as <code>ace_numyes</code>.</li>
+<li>Define the new variable as <code>ace_numyes &gt; 0</code>.</li>
+</ol>
+<p>Store the result as <code>samp_mod7</code>, and print the first few rows using <code>.head()</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># copy samp_mod6</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>samp_mod7 <span class="op">=</span> samp_mod6.copy()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ace column positions</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>ace_positions <span class="op">=</span> ...</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ace data</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>ace_data <span class="op">=</span> ...</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ace yes indicators</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>ace_yes <span class="op">=</span> ...</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># number of yesses</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>ace_numyes <span class="op">=</span> ...</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># assign new variable</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>samp_mod7[<span class="st">'adverse_conditions'</span>] <span class="op">=</span> ...</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># check result using .head()</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q7"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-8-define-missingness-indicator-variable" class="level3">
+<h3 class="anchored" data-anchor-id="question-8-define-missingness-indicator-variable">Question 8: Define missingness indicator variable</h3>
+<p>As you saw earlier, there are some missing values for the ACE questions. These arise whenever a respondent is not asked these questions. In fact, answers are missing for nearly 80% of the respondents in our subsample. We should keep track of this information. Define a missing indicator:</p>
+<ul>
+<li><code>adverse_missing</code>: is a response missing for at least one of the ACE questions?</li>
+</ul>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># copy modification 7</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>samp_mod8 <span class="op">=</span> samp_mod7.copy()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># define missing indicator using loc</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check using head()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q8"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-9-filter-respondents-who-did-not-answer-ace-questions" class="level3">
+<h3 class="anchored" data-anchor-id="question-9-filter-respondents-who-did-not-answer-ace-questions">Question 9: Filter respondents who did not answer ACE questions</h3>
+<p>Since values are missing for the ACE question if a respondent was not asked, we can remove these observations and do any analysis <em>conditional on respondents having been asked the ACE questions</em>. Use your indicator variable <code>adverse_missing</code> to filter out respondents who were not asked the ACE questions.</p>
+<p>Note that this dramatically limits the scope of inference for subsequent analyses to only those locations where the ACE module was included in the survey.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>samp_mod9 <span class="op">=</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q9"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-10-define-depression-indicator-variable" class="level3">
+<h3 class="anchored" data-anchor-id="question-10-define-depression-indicator-variable">Question 10: Define depression indicator variable</h3>
+<p>It will prove similarly helpful to define an indicator for reported depression:</p>
+<ul>
+<li><code>depression</code>: did the respondent report having been diagnosed with a depressive disorder?</li>
+</ul>
+<p>Follow the same strategy as above for the ACE variables, and store the result as <code>samp_mod10</code>. See if you can perform the calculation of the new variable in a single line of code. Print the first few rows using <code>.head()</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># copy samp_mod9</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>samp_mod10 <span class="op">=</span> samp_mod9.copy()</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># define new variable using loc</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check using .head()</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q10"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-11-final-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="question-11-final-dataset">Question 11: Final dataset</h3>
+<p>For the final dataset, drop the respondent answers to individual questions, the missingness indicator, and select just the derived indicator variables along with general health, sex, age, and smoking status. Check the <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rename.html">pandas documentation</a> for <code>.rename()</code> and follow the examples to rename the latter variables:</p>
+<ul>
+<li>general_health</li>
+<li>sex</li>
+<li>age</li>
+<li>smoking</li>
+</ul>
+<p>See if you can perform both operations (slicing and renaming) in a single chain. Store the result as <code>data</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>samp_mod10.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># slice and rename</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> ...</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check using .head()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q11"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="descriptive-analysis" class="level1">
+<h1>Descriptive analysis</h1>
+<p>Now that you have a clean dataset, you’ll use grouping and aggregation to compute several summary statistics that will help you explore whether there is an apparent association between experiencing adverse childhood conditions and self-reported health, smoking status, and depressive disorders in areas where the ACE module was administered.</p>
+<p>The basic strategy will be to calculate the proportions of respondents who answered yes to one of the adverse experience questions when respondents are grouped by the other variables.</p>
+<section id="question-12-proportion-of-respondents-reporting-aces" class="level3">
+<h3 class="anchored" data-anchor-id="question-12-proportion-of-respondents-reporting-aces">Question 12: Proportion of respondents reporting ACEs</h3>
+<p>Calculate the overall proportion of respondents in the subsample that reported experiencing at least one adverse condition (given that they answered the ACE questions). Use <code>.mean()</code>; store the result as <code>mean_ace</code> and print.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># proportion of respondents reporting at least one adverse condition</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>mean_ace <span class="op">=</span> ...</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>mean_ace</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q12"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Does the proportion of respondents who reported experiencing adverse childhood conditions vary by general health?</em></p>
+<p>The cell below computes the porportion separately by general health self-rating. Notice that the depression variable is dropped so that the result doesn’t also report the proportion of respondents reporting having been diagnosed with a depressive disorder. Notice also that the proportion of missing values for respondents indicating each general health rating is shown.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># proportions grouped by general health</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data.drop(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'depression'</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>).groupby(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'general_health'</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>).mean(numeric_only <span class="op">=</span> <span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that the row index lists the general health rating out of order. This can be fixed using a <code>.loc[]</code> call and the dictionary that was defined for the variable coding.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># same as above, rearranging index</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>ace_health <span class="op">=</span> data.drop(</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'depression'</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>).groupby(</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'general_health'</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>).mean(</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    numeric_only <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>).loc[<span class="bu">list</span>(health_codes.values()), :]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># print</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>ace_health</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-13-association-between-smoking-status-and-aces" class="level3">
+<h3 class="anchored" data-anchor-id="question-13-association-between-smoking-status-and-aces">Question 13: Association between smoking status and ACEs</h3>
+<p><em>Does the proportion of respondents who reported experiencing adverse childhood conditions vary by smoking status?</em></p>
+<p>Following the example above for computing the proportion of respondents reporting ACEs by general health rating, calculate the proportion of respondents reporting ACEs by smoking status (be sure to arrange the rows in appropriate order of smoking status) and store as <code>ace_smoking</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># proportions grouped by smoking status</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ace_smoking <span class="op">=</span> data.drop(</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'depression'</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>).groupby(</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'smoking'</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>).mean(</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    numeric_only <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># print</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>ace_smoking</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q13"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-14-association-between-depression-and-aces" class="level3">
+<h3 class="anchored" data-anchor-id="question-14-association-between-depression-and-aces">Question 14: Association between depression and ACEs</h3>
+<p><em>Does the proportion of respondents who reported experiencing adverse childhood conditions vary by smoking status?</em></p>
+<p>Calculate the proportion of respondents reporting ACEs by whether respondents had been diagnosed with a depressive disorder and store as <code>ace_depr</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># proportions grouped by having experienced depression</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ace_depr <span class="op">=</span> data.groupby(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'depression'</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>).mean(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    numeric_only <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># print</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>ace_depr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q14"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="question-15-exploring-subgroupings" class="level3">
+<h3 class="anchored" data-anchor-id="question-15-exploring-subgroupings">Question 15: Exploring subgroupings</h3>
+<p><em>Does the apparent association between general health and ACEs persist after accounting for sex?</em></p>
+<p>Repeat the calculation of the proportion of respondents reporting ACEs by general health rating, but also group by sex. Store the result as <code>ace_health_sex</code>.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># group by general health and sex</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>ace_health_sex <span class="op">=</span> data.drop(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'depression'</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>).groupby(</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'general_health'</span>, <span class="st">'sex'</span>]</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q15"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The cell below rearranges the table a little for better readability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pivot table for better display</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>ace_health_sex.reset_index().pivot(columns <span class="op">=</span> <span class="st">'sex'</span>, index <span class="op">=</span> <span class="st">'general_health'</span>, values <span class="op">=</span> <span class="st">'adverse_conditions'</span>).loc[<span class="bu">list</span>(health_codes.values()), :]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Even after rearrangement, the table in the last question is a little tricky to read (few people like visually scanning tables). This information would be better displayed in a plot. The example below generates a bar chart showing the summaries you calculated in Q2(d), with the proportion on the y axis, the health rating on the x axis, and separate bars for the two sexes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># coerce indices to columns for plotting</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="op">=</span> ace_health_sex.reset_index()</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># specify order of general health categories</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>genhealth_order <span class="op">=</span> <span class="bu">list</span>(health_codes.values())</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>plot_df.general_health.cat.set_categories(genhealth_order, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>plot_df.sort_values([<span class="st">"general_health"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>alt.Chart(plot_df).mark_bar().encode(</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'general_health'</span>, </span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>              sort <span class="op">=</span> [<span class="st">'general_health'</span>],</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>              title <span class="op">=</span> <span class="st">'Self-rated general health'</span>),</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'adverse_conditions'</span>,</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>              title <span class="op">=</span> <span class="st">'Prop. of respondents reporting ACEs'</span>),</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'sex'</span>,</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    column <span class="op">=</span> <span class="st">'sex'</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>).properties(</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> <span class="dv">200</span>, </span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    height <span class="op">=</span> <span class="dv">200</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-16-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="question-16-visualization">Question 16: Visualization</h3>
+<p>Use the example above to plot the proportion of respondents reporting ACEs against smoking status for men and women.</p>
+<p><em>Hint</em>: you only need to modify the example by substituting smoking status for general health.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dataframe of proportions grouped by smoking status</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>ace_smoking_sex <span class="op">=</span> ...</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># coerce indices to columns for plotting</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># specify order of general health categories</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+</section>
+</section>
+<section id="communicating-results" class="level1">
+<h1>Communicating results</h1>
+<p>Here you’ll be asked to reflect briefly on your findings.</p>
+<!-- BEGIN QUESTION -->
+<section id="question-17-summary" class="level3">
+<h3 class="anchored" data-anchor-id="question-17-summary">Question 17: Summary</h3>
+<p><em>Is there an observed association between reporting ACEs and general health, smoking status, and depression among survey respondents who answered the ACE questions?</em></p>
+<p>Write a two to three sentence answer to the above question summarizing your findings. State an answer to the question in your first sentence, and then in your second/third sentences describe exactly what you observed in the foregoing descriptive analysis of the BRFSS data. Be precise, but also concise. There is no need to describe any of the data manipulations, survey design, or the like.</p>
+<p><em>Type your answer here, replacing this text.</em></p>
+<!-- END QUESTION -->
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-18-scope-of-inference" class="level3">
+<h3 class="anchored" data-anchor-id="question-18-scope-of-inference">Question 18: Scope of inference</h3>
+<p>Recall from the overview documentation all the care that the BRFSS dedicates to collecting a representative sample of the U.S. adult population with phone numbers. Do you think that your findings provide evidence of an association among the general public (not just the individuals survey)? Why or why not? Answer in two sentences.</p>
+<p><em>Type your answer here, replacing this text.</em></p>
+<!-- END QUESTION -->
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-19-bias" class="level3">
+<h3 class="anchored" data-anchor-id="question-19-bias">Question 19: Bias</h3>
+<p>What is a potential source of bias in the survey results, and how might this affect the proportions you’ve calculated?</p>
+<p>Answer in one or two sentences.</p>
+<p><em>Type your answer here, replacing this text.</em></p>
+<!-- END QUESTION -->
+</section>
+<section id="comment" class="level3">
+<h3 class="anchored" data-anchor-id="comment">Comment</h3>
+<p>Notice that the language ‘association’ is non-causual: we don’t say that ACEs cause (or don’t cause) poorer health outcomes. This is intentional, because the BRFSS data are what are known as ‘observational’ data, <em>i.e.</em> not originating from a controlled experiment. There could be unobserved factors that explain the association.</p>
+<p>To take a simple example, dog owners live longer, but the reason is simply that dog owners walk more – so it’s the exercise, not the dogs, that cause an increase in longevity. An observational study that doesn’t measure exercise would show a positive association between dog ownership and lifespan, but it’s a non-causal relationship.</p>
+<p>(As an interesting/amusing aside, there is a <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1884050/">well known study</a> that established an association between birdkeeping and lung cancer; obviously this is non-causal, yet the study authors recommended that individuals at high risk for cancer avoid ‘avian exposure’, as they were unsure of the mechanism.)</p>
+<p>So there could easily be unobserved factors that account for the observed association in the BRFSS data. We guard against over-interpreting the results by using causally-neutral language.</p>
+</section>
+</section>
+<section id="submission" class="level1">
+<h1>Submission</h1>
+<ol type="1">
+<li>Save the notebook.</li>
+<li>Restart the kernel and run all cells. (<strong>CAUTION</strong>: if your notebook is not saved, you will lose your work.)</li>
+<li>Carefully look through your notebook and verify that all computations execute correctly and all graphics are displayed clearly. You should see <strong>no errors</strong>; if there are any errors, make sure to correct them before you submit the notebook.</li>
+<li>Download the notebook as an <code>.ipynb</code> file. This is your backup copy.</li>
+<li>Export the notebook as PDF and upload to Gradescope.</li>
+</ol>
+<hr>
+<p>To double-check your work, the cell below will rerun all of the autograder tests.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>grader.check_all()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

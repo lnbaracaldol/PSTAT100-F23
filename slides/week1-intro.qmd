@@ -1,0 +1,178 @@
+---
+title: "Course introduction"
+author: "PSTAT100 Fall 2023"
+subtitle: "Week 1, Lecture 1"
+format: 
+    revealjs:
+        smaller: false
+        incremental: true
+        slide-number: true
+jupyter: python3
+---
+
+
+# Case studies: a preview
+
+## Case study 1: ACE and health
+
+![Association between adverse childhood experiences and general health, by sex.](figures/brfs-ace.png)
+
+## Case study 1: ACE and health
+
+You will:
+
+- process and recode 10K survey responses from CDC's 2019 behavior risk factor surveillance survey (BRFSS)
+- cross-tabulate health-related measurements with frequency of adverse childhood experiences
+
+## Case study 2: SEDA
+
+![Education achievement gaps as functions of socioeconomic indicators, by gender.](figures/seda-fig.png)
+
+## Case study 2: SEDA
+
+You will:
+
+- merge test scores and socioeconomic indicators from the 2018 Standford Education Data Archive by school district
+- visually assess correlations between gender achievement gaps among grade schoolers and socioeconomic indicators across school districts in CA
+
+## Case study 3: Paleoclimatology
+
+![Sea surface temperature reconstruction over the past 16,000 years.](figures/sst.png)
+
+## Case study 3: Paleoclimatology
+
+![Clustering of diatom relative abundances in pleistocene (pre-11KyBP) vs. holocene (post-11KyBP) epochs.](figures/diatom.png)
+
+## Case study 3: Paleoclimatology
+
+You will:
+
+- explore ecological community structure from relative abundances of diatoms measured in ocean sediment core samples spanning ~15,000 years
+- use dimension reduction techniques to obtain measures of community structure
+- identify shifts associated with the transition from pleistocene to holocene epochs
+
+## Case study 4: Discrimination at DDS?
+
+![Apparent disparity in allocation of DDS benefits across racial groups.](figures/dds-1.png)
+
+## Case study 4: Discrimination at DDS?
+
+![Expenditure is strongly associated with age.](figures/dds-2.png)
+
+## Case study 4: Discrimination at DDS?
+
+![Correcting for age shows comparable expenditure across racial groups.](figures/dds-3.png)
+
+## Case study 4: Discrimination at DDS?
+
+You will:
+
+- assess the case for discrimination in allocation of DDS benefits
+- identify confounding factors present in the sample
+- model median expenditure by racial group after correcting for age
+
+# About the course
+
+## Scope
+
+This course is about developing your data science toolkit with foundational skills:
+
+1. Core competency with Python data science libraries
+2. Critical thinking about data
+3. Visualization and exploratory analysis
+4. Application of basic statistical concepts and methods in practice
+5. Communication and interpretation of results
+
+## What's unique about PSTAT100?
+
+There are a few distinctive aspects:
+
+* multiple end-to-end case studies
+* question-driven rather than method-driven
+* emphasis on project workflow
+* data storytelling and communication
+
+## Limitations
+
+There are also some things we *won't* cover:
+
+* Predictive modeling or machine learning
+* Algorithm design and implementation
+* Techniques and methods for big data
+* Theoretical basis for methods
+
+## Weekly Pattern
+
+We'll follow a simple weekly pattern:
+
+* **Mondays** 
+    - Lecture
+    - Assignments due 11:59pm PST
+
+* **Wednesdays** 
+    - Lecture
+* **Thursdays**
+    - Section
+
+## Course pages & materials
+
+- Materials via course website [lnbaracaldol.github.io/PSTAT100-F23](lnbaracaldol.github.io/PSTAT100-F23)
+- Computing at [pstat100.lsit.ucsb.edu](https://pstat100.lsit.ucsb.edu)
+- Assignments/gradebook at [Gradescope](https://www.gradescope.com/courses/640473)
+- Nectir at [Nectir](https://app.nectir.io/us/ucsb/group/PSTAT100F23)
+
+## Tentative schedule {.smaller}
+
+Week | Topic | Lab | Homework | Project
+---|---|---|---|---
+1 | Data science life cycle | | |
+2 | Tidy data | L0 | |
+3 | Sampling and bias | L1 | 
+4 | Statistical graphics | L2 | H1 
+5 | Kernel density estimation | L3 | | MP1
+6 | Principal components | L4 | H2
+7 | Simple regression | | |MP2
+8 | Multiple regression | L5 | H3
+9 | Classification and clustering | | | CP1
+10 | Case study | | H4
+11 | Finals week | | | CP2
+
+
+## Assessments
+
+* **Labs** introduce and develop core skills
+* **Homeworks** apply core skills to case studies
+* **Projects** practice creative problem-solving
+    
+## Policies
+
+* **Communication**
+    + If you have questions, please come to office hours
+    + Avoid email except for personal matters
+
+* **Deadlines and late work**
+    + One-hour grace period on all deadlines
+    + 24-hour late submissions
+    + Two free lates on any assignment (except last assignment)
+    + 75% partial credit thereafter for late work
+
+## Policies
+
+* **Grades**
+    + Final weighting and grade assignment at instructor's discretion
+    + Do not expect 92+% = A, 90-92% = A-, 87-89.9 = B+, etc.
+    + A's are awarded sparingly and indicate exceptional work
+
+## Other info
+
+* Informal section swaps are allowed with TA permission
+* Attendance required at all class meetings, but a few absences without notice are okay
+* Honors contracts not available this quarter
+* Office hours start week 2, check website for schedule
+
+## Getting started
+
+- Lab this week will introduce you to computing and course infrastructure
+- Please fill out intake survey ASAP
+- Check access to Gradescope, LSIT, course page
+- Review syllabus

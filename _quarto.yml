@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "PSTAT100"
+  google-analytics: "G-H3YKZX4J88"
+  navbar:
+    background: dark
+    foreground: light
+    search: true
+    left:
+      - about.qmd
+      - content.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+

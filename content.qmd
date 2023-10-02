@@ -1,0 +1,21 @@
+---
+title: "Materials"
+format: html
+---
+
+## Week 1
+
+*Readings*: 
+
+- LDS1 [The Data Science Lifecycle](https://learningds.org/ch/01/lifecycle_intro.html) 
+- LDS5 [Case Study: Why is my Bus Always Late?](https://learningds.org/ch/05/bus_intro.html)
+- PDSH2.1 [Understanding data types in python](https://jakevdp.github.io/PythonDataScienceHandbook/02.01-understanding-data-types.html)
+- PDSH2.2 [The basics of numpy arrays](https://jakevdp.github.io/PythonDataScienceHandbook/02.02-the-basics-of-numpy-arrays.html)
+- PDSH2.4 [Aggregations: min, max, and everything in between](https://jakevdp.github.io/PythonDataScienceHandbook/02.04-computation-on-arrays-aggregates.html)
+
+**Monday**: Course introduction [[slides](slides/week1-intro.qmd)]
+
+**Lab sections**: Orientation to Jupyter notebooks [[html](labs/lab0-gettingstarted/lab0-gettingstarted.ipynb)]
+
+**Wednesday**: Data science lifecycle [[slides](slides/week1-lifecycle.qmd)]
+

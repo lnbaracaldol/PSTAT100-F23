@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>PSTAT100 - Lab 4: Smoothing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">PSTAT100</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Course syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../content.html" rel="" target="">
+ <span class="menu-text">Materials</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#transforms-in-altair" id="toc-transforms-in-altair" class="nav-link active" data-scroll-target="#transforms-in-altair">Transforms in Altair</a>
+  <ul class="collapse">
+  <li><a href="#filter-transform" id="toc-filter-transform" class="nav-link" data-scroll-target="#filter-transform">Filter transform</a>
+  <ul class="collapse">
+  <li><a href="#question-1-filter-transform" id="toc-question-1-filter-transform" class="nav-link" data-scroll-target="#question-1-filter-transform">Question 1: Filter transform</a></li>
+  </ul></li>
+  <li><a href="#bin-transform" id="toc-bin-transform" class="nav-link" data-scroll-target="#bin-transform">Bin transform</a>
+  <ul class="collapse">
+  <li><a href="#question-2-bin-transform" id="toc-question-2-bin-transform" class="nav-link" data-scroll-target="#question-2-bin-transform">Question 2: Bin transform</a></li>
+  </ul></li>
+  <li><a href="#aggregate-transform" id="toc-aggregate-transform" class="nav-link" data-scroll-target="#aggregate-transform">Aggregate transform</a></li>
+  <li><a href="#calculate-transform" id="toc-calculate-transform" class="nav-link" data-scroll-target="#calculate-transform">Calculate transform</a>
+  <ul class="collapse">
+  <li><a href="#question-3-density-scale-histogram" id="toc-question-3-density-scale-histogram" class="nav-link" data-scroll-target="#question-3-density-scale-histogram">Question 3: Density scale histogram</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#density-estimation" id="toc-density-estimation" class="nav-link" data-scroll-target="#density-estimation">Density estimation</a>
+  <ul class="collapse">
+  <li><a href="#question-4-selecting-a-bandwidth" id="toc-question-4-selecting-a-bandwidth" class="nav-link" data-scroll-target="#question-4-selecting-a-bandwidth">Question 4: Selecting a bandwidth</a></li>
+  <li><a href="#comparing-distributions" id="toc-comparing-distributions" class="nav-link" data-scroll-target="#comparing-distributions">Comparing distributions</a>
+  <ul class="collapse">
+  <li><a href="#question-5-multiple-density-estimates" id="toc-question-5-multiple-density-estimates" class="nav-link" data-scroll-target="#question-5-multiple-density-estimates">Question 5: Multiple density estimates</a></li>
+  <li><a href="#question-6-interpretation" id="toc-question-6-interpretation" class="nav-link" data-scroll-target="#question-6-interpretation">Question 6: Interpretation</a></li>
+  <li><a href="#question-7-outlier" id="toc-question-7-outlier" class="nav-link" data-scroll-target="#question-7-outlier">Question 7: Outlier</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#scatterplot-smoothing" id="toc-scatterplot-smoothing" class="nav-link" data-scroll-target="#scatterplot-smoothing">Scatterplot smoothing</a>
+  <ul class="collapse">
+  <li><a href="#loess" id="toc-loess" class="nav-link" data-scroll-target="#loess">LOESS</a>
+  <ul class="collapse">
+  <li><a href="#question-8-loess-bandwidth-selection" id="toc-question-8-loess-bandwidth-selection" class="nav-link" data-scroll-target="#question-8-loess-bandwidth-selection">Question 8: LOESS bandwidth selection</a></li>
+  </ul></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression">Regression</a>
+  <ul class="collapse">
+  <li><a href="#question-9-simple-regression-line" id="toc-question-9-simple-regression-line" class="nav-link" data-scroll-target="#question-9-simple-regression-line">Question 9: Simple regression line</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#a-neat-trick" id="toc-a-neat-trick" class="nav-link" data-scroll-target="#a-neat-trick">A neat trick</a></li>
+  <li><a href="#submission" id="toc-submission" class="nav-link" data-scroll-target="#submission">Submission</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 4: Smoothing</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize Otter</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> otter</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>grader <span class="op">=</span> otter.Notebook(<span class="st">"lab4-smoothing.ipynb"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>pd.options.mode.chained_assignment <span class="op">=</span> <span class="va">None</span>  <span class="co"># default='warn'</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># disable row limit for plotting</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>alt.data_transformers.disable_max_rows()</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># uncomment to ensure graphics display with pdf export</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># alt.renderers.enable('mimetype')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>So far, you’ve encountered a number of visualization techniques for displaying tidy data. In those visualizations, all graphic elements represent the values of a dataset – they are visual displays of actual data.</p>
+<p>In general, smoothing means evening out. Visualizations of actual data are often irregular – points are distributed widely in scatterplots, line plots are jagged, bars are discontinuous. When we look at such visuals, we tend to attempt to look past these irregularities in order to discern patterns – for example, the overall shape of a histogram or the general trend in a scatterplot. Showing what a graphic might look like with irregularities evened out often aids the eye in detecting pattern. This is what <strong>smoothing</strong> is: <em><strong>evening out irregularities in graphical displays of actual data</strong></em>.</p>
+<p>For our purposes, usually smoothing will consist in drawing a line or a curve on top of an existing statistical graphic. From a technical point of view, this amounts to adding derived geometric objects to a graphic that have fewer irregularities than the displays of actual data.</p>
+<p>In this lab, you’ll learn some basic smoothing techniques – kernel density estimation, LOESS, and linear smoothing via regression – and how to implement them in Altair.</p>
+<p>In Altair, smoothing is implemented via what Altair describes as <em>transforms</em> – operations that modify a dataset. Try not to get too attached to this terminology – ‘transform’ and ‘transformation’ are used to mean a variety of things in other contexts. You’ll begin with a brief introduction to Altair transforms before turning to smoothing techniques.</p>
+<p>The <strong>sections</strong> of the lab are divided as follows:</p>
+<ol start="0" type="1">
+<li>Introduction to Altair transforms</li>
+<li>Histogram smoothing: kernel density estimamtion</li>
+<li>Scatterplot smoothing: LOESS and linear smoothing</li>
+<li>A neat graphic</li>
+</ol>
+<p>And our main <strong>goals</strong> are:</p>
+<ul>
+<li>Get familiar with Altair transforms for dataframe operations: filter, bin, aggregate, calculate.</li>
+<li>‘Handmande’ histograms: step-by-step construction</li>
+<li>Implement kernel density estimation via <code>.transform_density(...)</code></li>
+<li>Implement LOESS via <code>.transform_loess(...)</code></li>
+<li>Implement linear smoothing via <code>transform_regression(...)</code></li>
+</ul>
+<p>You’ll use the same data as last week to stick to a familiar example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import tidied lab 3 data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'data/lab3-data.csv'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="transforms-in-altair" class="level1">
+<h1>Transforms in Altair</h1>
+<p>In Altair, operations that modify a dataset are referred to as <em>transforms</em>. Mostly, these are operations that could be performed manually with ease – the utility of transforms is that they <em>wrap common operations within plotting commands</em>, although they also make plotting codes more verbose.</p>
+<p>Transforms encompass a broad range of types of operations, from relatively simple ones like filtering to more complex ones like smoothing. Here you’ll see a few intuitive transforms in Altair that integrate simple dataframe manipulations into the plotting process.</p>
+<p>You’ll focus on the construction of histograms as a sort of case study. This will be a useful primer for histogram smoothing in the next section.</p>
+<section id="filter-transform" class="level2">
+<h2 class="anchored" data-anchor-id="filter-transform">Filter transform</h2>
+<p>Last week you saw a way to make histograms. As a quick refresher, to make a histogram of life expectancies across the globe in 2010, one can filter the data and then plot using the following commands:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>data2010 <span class="op">=</span> data[data.Year <span class="op">==</span> <span class="dv">2010</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>alt.Chart(data2010).mark_bar().encode(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'Life Expectancy'</span>, </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>              <span class="bu">bin</span> <span class="op">=</span> alt.Bin(step <span class="op">=</span> <span class="dv">2</span>), </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>              title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'count()'</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>However, the filtering step can be handled <em>within the plotting commands</em> using <code>.transform_filter()</code>.</p>
+<p>This uses a helper command to specify the filtering condition – in the above example, the filtering condition is that <code>Year</code> is equal to <code>2010</code>. A filtering condition is referred to in Altair as a ‘field predicate’. In the above example: * filtering field: <code>Year</code> * field predicate: equals <code>2010</code></p>
+<p>There are different helpers for different types of field predicates – you can find a complete list <a href="https://altair-viz.github.io/user_guide/transform/filter.html">in the documentation</a>.</p>
+<p>Here is how to use <code>.transform_filter()</code> to make the same histogram shown above, but skipping the step of storing a subset of the data under a separate name:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter and plot</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(data).transform_filter(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2010</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>).mark_bar().encode(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'Life Expectancy'</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>              <span class="bu">bin</span> <span class="op">=</span> alt.Bin(step <span class="op">=</span> <span class="dv">2</span>), </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>              title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'count()'</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- BEGIN QUESTION -->
+<section id="question-1-filter-transform" class="level3">
+<h3 class="anchored" data-anchor-id="question-1-filter-transform">Question 1: Filter transform</h3>
+<p>Construct a histogram of life expectancies across the globe in 2019 using a filter transform as shown above to filter the appropriate rows of the dataset. Use a bin size of three (not two) years.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter and plot</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(data).transform_filter(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>).mark_bar().encode(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ...</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> ...</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+</section>
+</section>
+<section id="bin-transform" class="level2">
+<h2 class="anchored" data-anchor-id="bin-transform">Bin transform</h2>
+<p>The codes above provide a sleek way to construct the histogram that handles binning via arguments to <code>alt.X(...)</code>. However, binning actually involves an operation: creating a new variable that is a discretization of an existing variable into contiguous intervals of a specified width.</p>
+<p>To illustrate, have a look at how the histogram could be constructed ‘manually’ by the following operations. 1. Bin life expectancies 2. Count values in each bin 3. Make a bar plot of counts against bin centers.</p>
+<p>Here’s step 1:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bin life expectancies into 20 contiguous intervals</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>data2010[<span class="st">'Bin'</span>] <span class="op">=</span> pd.cut(data2010[<span class="st">"Life Expectancy"</span>], bins <span class="op">=</span> <span class="dv">20</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>data2010.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s step 2:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count values in each bin and store midpoints</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>histdata <span class="op">=</span> data2010.loc[:, [<span class="st">'Life Expectancy'</span>, <span class="st">'Bin'</span>]].groupby(<span class="st">'Bin'</span>).count()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>histdata[<span class="st">'Bin midpoint'</span>] <span class="op">=</span> histdata.index.values.categories.mid.values</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>histdata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And finally, step 3:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(histdata).mark_bar(width <span class="op">=</span> <span class="dv">10</span>).encode(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Bin midpoint'</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'Life Expectancy'</span>, title <span class="op">=</span> <span class="st">'Count'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These operations can be articulated as a transform in Altair using <code>.bin_transform()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter, bin, and plot</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    data</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>).transform_filter(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2010</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>).transform_bin(</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Life Expectancy at Birth'</span>, <span class="co"># name to give binned variable</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    field <span class="op">=</span> <span class="st">'Life Expectancy'</span>, <span class="co"># variable to bin</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">bin</span> <span class="op">=</span> alt.Bin(step <span class="op">=</span> <span class="dv">2</span>) <span class="co"># binning parameters</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>).mark_bar(size <span class="op">=</span> <span class="dv">10</span>).encode(</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>, </span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'count()'</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The plotting codes are a little more verbose, but they’re much more efficient than performing the manipulations separately in pandas.</p>
+<!-- BEGIN QUESTION -->
+<section id="question-2-bin-transform" class="level3">
+<h3 class="anchored" data-anchor-id="question-2-bin-transform">Question 2: Bin transform</h3>
+<p>Follow the example above and make a histogram of life expectancies across the globe in 2019 using an explicit bin transform to create bins spanning three years.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter, bin, and plot</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    data</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>).transform_filter(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2019</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>).transform_bin(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    field <span class="op">=</span> ...</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">bin</span> <span class="op">=</span> ...</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>).mark_bar(size <span class="op">=</span> <span class="dv">10</span>).encode(</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ...</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'count()'</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+</section>
+</section>
+<section id="aggregate-transform" class="level2">
+<h2 class="anchored" data-anchor-id="aggregate-transform">Aggregate transform</h2>
+<p>Now, the counting of observations in each bin (implemented via <code>y = count()</code>) is <em>also</em> an under-the-hood operation in constructing the histogram. You already saw how this was done ‘manually’ in the example above before introducing the bin transform.</p>
+<p>Grouped counting is a form of <em>aggregation</em> in the sense discussed in lecture: it produces output that has fewer values than the input by combining multiple values (in this case rows) into one value (in this case a count of the number of rows).</p>
+<p>This operation can also be made explicit using <code>.transform_aggregate()</code>. This makes use of Altair’s <em>aggregation shorthands</em> for common aggregation functions; see the documentation on Altair encodings for a <a href="https://altair-viz.github.io/user_guide/encodings/index.html#binning-and-aggregation">full list of shorthands</a>.</p>
+<p>Here is how <code>.transform_aggregate()</code> would be used to perform the counting:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter, bin, count, and plot</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    data</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>).transform_filter(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2010</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>).transform_bin(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Life Expectancy at Birth'</span>, </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    field <span class="op">=</span> <span class="st">'Life Expectancy'</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">bin</span> <span class="op">=</span> alt.Bin(step <span class="op">=</span> <span class="dv">2</span>) </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>).transform_aggregate(</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    Count <span class="op">=</span> <span class="st">'count()'</span>, <span class="co"># altair shorthand operation -- see docs for full list</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>] <span class="co"># grouping variable(s)</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>).mark_bar(size <span class="op">=</span> <span class="dv">10</span>).encode(</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>, </span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Count:Q'</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="calculate-transform" class="level2">
+<h2 class="anchored" data-anchor-id="calculate-transform">Calculate transform</h2>
+<p>By default, Altair’s histograms are displayed on the <em>count scale</em> rather than the <em>density scale</em>.</p>
+<p>The <strong>count scale</strong> means that the y-axis shows <em><strong>counts of observations in each bin</strong></em>.</p>
+<p>By contrast, on the <strong>density scale</strong>, the y-axis would show <em><strong>proportions of total bar area</strong></em> (so that the area of plotted bars sums to 1).</p>
+<p>It might seem like a silly distinction – after all, the two scales differ simply by a proportionality constant (the sample size times the bin width) – but as you will see shortly, the density scale is more useful for statistical thinking about the distribution of values and for direct comparisons of distributions approximated from samples of different sizes.</p>
+<p>The scale conversion can be done using <code>.transform_calculate()</code>, which computes derived variables using arithmetic operations. In this case, one only needs to divide the count by the total number of observations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filter, bin, count, convert scale, and plot</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    data</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>).transform_filter(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2010</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>).transform_bin(</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Life Expectancy at Birth'</span>, </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    field <span class="op">=</span> <span class="st">'Life Expectancy'</span>, </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">bin</span> <span class="op">=</span> alt.Bin(step <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>).transform_aggregate(</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    Count <span class="op">=</span> <span class="st">'count()'</span>,</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>).transform_calculate(</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    Density <span class="op">=</span> <span class="st">'datum.Count/(2*157)'</span> <span class="co"># divide counts by sample size x binwidth</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>).mark_bar(size <span class="op">=</span> <span class="dv">10</span>).encode(</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>, </span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Density:Q'</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="question-3-density-scale-histogram" class="level3">
+<h3 class="anchored" data-anchor-id="question-3-density-scale-histogram">Question 3: Density scale histogram</h3>
+<p>Follow the example above and convert your histogram from Question 2 (with the year 2019, the step size of 3, and the usage of <code>.transform_bin(...)</code>) to the density scale.</p>
+<ul>
+<li><ol type="i">
+<li>First, calculate the sample size and store the value as <code>sample_size</code>. Store the desired step size as <code>bin_width</code>.</li>
+</ol></li>
+<li><ol start="2" type="i">
+<li>Convert your histogram from Question 2 (with the year 2019, the step size of 3, and the usage of <code>.transform_bin(...)</code>) to the density scale. First calculate the count explicitly using <code>.transform_aggregate(...)</code> and then convert to a proportion using <code>.transform_calculate(...)</code>. Multiply <code>sample_size</code> with <code>bin_width</code> to obtain the scaling constant and hardcode it into your implementation.</li>
+</ol></li>
+</ul>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find scaling factor</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sample_size <span class="op">=</span> ...</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>bin_width <span class="op">=</span> ...</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'scaling factor = '</span>, sample_size<span class="op">*</span>bin_width)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># construct histogram</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>alt.Chart(data).transform_filter(</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2019</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>).transform_bin(</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    field <span class="op">=</span> ...</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">bin</span> <span class="op">=</span> ...</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>).transform_aggregate(</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    Count <span class="op">=</span> ...</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> ...</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>).transform_calculate(</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># use sample_size*bin_width to rescale - you will need to hardcode this value</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    Density <span class="op">=</span> ...</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>).mark_bar(size <span class="op">=</span> <span class="dv">20</span>).encode(</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>, <span class="co"># SOLUTIOON</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> ...</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="density-estimation" class="level1">
+<h1>Density estimation</h1>
+<p>Now that you have a sense of how transforms work, we can explore transforms that perform more sophisticated operations. We’re going to focus on a technique known as <em>kernel density estimation</em>.</p>
+<p>Histograms show the distribution of values in the sample. Let’s call the density-scale histogram the <em>empirical density</em>. A <strong>kernel density estimate</strong> is simply <em><strong>a smoothing of the empirical density</strong></em>. (It’s called an ‘estimate’ because it’s often construed as an approximation of the distribution of population values that the sample came from.)</p>
+<p>Often the point of visualizing the distribution of a variable is to discern the shape, spread, center, and tails of the distribution to answer certain questions: * what’s a typical value? * are there multiple typical values (multi-modal)? * are there outliers? * is the distribution skewed?</p>
+<p>Density estimates are often easier to work with in exploratory analysis because it is visually easier to distinguish the shape of a smooth curve than the shape of a bunch of bars (unless you’re really far away).</p>
+<p>Kernel density estimates are easy to plot using <code>.transform_density()</code>. The cell below generates a density estimate of life expectancies across the globe in 2010. Notice the commented lines explaining the syntax.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot kernel density estimate of life expectancies in 2010</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>alt.Chart(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    data</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>).transform_filter(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2010</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>).transform_density(</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> <span class="st">'Life Expectancy'</span>, <span class="co"># variable to smooth</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>, <span class="st">'Estimated Density'</span>], <span class="co"># names of outputs</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="dv">3</span>, <span class="co"># how smooth?</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">85</span>], <span class="co"># domain on which the smooth is defined</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">1000</span> <span class="co"># for plotting: number of points to generate for plotting line</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>).encode(</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Estimated Density:Q'</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This estimate can be layered onto the empirical density to get a better sense of the relationship between the two. The cell below accomplishes this. Notice that the plot elements are constructed as separate <em>layers</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># base plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>base <span class="op">=</span> alt.Chart(data).transform_filter(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2010</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># empirical density</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>hist <span class="op">=</span> base.transform_bin(</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>, </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    field <span class="op">=</span> <span class="st">'Life Expectancy'</span>, </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">bin</span> <span class="op">=</span> alt.Bin(step <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>).transform_aggregate(</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    Count <span class="op">=</span> <span class="st">'count()'</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>]</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>).transform_calculate(</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    Density <span class="op">=</span> <span class="st">'datum.Count/(2*157)'</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>).mark_bar(size <span class="op">=</span> <span class="dv">10</span>, opacity <span class="op">=</span> <span class="fl">0.8</span>).encode(</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>, </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Density:Q'</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co"># kernel density estimate</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> base.transform_density(</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> <span class="st">'Life Expectancy'</span>, </span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>, <span class="st">'Estimated density'</span>],</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="dv">3</span>, </span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">85</span>],</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">1000</span> </span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>).encode(</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>,</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Estimated density:Q'</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="co"># layer</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>hist <span class="op">+</span> smooth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What if you want a different amount of smoothing? That’s what the <code>extent</code> parameter is for. The smoothing is <em>local</em>, in the following sense: at any given point, the kernel density estimate averages bar heights in a neighborhood of nearby bars in proportion to how far the bars are from the point in question.</p>
+<p>The <code>extent</code> parameter specifies the size of the smoothing neighborhood in standard deviations. For instance, above <code>extent = 3</code>, which means that the empirical density is smoothed 3 standard deviations in either direction to produce the kernel density estimate. This is also known as the <em>bandwidth</em>. * If the bandwidth is increased, averaging is more global, so the density estimate will get smoother. * If the bandwidth is decreased, averaging is more local, so the density estimate will get wiggly.</p>
+<p>There are some methods out there for automating bandwidth choice, but often it is done by hand. Arguably this is preferable, as it allows the analyst to see a few possibilities and decide what best captures the shape of the distribution.</p>
+<!-- BEGIN QUESTION -->
+<section id="question-4-selecting-a-bandwidth" class="level3">
+<h3 class="anchored" data-anchor-id="question-4-selecting-a-bandwidth">Question 4: Selecting a bandwidth</h3>
+<p>Modify the ploting codes by <em>decreasing</em> the bandwidth parameter. Try several values, and then choose one that you feel captures the shape of the distribution well without getting too wiggly.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>hist <span class="op">+</span> base.transform_density(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> <span class="st">'Life Expectancy'</span>, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>, <span class="st">'Estimated density'</span>],</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> ...</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">85</span>],</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">1000</span> </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>).encode(</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Estimated density:Q'</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+</section>
+<section id="comparing-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-distributions">Comparing distributions</h2>
+<p>The visual advantage of a kernel density estimate for discerning shape is even more apparent when comparing distributions.</p>
+<p>A major task in exploratory analysis is understanding how the distribution of a variable of interest changes depending on other variables – for example, you have already seen in the last lab that life expectancy seems to change over time. We can explore this phenomenon from a different angle by comparing distributions in different years.</p>
+<p>Multiple density estimates can be displayed on the same plot by passing a grouping variable (or set of variables) to <code>.transform_density(...)</code>. For example, the cell below computes density estimates of life expectancies for each of two years.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(data).transform_filter(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    alt.FieldOneOfPredicate(field <span class="op">=</span> <span class="st">'Year'</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                            oneOf <span class="op">=</span> [<span class="dv">2010</span>, <span class="dv">2019</span>])</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>).transform_density(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> <span class="st">'Life Expectancy'</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'Year'</span>],</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>, <span class="st">'Estimated Density'</span>],</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="fl">1.8</span>, </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> [<span class="dv">25</span>, <span class="dv">90</span>],</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">1000</span> </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>).mark_line().encode(</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Estimated Density:Q'</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'Year:N'</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Often the area beneath each density estimate is filled in. This can be done by simply appending a <code>.mark_area()</code> call at the end of the plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> alt.Chart(data).transform_filter(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    alt.FieldOneOfPredicate(field <span class="op">=</span> <span class="st">'Year'</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                            oneOf <span class="op">=</span> [<span class="dv">2010</span>, <span class="dv">2019</span>])</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>).transform_density(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> <span class="st">'Life Expectancy'</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'Year'</span>],</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>, <span class="st">'Estimated Density'</span>],</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="fl">1.8</span>, </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> [<span class="dv">25</span>, <span class="dv">90</span>],</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">1000</span> </span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>).mark_line().encode(</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">'Life Expectancy at Birth:Q'</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">'Estimated Density:Q'</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'Year:N'</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>p <span class="op">+</span> p.mark_area(opacity <span class="op">=</span> <span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that this makes it much easier to compare the distributions between years – you can see a pronounced rightward shift of the smooth for 2019 compared with 2010.</p>
+<p>We could make the same comparison based on the histograms, but the shift is a lot harder to make out. Overlaid histograms should be avoided.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>alt.Chart(data).transform_filter(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    alt.FieldOneOfPredicate(field <span class="op">=</span> <span class="st">'Year'</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                            oneOf <span class="op">=</span> [<span class="dv">2010</span>, <span class="dv">2019</span>])</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>).mark_bar(opacity <span class="op">=</span> <span class="fl">0.5</span>).encode(</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'Life Expectancy'</span>, <span class="bu">bin</span> <span class="op">=</span> alt.Bin(maxbins <span class="op">=</span> <span class="dv">30</span>), title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'count()'</span>, stack <span class="op">=</span> <span class="va">None</span>),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'Year:N'</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- BEGIN QUESTION -->
+<section id="question-5-multiple-density-estimates" class="level3">
+<h3 class="anchored" data-anchor-id="question-5-multiple-density-estimates">Question 5: Multiple density estimates</h3>
+<p>Follow the example above to construct a plot showing separate density estimates of life expectancy for each region in the 2010. You can choose whether you prefer to fill in the area beneath the smooth curves, or not. Be sure to play with the bandwidth parameter and choose a value that seems sensible to you.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># construct density estimates</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> alt.Chart(data).transform_filter(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>).transform_density(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> ...</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> ...</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> ...</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> ...</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> ...</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> ...</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>).mark_line(</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>).encode(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ...</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> ...</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> ...</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co"># add shaded area underneath curves</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+<!-- BEGIN QUESTION -->
+</section>
+<section id="question-6-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="question-6-interpretation">Question 6: Interpretation</h3>
+<p>Do the distributions of life expectancies seem to differ by region? If so, what is one difference that you notice? Answer in 1-2 sentences.</p>
+<p><em>Type your answer here, replacing this text.</em></p>
+<!-- END QUESTION -->
+</section>
+<section id="question-7-outlier" class="level3">
+<h3 class="anchored" data-anchor-id="question-7-outlier">Question 7: Outlier</h3>
+<p>Notice that little peak way off to the left in the distribution of life expectancies in the Americas. That’s an outlier.</p>
+<ul>
+<li><ol type="i">
+<li>Which country is it? Check by filtering <code>data</code> appropriately and using <code>.sort_values(...)</code> to find the lowest life expectancy in the Americas. Save the outlying observation as a one-row dataframe called <code>lowest_Americas</code> and print the row.</li>
+</ol></li>
+<li><ol start="2" type="i">
+<li>What was the life expectancy for that country in other years? Filter the data to examine the life expectancy in the country you identified as the outlier in all y. Save the resulting data frame as <code>outlier_country</code>.</li>
+</ol></li>
+<li><ol start="3" type="i">
+<li>What Happened in 2010? Can you explain why the life expectancy was so low in that country for that particular year?(<em>Hint</em>: if you don’t remember, Google the country name and year in question.)</li>
+</ol></li>
+</ul>
+<p><em>Type your answer here, replacing this text.</em></p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># examine outlier</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>lowest_Americas <span class="op">=</span> data[</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    ].sort_values(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    by <span class="op">=</span> ...</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    ).head(<span class="dv">1</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>lowest_Americas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show all obsrvations for country of interest</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>outlier_country <span class="op">=</span> ...</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>outlier_country</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>grader.check(<span class="st">"q7"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="scatterplot-smoothing" class="level1">
+<h1>Scatterplot smoothing</h1>
+<p>In this brief section you’ll see two techniques for smoothing scatterplots: LOESS, which produces a curve; and regression, which produces a linear smooth.</p>
+<p>The next parts will modify the dataframe <code>data</code> by adding a column. Create a copy <code>data_mod1</code> of the original dataframe <code>data</code> to modify so as to not lose track of previous work:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data_mod1 <span class="op">=</span> data.copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="loess" class="level2">
+<h2 class="anchored" data-anchor-id="loess">LOESS</h2>
+<p><strong>Lo</strong>cally w<strong>e</strong>ighted <strong>s</strong>catterplot <strong>s</strong>moothing (LOESS) is a flexible smoothing technique for visualizing trends in scatterplots. The technical details are a little involved but quite similar conceptually to kernel density estimation; we’ll just look at the implementation for now.</p>
+<p>To illustrate, consider the scatterplots you made in lab 3 showing the relationship between life expectancy and GDP per capita. The plot for 2010 looked like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># log transform gdp explicitly</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>data_mod1[<span class="st">'log(GDP per capita)'</span>] <span class="op">=</span> np.log(data_mod1[<span class="st">'GDP per capita'</span>])</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># scatterplot</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> alt.Chart(data_mod1).transform_filter(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, equal <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>).mark_circle(opacity <span class="op">=</span> <span class="fl">0.5</span>).encode(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'log(GDP per capita)'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'Life Expectancy'</span>, title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> alt.Size(<span class="st">'Population'</span>, scale <span class="op">=</span> alt.Scale(<span class="bu">type</span> <span class="op">=</span> <span class="st">'sqrt'</span>))</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># show</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>scatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To add a LOESS curve, simply append <code>.transform_loess()</code> to the base plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute smooth</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> scatter.transform_loess(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    on <span class="op">=</span> <span class="st">'log(GDP per capita)'</span>, <span class="co"># x variable</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    loess <span class="op">=</span> <span class="st">'Life Expectancy'</span>, <span class="co"># y variable</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="fl">0.25</span> <span class="co"># how smooth?</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co"># add as a layer to the scatterplot</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">+</span> smooth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Just as with kernel density estimates, LOESS curves have a bandwidth parameter that controls how smooth or wiggly the curve is. In Altair, the LOESS bandwidth is a unitless parameter between 0 and 1.</p>
+<!-- BEGIN QUESTION -->
+<section id="question-8-loess-bandwidth-selection" class="level3">
+<h3 class="anchored" data-anchor-id="question-8-loess-bandwidth-selection">Question 8: LOESS bandwidth selection</h3>
+<p>Tinker with the bandwidth parameter to see its effect in the cell below. Then choose a value that produces a smoothing you find appropriate for indicating the general trend shown in the scatter.</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute smooth</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> scatter.transform_loess(</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    on <span class="op">=</span> <span class="st">'log(GDP per capita)'</span>, </span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    loess <span class="op">=</span> <span class="st">'All'</span>, </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> ...</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># add as a layer to the scatterplot</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">+</span> smooth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+<p>LOESS curves can also be computed groupwise. For instance, to display separate curves for each region, one need only pass a <code>groupby = ...</code> argument to <code>.transform_loess()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatterplot</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> alt.Chart(data_mod1).transform_filter(</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, equal <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>).mark_circle(opacity <span class="op">=</span> <span class="fl">0.5</span>).encode(</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'log(GDP per capita)'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'Life Expectancy'</span>, title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> alt.Size(<span class="st">'Population'</span>, scale <span class="op">=</span> alt.Scale(<span class="bu">type</span> <span class="op">=</span> <span class="st">'sqrt'</span>)),</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'region'</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co"># compute smooth</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> scatter.transform_loess(</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'region'</span>], <span class="co"># add groupby</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    on <span class="op">=</span> <span class="st">'log(GDP per capita)'</span>, </span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    loess <span class="op">=</span> <span class="st">'Life Expectancy'</span>, </span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="fl">0.8</span> </span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>)</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># add as a layer to the scatterplot</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">+</span> smooth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The curves are a little jagged because there aren’t very many countries in each region.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data_mod1[data_mod1.Year <span class="op">==</span> <span class="dv">2000</span>].groupby(<span class="st">'region'</span>).count().iloc[:, [<span class="dv">0</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="regression" class="level2">
+<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+<p>You will be learning more about linear regression later in the course, but we can introduce regression lines now as a visualization technique. As with LOESS, you don’t need to concern yourself with the mathematical details (yet). From this perspective, regression is a form of <em>linear</em> smoothing – a regression smooth is a straight line. By contrast, LOESS smooths have <em>curvature</em> – they are not straight lines.</p>
+<p>In the example above, the LOESS curves don’t have much curvature. So it may be a cleaner choice visually to show linear smooths. This can be done using <code>.transform_regression(...)</code> with a similar argument structure.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatterplot</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> alt.Chart(data_mod1).transform_filter(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, equal <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>).mark_circle(opacity <span class="op">=</span> <span class="fl">0.5</span>).encode(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'log(GDP per capita)'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'Life Expectancy'</span>, title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> alt.Size(<span class="st">'Population'</span>, scale <span class="op">=</span> alt.Scale(<span class="bu">type</span> <span class="op">=</span> <span class="st">'sqrt'</span>)),</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'region'</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co"># compute smooth</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> scatter.transform_regression(</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'region'</span>],</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>    on <span class="op">=</span> <span class="st">'log(GDP per capita)'</span>, </span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    regression <span class="op">=</span> <span class="st">'Life Expectancy'</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>)</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># add as a layer to the scatterplot</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">+</span> smooth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- BEGIN QUESTION -->
+<section id="question-9-simple-regression-line" class="level3">
+<h3 class="anchored" data-anchor-id="question-9-simple-regression-line">Question 9: Simple regression line</h3>
+<p>Based on the example immediately above, construct a scatterplot of life expectancy against log GDP per capita in 2010 with points sized according to population (and no distinction between regions). Layer a single linear smooth on the scatterplot using <code>.transform_regression(...)</code>.</p>
+<p>(<em>Hint</em>: remove the color aesthetic and grouping from the previous plot.)</p>
+<div class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># construct scatterplot</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> alt.Chart(data_mod1).transform_filter(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>).mark_circle(opacity <span class="op">=</span> <span class="fl">0.5</span>).encode(</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ...</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> ...</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> ...</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># construct smooth</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> scatter.transform_regression(</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    on <span class="op">=</span> ...</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    regression <span class="op">=</span> ...</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="co"># layer</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- END QUESTION -->
+</section>
+</section>
+</section>
+<section id="a-neat-trick" class="level1">
+<h1>A neat trick</h1>
+<p>Let’s combine the scatterplot with a smooth from part 2 with the density estimates in part 1. This is an example of combining multiple plots into one visual.</p>
+<p>Why combine? Well, sometimes it’s useful to visualize the distribution of the variable of interest <em>together with</em> its relationship to another variable. Imagine, for example, that you’re interested in seeing both: * the relationship between life expectancy and GDP per capita by region; and * the distributions of life expeectancies by region.</p>
+<p>We can flip the density estimates on their side and append them as a facet to the right-hand side of the scatterplot as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># scatterplot with linear smooth</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> alt.Chart(data_mod1).transform_filter(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>, equal <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>).mark_circle(opacity <span class="op">=</span> <span class="fl">0.5</span>).encode(</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'log(GDP per capita)'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'Life Expectancy'</span>, title <span class="op">=</span> <span class="st">'Life Expectancy at Birth'</span>, scale <span class="op">=</span> alt.Scale(zero <span class="op">=</span> <span class="va">False</span>)),</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> alt.Size(<span class="st">'Population'</span>, scale <span class="op">=</span> alt.Scale(<span class="bu">type</span> <span class="op">=</span> <span class="st">'sqrt'</span>)),</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> <span class="st">'region'</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>smooth <span class="op">=</span> scatter.transform_regression(</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'region'</span>],</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    on <span class="op">=</span> <span class="st">'log(GDP per capita)'</span>, </span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>    regression <span class="op">=</span> <span class="st">'Life Expectancy'</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>).mark_line(color <span class="op">=</span> <span class="st">'black'</span>)</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="co"># density estimates</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> alt.Chart(data_mod1).transform_filter(</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    alt.FieldEqualPredicate(field <span class="op">=</span> <span class="st">'Year'</span>,</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>                            equal <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>).transform_density(</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>    density <span class="op">=</span> <span class="st">'Life Expectancy'</span>,</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    groupby <span class="op">=</span> [<span class="st">'region'</span>], <span class="co"># change here</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>    as_ <span class="op">=</span> [<span class="st">'Life Expectancy at Birth'</span>, <span class="st">'Estimated density'</span>],</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    bandwidth <span class="op">=</span> <span class="dv">2</span>, </span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    extent <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">85</span>],</span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>    steps <span class="op">=</span> <span class="dv">1000</span> </span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>).mark_line(order <span class="op">=</span> <span class="va">False</span>).encode(</span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> alt.Y(<span class="st">'Life Expectancy at Birth:Q'</span>, </span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>              scale <span class="op">=</span> alt.Scale(domain <span class="op">=</span> (<span class="dv">40</span>, <span class="dv">85</span>)), </span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>              title <span class="op">=</span> <span class="st">''</span>, </span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>              axis <span class="op">=</span> <span class="va">None</span>),</span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.X(<span class="st">'Estimated density:Q'</span>,</span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>              title <span class="op">=</span> <span class="st">''</span>,</span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>              axis <span class="op">=</span> <span class="va">None</span>),</span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> alt.Color(<span class="st">'region:N'</span>)</span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>).properties(width <span class="op">=</span> <span class="dv">60</span>)</span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a><span class="co"># facet structure</span></span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>(scatter <span class="op">+</span> smooth) <span class="op">|</span> (p <span class="op">+</span> p.mark_area(order <span class="op">=</span> <span class="va">False</span>, opacity <span class="op">=</span> <span class="fl">0.1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="submission" class="level1">
+<h1>Submission</h1>
+<ol type="1">
+<li>Save the notebook.</li>
+<li>Restart the kernel and run all cells. (<strong>CAUTION</strong>: if your notebook is not saved, you will lose your work.)</li>
+<li>Carefully look through your notebook and verify that all computations execute correctly and all graphics are displayed clearly. You should see <strong>no errors</strong>; if there are any errors, make sure to correct them before you submit the notebook.</li>
+<li>Download the notebook as an <code>.ipynb</code> file. This is your backup copy.</li>
+<li>Export the notebook as PDF and upload to Gradescope.</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

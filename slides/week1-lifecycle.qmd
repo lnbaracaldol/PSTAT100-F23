@@ -1,0 +1,425 @@
+---
+title: "Data science lifecycle"
+author: "PSTAT100 Fall 2023"
+subtitle: "Week 1, Lecture 2"
+format: 
+    revealjs:
+        smaller: false
+        incremental: true
+        slide-number: true
+jupyter: python3
+df-print: paged
+---
+
+## What's data science?
+
+```{python}
+#| echo: false
+#| slideshow: {slide_type: skip}
+import pandas as pd
+import numpy as np
+import altair as alt
+import IPython.display as display
+```
+
+Data science is a term of art encompassing a wide range of activities that involve *uncovering insights from quantitative information*.
+
+. . .
+
+People that refer to themselves as data scientists typically combine specific interests ("domain knowledge", *e.g.*, biology) with computation, mathematics, and statistics and probability to contribute to knowledge in their communities.
+
+* Intersectional in nature
+* No singular disciplinary background among practitioners
+
+## Data science lifecycle
+
+> Data science **lifecycle**: *an end-to-end process resulting in a data analysis product*
+
+* Question formulation
+* Data collection and cleaning
+* Exploration
+* Analysis
+
+. . .
+
+These form a *cycle* in the sense that the steps are iterated for question refinement and futher discovery. 
+
+## Data science lifecylce
+
+![](figures/cycle-diagram.png)
+
+. . .
+
+The point isn't really the exact steps, but rather the notion of an iterative process.
+
+## Starting with a question
+
+The scaling of brains with bodies is thought to contain clues about evolutionary patterns pertaining to intelligence. 
+
+. . .
+
+There are lots of datasets out there with brain and body weight measurements, so let's consider the question: 
+
+> *What is the relationship between an animal's brain and body weight?*
+
+## Data acquisition
+
+From Allison *et al.* 1976, average body and brain weights for 62 mammals. 
+
+```{python}
+#| scrolled: true
+#| slideshow: {slide_type: '-'}
+# import brain and body weights
+bb_weights = pd.read_csv('data/allison1976.csv').iloc[:, 0:3]
+bb_weights.head(3)
+```
+
+**Units of measurement**
+
+* body weight in kilograms
+* brain weight in grams
+
+## Data assessment
+
+How well-matched is the data to our question?
+
+* Mammals only (no birds, fish, reptiles, etc.)
+* Species are those for which convenient specimens were available
+* Averages across specimens are reported ('aggregated' data)
+
+. . .
+
+What do you think? Take a moment to discuss with your neighbor.
+
+## Data assessment
+
+Based on the great points you just made, we really only stand to learn something about this particular sample of animals.
+
+. . .
+
+In other words, no *inference* is possible. 
+
+. . .
+
+> Do you think the data are still useful?
+
+## Inpection
+
+This dataset is already impeccably neat: each row is an observation for some species of mammal, and the columns are the two variables (average weight). 
+
+So no tidying needed -- we'll just check the dimensions and see if any values are missing.
+
+```{python}
+#| echo: true 
+# dimensions?
+bb_weights.shape
+```
+
+```{python}
+#| echo: true 
+# missing values?
+bb_weights.isna().sum(axis = 0)
+```
+
+## Exploration
+
+Visualization is usually a good starting point for exploring data.
+
+```{python}
+# plot
+alt.Chart(bb_weights).mark_point().encode(x = 'body_wt', y = 'brain_wt')
+```
+
+Notice the apparent density of points near $(0, 0)$ -- that suggests we shouldn't look for a relationship on the scale of kg/g.
+
+## Exploration
+
+A simple transformation of the axes reveals a clearer pattern.
+
+```{python}
+# plot
+alt.Chart(bb_weights).mark_point().encode(
+    x = alt.X('body_wt', scale = alt.Scale(type = 'log'), title = 'body weight (kg)'),
+    y = alt.Y('brain_wt', scale = alt.Scale(type = 'log'), title = 'brain weight (g)')
+)
+```
+
+## Analysis
+
+The plot shows us that there's a roughly linear relationship on the log scale:
+
+$$\log(\text{brain}) = \alpha \log(\text{body}) + c$$
+
+. . .
+
+So what does that mean in terms of brain and body weights? A little algebra and we have a "power law":
+
+$$(\text{brain}) \propto (\text{body})^\alpha$$ 
+
+. . .
+
+Check your understanding: what's the proportionality constant?
+
+## Interpretation
+
+So it appears that the brain-body scaling is well-described by a power law:
+
+> among selected specimens of these 62 species of mammal, species average brain weight is approximately proportional to a power of species average body weight
+
+. . .
+
+Notice that I did not say:
+
+- animals' brains are proportional to a power of their bodies
+- among these 62 mammals, average brain weight is approximately proportional to a power of average body weight 
+
+## Question refinement
+
+We can now ask further, more specific questions:
+
+> Do other types of animals exhibit the same power law relationship? 
+
+. . .
+
+To investigate, we need richer data.
+
+## (More) data acquisition
+
+A number of authors have compiled and published 'meta-analysis' datasets by combining the results of multiple studies.
+
+Below we'll import a few of these for three different animal classes.
+
+```{python}
+#| echo: true
+# import metaanalysis datasets
+reptiles = pd.read_csv('data/reptile_meta.csv')
+birds = pd.read_csv('data/bird_meta.csv', encoding = 'latin1')
+mammals = pd.read_csv('data/mammal_meta.csv', encoding = 'latin1')
+```
+
+## Data assessment
+
+Where does this data come from? It's kind of a convenience sample of scientific data:
+
+* Multiple studies $\rightarrow$ possibly different sampling and measurement protocols
+* Criteria for inclusion unknown $\rightarrow$ probably neither comprehensive nor representative of all such measurements taken
+
+. . .
+
+So these data, while richer, are still relatively narrow in terms of generalizability.
+
+```{python}
+#| slideshow: {slide_type: skip}
+# variables of interest
+rept_vars = reptiles.columns[[0, 1, 2, 3, 7, 9, 11]].tolist()
+bird_vars = birds.columns[[0, 1, 2, 3, 6, 11, 10]].tolist()
+mammal_vars = mammals.columns[[0, 1, 2, 3, 6, 14, 11]].tolist()
+
+# rename columns to consistent names
+rept = reptiles.loc[:, rept_vars].rename(columns = {'Body weight (g)': 'body',
+                                             'Brain weight (g)': 'brain'})
+
+bird = birds.loc[:, bird_vars].rename(columns = {'Body mass (g)': 'body',
+                                           'Brain mass (g)': 'brain'})
+
+mamm = mammals.loc[:, mammal_vars].rename(columns = {'Body mass (g)': 'body',
+                                           'Brain mass (g)': 'brain'})
+
+# add animal indicator
+mamm['class'] = 'Mammal'
+bird['class'] = 'Bird'
+rept['class'] = 'Reptile'
+
+# concatenate
+frames = [rept, mamm, bird]
+data = pd.concat(frames)
+```
+
+## A comment on scope of inference
+
+These data don't support general inferences (*e.g.*, to all animals, all mammals, etc.) because they weren't collected for the purpose to which we're putting them.
+
+. . .
+
+Usually, if data are not collected for the explicit purpose of the question you're trying to answer, they won't constitute a representative sample.
+
+## Tidying
+
+Back to the task at hand, in order to comine the datasets one must:
+
+* Select columns of interest;
+* Put in consistent order;
+* Give consistent names;
+* Concatenate row-wise.
+
+. . .
+
+We'll skip the details for now.
+
+## Inspection
+
+This dataset has quite a lot of missing brain weight measurements: many of the studies combined to form these datasets did not include that particular measurement.
+
+```{python}
+#| echo: true
+# missing values?
+data.isna().mean(axis = 0)
+```
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+# aggregate by species
+avg_weights = data.dropna().groupby(['class', 'Order', 'Species', 'Sex']).mean().reset_index()
+avg_weights['log(body)'] = np.log(avg_weights['body'])
+avg_weights['log(brain)'] = np.log(avg_weights['brain'])
+```
+
+## Exploration
+
+Focusing on the nonmissing values, we see the same power law relationship but with *different* proportionality constants and exponents for the three classes of animals.
+
+```{python}
+#| slideshow: {slide_type: skip}
+scatter = alt.Chart(avg_weights).mark_point(opacity = 0.2).encode(
+    x = 'log(body)',
+    y = 'log(brain)',
+    color = 'class'
+)
+
+trend = scatter.transform_regression('log(body)', 'log(brain)', groupby = ['class']).mark_line(size = 2)
+```
+
+```{python}
+scatter + trend
+```
+
+## Analysis
+
+So we might hypothesize that:
+
+$$
+(\text{brain}) = \beta_1(\text{body})^{\alpha_1} \qquad \text{(mammal)} \\
+(\text{brain}) = \beta_2(\text{body})^{\alpha_2} \qquad \text{(reptile)} \\
+(\text{brain}) = \beta_3(\text{body})^{\alpha_3} \qquad \text{(bird)} \\
+\beta_i \neq \beta_j, \alpha_i \neq \alpha_j \quad \text{for } i \neq j
+$$ 
+
+
+## Interpretation
+
+It seems that the average brain and body weights of the birds, mammals, and reptiles measured in these studies exhibit distinct power law relationships.
+
+. . .
+
+What would you investigate next?
+
+- Correlates of body weight?
+- Adjust for lifespan, habitat, predation, etc.?
+- Estimate the $\alpha_i$'s and $\beta_i$'s?
+- Predict brain weights for unobserved species?
+- Something else?
+
+## A comment
+
+_**Notice that I did not mention the word 'model' anywhere!**_ 
+
+. . .
+
+This was intentional -- it is a common misconception that analyzing data always involves fitting models.
+
+* Models are not not always necessary or appropriate
+* You can learn a lot from exploratory techniques
+* Models approximate specific kinds of relationships in data
+* Exploratory analysis can reveal unexpected structure
+
+## But if we *did* want to fit a model... {.scrollable}
+
+$(\text{brain}) = \beta_j(\text{body})^{\alpha_j} \quad \text{animal class } j = 1, 2, 3$
+
+```{python}
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+
+data = avg_weights.loc[:, ['class', 'brain', 'body']].rename(columns={'class':'animal_type'})
+
+body_rep = pd.concat([avg_weights.body, avg_weights.body, avg_weights.body], axis = 1)
+
+x1 = pd.get_dummies(avg_weights.iloc[:, 0])
+x2 = x1 * np.log(body_rep).values
+x2 = x2.rename(columns={'Bird': 'log.body.bird', 'Mammal': 'log.body.mammal', 'Reptile': 'log.body.reptile'})
+
+x = pd.concat([x1, x2], axis = 1)
+y = np.log(avg_weights.brain)
+
+fit = sm.OLS(y, x).fit()
+```
+
+
+::: panel-tabset 
+
+## Figure
+
+```{python}
+
+x = np.linspace(0, 100000, 100)  
+y1 = np.exp(fit.params[0])*(x**fit.params[3])
+y2 = np.exp(fit.params[1])*(x**fit.params[4])
+y3 = np.exp(fit.params[2])*(x**fit.params[5])
+
+fig, ax = plt.subplots(figsize=(6, 3.5), layout='constrained')
+ax.plot(x/1000, y1, label='birds')  # Plot some data on the axes.
+ax.plot(x/1000, y2, label='mammals')  # Plot more data on the axes...
+ax.plot(x/1000, y3, label='reptiles')  # ... and some more.
+ax.set_xlabel('body weight (kg)')  # Add an x-label to the axes.
+ax.set_ylabel('median brain weight (g)')  # Add a y-label to the axes.
+ax.legend()  # Add a legend.
+
+plt.show()
+```
+
+## Estimates
+
+```{python}
+fit.summary().tables[1]
+```
+
+:::
+
+## Model limitations
+
+Back to the issue of representativeness:
+
+* shouldn't use this model for inferences
+* might not be reliable for prediction either
+* but does capture/convey some suggestive comparisons
+
+. . .
+
+So, just be careful with interpretation of results:
+
+> "For this particular collection of specimens, we estimated..."
+
+## Zooming out
+
+This example illustrates the aspects of the lifecylce we'll cover in this class:
+
+* data retrieval and import
+* tidying and transformation
+* visualization
+* exploratory analysis
+* modeling
+
+. . .
+
+We'll address these topics in sequence.
+
+## Next week
+
+* Tabular data structure
+* Data semantics
+* Tidy data
+* Transformations of tabular data
+* Aggregation and grouping

@@ -1,0 +1,6 @@
+---
+title: "Data Science Concepts and Analysis"
+date: today
+---
+
+This is the course website for UCSB's Data Science Concepts and Analysis class (PSTAT100). Content is directed towards currently enrolled students. Please ask permission before using course materials in any other capacity. Please do not post any materials obtained or derived from this website on third-party websites.

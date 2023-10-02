@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.433">
+
+  <meta name="author" content="PSTAT100 Spring 2023">
+  <title>PSTAT100 - Sampling and missingness</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
+
+  <script type="text/javascript">
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
+  </script>
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Sampling and missingness</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+PSTAT100 Spring 2023 
+</div>
+</div>
+</div>
+
+  <p class="date">Invalid Date</p>
+</section>
+<section id="announcements" class="slide level2">
+<h2>Announcements</h2>
+<ul>
+<li class="fragment">First mini project released: air quality in U.S. cities</li>
+<li class="fragment">Lab 1 (pandas) due Monday 4/17 11:59pm PST</li>
+<li class="fragment">HW 1 due in one week on Monday 4/24</li>
+</ul>
+</section>
+<section id="this-week" class="slide level2">
+<h2>This week</h2>
+<p><strong>Objective</strong>: Enable you to critically assess data quality based on how it was collected.</p>
+<ul>
+<li class="fragment"><strong>Sampling and statistical bias</strong>
+<ul>
+<li class="fragment">Sampling terminology</li>
+<li class="fragment">Common sampling scenarios</li>
+<li class="fragment">Sampling mechanisms</li>
+<li class="fragment">Statistical bias</li>
+</ul></li>
+<li class="fragment"><strong>The missing data problem</strong>
+<ul>
+<li class="fragment">Types of missingness: MCAR, MAR, and MNAR</li>
+<li class="fragment">Pitfalls and simple fixes</li>
+</ul></li>
+<li class="fragment"><strong>Case study: voter fraud</strong>
+<ul>
+<li class="fragment">Steven Miller’s analysis of Voter Integrity Fund surveys</li>
+<li class="fragment">Sources of bias</li>
+<li class="fragment">Ethical considerations</li>
+</ul></li>
+</ul>
+</section>
+<section id="sampling-terminology" class="slide level2">
+<h2>Sampling terminology</h2>
+<p>Here we’ll introduce standard statistical terminology to describe data collection.</p>
+<div class="fragment">
+<p>All data are collected somehow. A <strong>sampling design</strong> is a <em><strong>way of selecting observational units for measurement</strong></em>. It can be construed as a particular relationship between:</p>
+<ul>
+<li class="fragment">a <strong>population</strong> (all entities of interest);</li>
+<li class="fragment">a <strong>sampling frame</strong> (all entities that are possible to measure); and</li>
+<li class="fragment">a <strong>sample</strong> (a specific collection of entities).</li>
+</ul>
+</div>
+<div class="fragment">
+<p><img data-src="figures/terminology.jpg"></p>
+</div>
+</section>
+<section id="population" class="slide level2">
+<h2>Population</h2>
+<p>Last week, we introduced the terminology <strong>observational unit</strong> to mean <em><strong>the entity measured for a study</strong></em> – datasets consist of observations made on observational units.</p>
+<div class="fragment">
+<p>In less technical terms, all data are data <em>on</em> some kind of thing, such as countries, species, locations, and the like.</p>
+</div>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>A statistical <strong>population</strong> is the <em><strong>collection of all units of interest</strong></em>. For example:</p>
+<ul>
+<li class="fragment">all countries (GDP data)</li>
+<li class="fragment">all mammal species (Allison 1976)</li>
+<li class="fragment">all babies born in the US (babynames data)</li>
+<li class="fragment">all locations in a region (SB weather data)</li>
+<li class="fragment">all adult U.S. residents (BRFSS data)</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/population.PNG"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="sampling-frame" class="slide level2">
+<h2>Sampling frame</h2>
+<p>There are usually some units in a population that can’t be measured due to practical constraints – for instance, many adult U.S. residents don’t have phones or addresses.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For this reason, it is useful to introduce the concept of a <strong>sampling frame</strong>, which refers to <em><strong>the collection of all units in a population that can be observed for a study</strong></em>. For example:</p>
+<ul>
+<li class="fragment">all countries reporting economic output between 1961 and 2019</li>
+<li class="fragment">all babies with birth certificates from U.S. hospitals born between 1990 and 2018</li>
+<li class="fragment">all adult U.S. residents with phone numbers in 2019</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/frame.PNG"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="sample" class="slide level2">
+<h2>Sample</h2>
+<p>Finally, it’s rarely feasible to measure every observable unit due to limited data collection resources – for instance, states don’t have the time or money to call every phone number every year.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>A <strong>sample</strong> is <em><strong>a subcollection of units in the sampling frame actually selected for study</strong></em>. For instance:</p>
+<ul>
+<li class="fragment">234 countries;</li>
+<li class="fragment">62 mammal species;</li>
+<li class="fragment">13,684,689 babies born in CA;</li>
+<li class="fragment">1 weather station location at SB airport;</li>
+<li class="fragment">418,268 adult U.S. residents.</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/sample.PNG"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="sampling-scenarios" class="slide level2">
+<h2>Sampling scenarios</h2>
+<p>We can now imagine a few common sampling scenarios by varying the relationship between population, frame, and sample.</p>
+<div class="fragment">
+<p>Denote an observational unit by <span class="math inline">\(U_i\)</span>, and let:</p>
+<p><span class="math display">\[\begin{alignat*}{2}
+\mathcal{U} &amp;= \{U_i\}_{i \in I} &amp;&amp;\quad(\text{universe}) \\
+P &amp;= \{U_1, \dots, U_N\} \subseteq \mathcal{U} &amp;&amp;\quad(\text{population}) \\
+    F &amp;= \{U_j: j \in J \subset I\} \subseteq P &amp;&amp;\quad(\text{frame})\\
+    S &amp;\subseteq F &amp;&amp;\quad(\text{sample})
+\end{alignat*}\]</span></p>
+</div>
+</section>
+<section id="census" class="slide level2">
+<h2>Census</h2>
+<p>The simplest scenario is a <strong>population census</strong>, where the entire population is observed.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For a census: <span class="math inline">\(S = F = P\)</span></p>
+<p><em>All properties of the population are definitevely <strong>known</strong> in a census.</em> So there is no need to model census data.</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/census.jpg"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="simple-random-sample" class="slide level2">
+<h2>Simple random sample</h2>
+<p>The statistical gold standard for inference, modeling, and prediction is the <strong>simple random sample</strong> in which units are selected at random from the population.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For a simple random sample: <span class="math inline">\(S \subset F = P\)</span></p>
+<p><em>Sample properties are reflective of population properties in simple random samples.</em> Population inference is straightforward.</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/random-sample.jpg"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="typical-sample" class="slide level2">
+<h2>‘Typical’ sample</h2>
+<p>More common in practice is a random sample from a sampling frame that overlaps but does not cover the population.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For a ‘typical’ sample: <span class="math inline">\(S \subset F \quad\text{and}\quad F \cap P \neq \emptyset\)</span></p>
+<p><em>Sample properties are <strong>reflective of the frame</strong> but not necessarily the study population.</em> Population inference gets more complicated and may not be possible.</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/typical-sample.jpg"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="administrative-data" class="slide level2">
+<h2>‘Administrative’ data</h2>
+<p>Also common is <strong>administrative data</strong> in which all units are selected from a convenient frame that partly covers the population.</p>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>For administrative data: <span class="math inline">\(S = F \quad\text{and}\quad F\cap P \neq \emptyset\)</span></p>
+<p><em>Administrative data are not really proper samples; they cannot be replicated and they do not represent any broader group.</em> No inference is possible.</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="figures/admin-data.jpg"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="scope-of-inference" class="slide level2">
+<h2>Scope of inference</h2>
+<p>The relationships among the population, frame, and sample determine the <strong>scope of inference</strong>: the <em><strong>extent to which conclusions based on the sample are generalizable</strong></em>.</p>
+<div class="fragment">
+<p>A good sampling design can ensure that the statistical properties of the sample are expected to match those of the population. If so, it is sound to generalize:</p>
+<ul>
+<li class="fragment">the sample is said to be <em>representative</em> of the population</li>
+<li class="fragment">the scope of inference is <em>broad</em></li>
+</ul>
+</div>
+<div class="fragment">
+<p>A poor sampling design will produce samples that distort the statistical properties of the population. If so, it is not sound to generalize:</p>
+<ul>
+<li class="fragment">sample statistics are subjet to bias</li>
+<li class="fragment">the scope of inference is <em>narrow</em></li>
+</ul>
+</div>
+</section>
+<section id="characterizing-sampling-designs" class="slide level2">
+<h2>Characterizing sampling designs</h2>
+<p>The sampling scenarios above can be differentiated along two key attributes:</p>
+<ol type="1">
+<li class="fragment">The overlap between the sampling frame and the population.
+<ul>
+<li class="fragment">frame <span class="math inline">\(=\)</span> population</li>
+<li class="fragment">frame <span class="math inline">\(\subset\)</span> population</li>
+<li class="fragment">frame <span class="math inline">\(\cap\)</span> population <span class="math inline">\(\neq \emptyset\)</span></li>
+</ul></li>
+<li class="fragment">The mechanism of obtaining a sample from the sampling frame.
+<ul>
+<li class="fragment">random sampling</li>
+<li class="fragment">convenience sampling</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<p><em>If you can articulate these two points, you have fully characterized the sampling design.</em></p>
+</div>
+</section>
+<section id="sampling-mechanisms" class="slide level2">
+<h2>Sampling mechanisms</h2>
+<p>In order to describe sampling mechanisms precisely, we need a little terminology.</p>
+<div class="fragment">
+<p>Each unit has some <strong>inclusion probability</strong> – <em><strong>the probability of being included in the sample</strong></em>.</p>
+</div>
+<div class="fragment">
+<p>Let’s suppose that the frame <span class="math inline">\(F\)</span> comprises <span class="math inline">\(N\)</span> units, and denote the inclusion probabilities by:</p>
+<p><span class="math display">\[
+p_i = P(\text{unit } i \text{ is included in the sample})
+\quad i = 1, \dots, N
+\]</span></p>
+<p>The inclusion probability of each unit depends on the physical procedure of collecting data.</p>
+</div>
+</section>
+<section id="sampling-mechanisms-1" class="slide level2">
+<h2>Sampling mechanisms</h2>
+<p><strong>Sampling mechanisms</strong> are <em><strong>methods of drawing samples</strong></em> and are categorized into four types based on inclusion probabilities.</p>
+<ul>
+<li class="fragment">in a <strong>census</strong> every unit is included
+<ul>
+<li class="fragment"><span class="math inline">\(p_i = 1\)</span> for every unit <span class="math inline">\(i = 1, \dots, N\)</span></li>
+</ul></li>
+<li class="fragment">in a <strong>random sample</strong> every unit is equally likely to be included
+<ul>
+<li class="fragment"><span class="math inline">\(p_i = p_j\)</span> for every pair of units <span class="math inline">\(i, j\)</span></li>
+</ul></li>
+<li class="fragment">in a <strong>probability sample</strong> units have different inclusion probabilities
+<ul>
+<li class="fragment"><span class="math inline">\(p_i \neq p_j\)</span> for at least one <span class="math inline">\(i \neq j\)</span></li>
+</ul></li>
+<li class="fragment">in a <strong>nonrandom sample</strong> there is no random mechanism
+<ul>
+<li class="fragment"><span class="math inline">\(p_i = 1\)</span> for <span class="math inline">\(i \in S\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="revisiting-example-datasets-gdp" class="slide level2">
+<h2>Revisiting example datasets: GDP</h2>
+<p>Annual observations of GDP growth for 234 countries from 1961 - 2018.</p>
+<ul>
+<li class="fragment">Population: all countries in existence between 1961-2019.</li>
+<li class="fragment">Frame: all countries reporting economic output for at least one year between 1961 and 2019.</li>
+<li class="fragment">Sample: equal to frame.</li>
+</ul>
+<div class="fragment">
+<p>So:</p>
+<ol type="1">
+<li class="fragment">Overlap: frame partly overlaps population.</li>
+<li class="fragment">Mechanism: sample is every country in the sampling frame.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>This is administrative data</em> with no scope of inference.</p>
+</div>
+</section>
+<section id="revisiting-example-datasets-brfss-data" class="slide level2">
+<h2>Revisiting example datasets: BRFSS data</h2>
+<p>Phone surveys of 418K U.S. residents in 2019.</p>
+<ul>
+<li class="fragment">Population: all U.S. residents.</li>
+<li class="fragment">Frame: all adult U.S. residents with phone numbers.</li>
+<li class="fragment">Sample: 418K adult U.S. residents with phone numbers.</li>
+</ul>
+<div class="fragment">
+<p>So:</p>
+<ol type="1">
+<li class="fragment">Overlap: frame is a subset of the population.</li>
+<li class="fragment">Mechanism: probability sample.
+<ul>
+<li class="fragment">Randomly selected phone numbers were dialed in each state, so individuals in less populous states or with multiple numbers are more likely to be included</li>
+</ul></li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>This is a typical sample</em> with narrow inference to adult residents with phone numbers.</p>
+</div>
+</section>
+<section id="statistical-bias" class="slide level2">
+<h2>Statistical bias</h2>
+<p>Statistical <strong>bias</strong> is the average difference between a sample property and a population property across all possible samples under a particular sampling design.</p>
+<div class="fragment">
+<p>In less technical terms: the expected error of estimates.</p>
+</div>
+<div class="fragment">
+<p>Two possible sources of statistical bias:</p>
+<ul>
+<li class="fragment">An estimator systematically over- or under-estimates its target population property
+<ul>
+<li class="fragment"><em>e.g.</em>, <span class="math inline">\(\frac{1}{n}\sum_i (x_i - \bar{x})^2\)</span> is biased for (underestimates) the population variance</li>
+</ul></li>
+<li class="fragment">Sampling design systematically over- or under-represents certain observational units
+<ul>
+<li class="fragment"><em>e.g.</em>, studies conducted on college campuses are biased towards (overrepresent) young adults</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p>These are distinct from other kinds of bias that we are <strong>not</strong> discussing:</p>
+<ul>
+<li class="fragment">Measurement bias: attributes or outcomes are measured unevenly across populations</li>
+<li class="fragment">Experimenter bias: study design and/or outcomes favor an investigator’s preconceptions</li>
+</ul>
+</div>
+</section>
+<section id="sampling-bias" class="slide level2">
+<h2>Sampling bias</h2>
+<p><em>In Lab 2 you’ll explore sampling bias arising from sampling mechanisms</em>. Here’s a preview:</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figures/hawk-pop-lab2.png"></p>
+<figcaption>Distributions of body length by sex (top) and in aggregate (bottom) for a hypothetical population of 5K hawks.</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<p>Consider:</p>
+<ol type="1">
+<li class="fragment">Are males or females generally longer?</li>
+<li class="fragment">How will the sample mean shift if disproportionately more males are sampled?</li>
+<li class="fragment">If disproportionately more females are sampled?</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="bias-corrections" class="slide level2">
+<h2>Bias corrections</h2>
+<p>If inclusion probabilities are known or estimable it is possible to apply bias corrections to estimates using inverse probability weighting.</p>
+<div class="fragment">
+<p>If</p>
+<ul>
+<li class="fragment"><span class="math inline">\(p_i\)</span> is the probability that individual <span class="math inline">\(i\)</span> is included in the sample <span class="math inline">\(S\)</span></li>
+<li class="fragment"><span class="math inline">\(Y_i\)</span> are observations of a variable of interest</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Then a bias-corrected estimate of the population mean is given by the weighted average:</p>
+<p><span class="math display">\[
+\sum_{i\in S} \left(\frac{p_i^{-1}}{\sum_i p_i^{-1}}\right) Y_i
+\]</span></p>
+</div>
+</section>
+<section id="bias-correction-example" class="slide level2">
+<h2>Bias correction example</h2>
+<p>Suppose we obtain a biased sample in which female hawks were 6 times as likely to be selected as males. This yields an overestimate:</p>
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-stdout">
+<pre><code>population mean:  54.73771716352954
+sample mean:  56.567779534464016</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>But since we know the exact inclusion probabilities up to a proportionality constant, we can apply inverse probability weighting to adjust for bias:</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># specify weights s.t. 6:1 female:male</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>weight_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    data <span class="op">=</span> {<span class="st">'sex'</span>: np.array([<span class="st">'male'</span>, <span class="st">'female'</span>]),</span>
+<span id="cb2-4"><a href="#cb2-4"></a>            <span class="st">'weight'</span>: np.array([<span class="dv">1</span>, <span class="dv">6</span>])})</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># append weights to sample</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>samp_w <span class="op">=</span> pd.merge(samp, weight_df, how <span class="op">=</span> <span class="st">'left'</span>, on <span class="op">=</span> <span class="st">'sex'</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># calculate inverse probability weightings</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>samp_w[<span class="st">'correction_factor'</span>] <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span>samp_w.weight)<span class="op">/</span>np.<span class="bu">sum</span>(<span class="dv">1</span><span class="op">/</span>samp_w.weight)</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co"># multiply observed values by weightings</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>samp_w[<span class="st">'weighted_length'</span>] <span class="op">=</span> samp_w.length<span class="op">*</span>samp_w.correction_factor</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co"># take weighted average</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>samp_w.weighted_length.<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>54.40928091743469</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="bias-correction-example-1" class="slide level2">
+<h2>Bias correction example</h2>
+<p>However, even if we <em>didn’t</em> know the exact inclusion probabilities, we could estimate them from the sample:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>samp.sex.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>female    88
+male      12
+Name: sex, dtype: int64</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>And use the same approach:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># estimate factor by which F more likely than M</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>ratio <span class="op">=</span> samp.sex.value_counts().loc[<span class="st">'female'</span>]<span class="op">/</span>samp.sex.value_counts().loc[<span class="st">'male'</span>]</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># input as weights</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>weight_df <span class="op">=</span> pd.DataFrame(data <span class="op">=</span> {<span class="st">'sex'</span>: np.array([<span class="st">'male'</span>, <span class="st">'female'</span>]), <span class="st">'weight'</span>: np.array([<span class="dv">1</span>, ratio])})</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co"># append weights to sample</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>samp_w <span class="op">=</span> pd.merge(samp, weight_df, how <span class="op">=</span> <span class="st">'left'</span>, on <span class="op">=</span> <span class="st">'sex'</span>)</span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># calculate inverse probability weightings</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>samp_w[<span class="st">'correction_factor'</span>] <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span>samp_w.weight)<span class="op">/</span>np.<span class="bu">sum</span>(<span class="dv">1</span><span class="op">/</span>samp_w.weight)</span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># multiply observed values by weightings</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>samp_w[<span class="st">'weighted_length'</span>] <span class="op">=</span> samp_w.length<span class="op">*</span>samp_w.correction_factor</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co"># take weighted average</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>samp_w.weighted_length.<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>54.082235672430265</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="remarks-on-ipw-and-bias-correction" class="slide level2">
+<h2>Remarks on IPW and bias correction</h2>
+<p>Inverse probability weighting can be applied to correct a wide range of estimators besides averages.</p>
+<div class="fragment">
+<p>It is also applicable to adjust for bias due to missing data.</p>
+</div>
+<div class="fragment">
+<p>In principle, the technique is simple, but in practice, there are some common hurdles:</p>
+<ul>
+<li class="fragment">usually inclusion probabilities are not known</li>
+<li class="fragment">estimating inclusion probabilities can be difficult and messy</li>
+</ul>
+</div>
+</section>
+<section id="missingness" class="slide level2">
+<h2>Missingness</h2>
+<p><strong>Missing data</strong> arise when <em><strong>one or more variable measurements fail for a subset of observations</strong></em>.</p>
+<div class="fragment">
+<p>This can happen for a variety of reasons, but is very common in pratice due to, for instance:</p>
+<ul>
+<li class="fragment">equipment failure;</li>
+<li class="fragment">sample contamination or loss;</li>
+<li class="fragment">respondents leaving questions blank;</li>
+<li class="fragment">attrition (dropping out) of study participants.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Many researchers and data scientists ignore missingness by simply deleting affected observations, but this is bad practice! Missingness needs to be treated carefully.</p>
+</div>
+</section>
+<section id="missing-representations" class="slide level2">
+<h2>Missing representations</h2>
+<p>It is standard practice to record observations with missingness but enter a special symbol (<code>..</code>, <code>-</code>, <code>NA</code>, etcetera) for missing values.</p>
+<div class="fragment">
+<p>In python, missing values are mapped to a special float:</p>
+</div>
+<div class="fragment">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="bu">float</span>(<span class="st">'nan'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>nan</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="missing-representations-1" class="slide level2">
+<h2>Missing representations</h2>
+<p>Here is some made-up data with two missing values:</p>
+<div class="fragment">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">obs</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-0.9286936933427271</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>-0.3088381742999848</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-1.4345064041945543</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0.03958917896644836</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>-0.5316890502224456</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1.4734842645335422</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="missing-representations-2" class="slide level2">
+<h2>Missing representations</h2>
+<p>If we read in the file with an <code>na_values</code> argument, pandas will parse the specified characters as NaN:</p>
+<div class="fragment">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>some_data <span class="op">=</span> pd.read_csv(<span class="st">'data/some_data.csv'</span>, index_col <span class="op">=</span> <span class="st">'obs'</span>, na_values <span class="op">=</span> <span class="st">'-'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>some_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">obs</th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-0.928694</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>-0.308838</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-1.434506</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0.039589</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>NaN</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>-0.531689</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1.473484</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculations-with-nans" class="slide level2">
+<h2>Calculations with NaNs</h2>
+<p>NaNs halt calculations on numpy arrays.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># mean in numpy -- halt</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>some_data.values.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>nan</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>However, the default behavior in pandas is to ignore the NaN’s, which allows the computation to proceed:</p>
+</div>
+<div class="fragment">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># mean in pandas -- ignore</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>some_data.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>value   -0.281776
+dtype: float64</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="omitting-missing-values-alters-results" class="slide level2">
+<h2>Omitting missing values alters results</h2>
+<p>But those missing values could have been anything. For example:</p>
+<div class="fragment">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># one counterfactual scenario</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>complete_data <span class="op">=</span> some_data.copy()</span>
+<span id="cb15-3"><a href="#cb15-3"></a>complete_data.loc[[<span class="dv">2</span>, <span class="dv">5</span>], <span class="st">'value'</span>] <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">6</span>] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Now the mean is:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>complete_data.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>value    1.163668
+dtype: float64</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>So missing values can dramatically alter results if they are simply omitted from calculations!</p>
+</div>
+</section>
+<section id="the-missing-data-problem" class="slide level2">
+<h2>The missing data problem</h2>
+<p>In a nutshell, the <strong>missing data problem</strong> is: <em><strong>how should missing values be handled in a data analysis?</strong></em></p>
+<div class="fragment">
+<blockquote>
+<p>Getting the software to run is one thing, but this alone does not address the challenges posed by the missing data. Unless the analyst, or the software vendor, provides some way to work around the missing values, the analysis cannot continue because calculations on missing values are not possible. There are many approaches to circumvent this problem. Each of these affects the end result in a different way. (Stef van Buuren, 2018)</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>There’s no universal approach to the missing data problem. The choice of method depends on:</p>
+<ul>
+<li class="fragment">the analysis objective;</li>
+<li class="fragment">the <em>missing data mechanism</em>.</li>
+</ul>
+</div>
+</section>
+<section id="missing-data-in-pstat100" class="slide level2">
+<h2>Missing data in PSTAT100</h2>
+<p>We won’t go too far into this topic in PSTAT 100. Our goal will be awareness-raising, specifically:</p>
+<ul>
+<li class="fragment">characterizing types of missingness (missing data mechanisms);</li>
+<li class="fragment">understanding missingness as a potential source of bias;</li>
+<li class="fragment">basic do’s and don’t’s when it comes to missingness.</li>
+</ul>
+<div class="fragment">
+<p>If you are interested in the topic, <a href="https://stefvanbuuren.name/fimd/">Stef van Buuren’s <em>Flexible Imputation of Missing Data</em></a> (the source of one of your readings this week) provides an excellent introduction.</p>
+</div>
+</section>
+<section id="missing-data-mechanisms" class="slide level2">
+<h2>Missing data mechanisms</h2>
+<p>Missing data mechanisms (like sampling mechanisms) are characterized by the probabilities that observations go missing.</p>
+<div class="fragment">
+<p>For dataset <span class="math inline">\(X = \{x_{ij}\}\)</span> comprising</p>
+<ul>
+<li class="fragment"><span class="math inline">\(n\)</span> rows/observations</li>
+<li class="fragment"><span class="math inline">\(p\)</span> columns/variables</li>
+</ul>
+</div>
+<div class="fragment">
+<p>denote the probability that a value goes missing as:</p>
+<p><span class="math display">\[
+q_{ij} = P(x_{ij} \text{ is missing})
+\]</span></p>
+</div>
+</section>
+<section id="missing-completely-at-random" class="slide level2">
+<h2>Missing completely at random</h2>
+<p>Data are <strong>missing completely at random</strong> (MCAR) if the <em><strong>probabilities of missing entries are uniformly equal</strong></em>.</p>
+<div class="fragment">
+<p><span class="math display">\[
+q_{ij} = q
+\quad\text{for all}\quad
+i = 1, \dots, n
+\quad\text{and}\quad
+j = 1, \dots, p
+\]</span></p>
+</div>
+<div class="fragment">
+<p>This implies that the cause of missingness is unrelated to the data: missing values can be ignored. This is the easiest scenario to handle.</p>
+</div>
+</section>
+<section id="missing-at-random" class="slide level2">
+<h2>Missing at random</h2>
+<p>Data are <strong>missing at random</strong> (MAR) if the <em><strong>probabilities of missing entries depend on observed data</strong></em>.</p>
+<div class="fragment">
+<p><span class="math display">\[
+q_{ij} = f(\mathbf{x}_i)
+\]</span></p>
+</div>
+<div class="fragment">
+<p>This implies that information about the cause of missingness is captured within the dataset. As a result:</p>
+<ul>
+<li class="fragment">it is possible to estimate <span class="math inline">\(q_{ij}\)</span></li>
+<li class="fragment">bias corrections using inverse probability weighting can be implemented</li>
+</ul>
+</div>
+</section>
+<section id="missing-not-at-random" class="slide level2">
+<h2>Missing not at random</h2>
+<p>Data are <strong>missing not at random</strong> (MNAR) if the <em><strong>probabilities of missing entries depend on unobserved data</strong></em>.</p>
+<div class="fragment">
+<p><span class="math display">\[
+q_{ij} = f(z_i, x_{ij}) \quad z_i \text{ unknown}
+\]</span></p>
+</div>
+<div class="fragment">
+<p>This implies that information about the cause of missingness is unavailable. This is the most complicated scenario.</p>
+</div>
+</section>
+<section id="assessing-the-missing-data-mechanism" class="slide level2">
+<h2>Assessing the missing data mechanism</h2>
+<p>Importantly, there is no easy diagnostic check to distinguish MCAR, MAR, and MNAR without measuring some of the missing data.</p>
+<div class="fragment">
+<p>So in practice, usually one has to make an informed assumption based on knowledge of the data collection process.</p>
+</div>
+</section>
+<section id="example-gdp-data" class="slide level2">
+<h2>Example: GDP data</h2>
+<p>In the GDP growth data, growth measurements are missing for many countries before a certain year.</p>
+<div class="fragment">
+<p>We might be able to hypothesize about why – perhaps a country didn’t exist or didn’t keep reliable records for a period of time.However, the data as they are contain no additional information that might explain the cause of missingness.</p>
+</div>
+<div class="fragment">
+<p>So these data are MNAR.</p>
+</div>
+</section>
+<section id="simple-fixes" class="slide level2">
+<h2>Simple fixes</h2>
+<p>The easiest approach to missing data is to drop observations with missing values: <code>df.dropna()</code>.</p>
+<ul>
+<li class="fragment">Implicitly assumes data are MCAR</li>
+<li class="fragment">Induces bias if data are MAR or MNAR</li>
+</ul>
+<div class="fragment">
+<p>Another simple fix is <em>mean imputation</em>, filling in missing values with the mean of the corresponding variable: <code>df.fillna()</code>.</p>
+<ul>
+<li class="fragment">Only a good idea if a very small proportion of values are missing</li>
+<li class="fragment">Induces bias if data are MAR or MNAR</li>
+</ul>
+</div>
+</section>
+<section id="perils-of-mean-imputation" class="slide level2">
+<h2>Perils of mean imputation</h2>
+
+<img data-src="figures/mean-imputation.PNG" class="r-stretch quarto-figure-center"><p class="caption"><em>Imputing too many missing values distorts the distribution of sample values.</em></p></section>
+<section id="other-common-approaches-to-missingness" class="slide level2">
+<h2>Other common approaches to missingness</h2>
+<p>When data are MCAR or MAR, one can:</p>
+<ul>
+<li class="fragment">model the probability of missingness and apply bias corrections to estimated quantities using inverse probability weighting</li>
+<li class="fragment">model the variables with missing observations as functions of the other variables and perform model-based imputation</li>
+</ul>
+</section>
+<section id="dos-and-donts" class="slide level2">
+<h2>Do’s and don’t’s</h2>
+<p>Do:</p>
+<ol type="1">
+<li class="fragment">Always check for missing values <em>upon import</em>.
+<ul>
+<li class="fragment">Tabulate the proportion of observations with missingness</li>
+<li class="fragment">Tabulate the proportion of values for each variable that are missing</li>
+</ul></li>
+<li class="fragment">Take time to find out the reasons data are missing.
+<ul>
+<li class="fragment">Determine which outcomes are coded as missing.</li>
+<li class="fragment">Investigate the physical mechanisms involved.</li>
+</ul></li>
+<li class="fragment">Report missing data if they are present.</li>
+</ol>
+<p>Don’t:</p>
+<ol type="1">
+<li class="fragment">Rely on software defaults for handling missing values.</li>
+<li class="fragment">Drop missing values if data are not MCAR.</li>
+</ol>
+
+<div class="footer footer-default">
+
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
