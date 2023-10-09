@@ -1,488 +1,278 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="PSTAT100 Fall 2023">
+
+<title>PSTAT100 - Tidy data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.433">
-
-  <meta name="author" content="PSTAT100 Spring 2023">
-  <title>PSTAT100 - Tidy data</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
-    }
-    /* CSS for syntax highlighting */
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      { color: #003b4f; background-color: #f1f3f5; }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span { color: #003b4f; } /* Normal */
-    code span.al { color: #ad0000; } /* Alert */
-    code span.an { color: #5e5e5e; } /* Annotation */
-    code span.at { color: #657422; } /* Attribute */
-    code span.bn { color: #ad0000; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
-    code span.ch { color: #20794d; } /* Char */
-    code span.cn { color: #8f5902; } /* Constant */
-    code span.co { color: #5e5e5e; } /* Comment */
-    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
-    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
-    code span.dt { color: #ad0000; } /* DataType */
-    code span.dv { color: #ad0000; } /* DecVal */
-    code span.er { color: #ad0000; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #ad0000; } /* Float */
-    code span.fu { color: #4758ab; } /* Function */
-    code span.im { color: #00769e; } /* Import */
-    code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
-    code span.op { color: #5e5e5e; } /* Operator */
-    code span.ot { color: #003b4f; } /* Other */
-    code span.pp { color: #ad0000; } /* Preprocessor */
-    code span.sc { color: #5e5e5e; } /* SpecialChar */
-    code span.ss { color: #20794d; } /* SpecialString */
-    code span.st { color: #20794d; } /* String */
-    code span.va { color: #111111; } /* Variable */
-    code span.vs { color: #20794d; } /* VerbatimString */
-    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-  </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
-  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
-
-  <script type="text/javascript">
-
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
-  </script>
-  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
 
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
+<script type="text/javascript">
 
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
 
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-titled.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-titled) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-titled .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-titled .callout-title  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-titled.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-titled.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-title {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-title {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-title {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
-  }
-
-  .callout.callout-titled .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-titled) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-title {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-title {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-title {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-title {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-title {
-    background-color: #ffe5d0
-  }
-
-  </style>
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="stylesheet" href="../styles.css">
 </head>
-<body class="quarto-light">
-  <div class="reveal">
-    <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Tidy data</h1>
+<body class="nav-fixed">
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-PSTAT100 Spring 2023 
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PSTAT100</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">Course syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../content.html" rel="" target="">
+ <span class="menu-text">Materials</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
 </div>
-</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#announcements" id="toc-announcements" class="nav-link active" data-scroll-target="#announcements">Announcements</a></li>
+  <li><a href="#this-week" id="toc-this-week" class="nav-link" data-scroll-target="#this-week">This week</a></li>
+  <li><a href="#tabular-data" id="toc-tabular-data" class="nav-link" data-scroll-target="#tabular-data">Tabular data</a></li>
+  <li><a href="#mammal-data-long-layouts" id="toc-mammal-data-long-layouts" class="nav-link" data-scroll-target="#mammal-data-long-layouts">Mammal data: long layouts</a></li>
+  <li><a href="#mammal-data-wide-layout" id="toc-mammal-data-wide-layout" class="nav-link" data-scroll-target="#mammal-data-wide-layout">Mammal data: wide layout</a></li>
+  <li><a href="#gdp-growth-data-wide-layout" id="toc-gdp-growth-data-wide-layout" class="nav-link" data-scroll-target="#gdp-growth-data-wide-layout">GDP growth data: wide layout</a></li>
+  <li><a href="#gdp-growth-data-long-layout" id="toc-gdp-growth-data-long-layout" class="nav-link" data-scroll-target="#gdp-growth-data-long-layout">GDP growth data: long layout</a></li>
+  <li><a href="#sb-weather-data-long-layouts" id="toc-sb-weather-data-long-layouts" class="nav-link" data-scroll-target="#sb-weather-data-long-layouts">SB weather data: long layouts</a></li>
+  <li><a href="#sb-weather-data-wide-layout" id="toc-sb-weather-data-wide-layout" class="nav-link" data-scroll-target="#sb-weather-data-wide-layout">SB weather data: wide layout</a></li>
+  <li><a href="#un-development-data-multiple-tables" id="toc-un-development-data-multiple-tables" class="nav-link" data-scroll-target="#un-development-data-multiple-tables">UN development data: multiple tables</a></li>
+  <li><a href="#un-development-data-one-table" id="toc-un-development-data-one-table" class="nav-link" data-scroll-target="#un-development-data-one-table">UN development data: one table</a></li>
+  <li><a href="#un-development-data-one-longer-table" id="toc-un-development-data-one-longer-table" class="nav-link" data-scroll-target="#un-development-data-one-longer-table">UN development data: one (longer) table</a></li>
+  <li><a href="#what-are-the-differences" id="toc-what-are-the-differences" class="nav-link" data-scroll-target="#what-are-the-differences">What are the differences?</a></li>
+  <li><a href="#how-to-choose" id="toc-how-to-choose" class="nav-link" data-scroll-target="#how-to-choose">How to choose?</a></li>
+  <li><a href="#few-organizational-constraints" id="toc-few-organizational-constraints" class="nav-link" data-scroll-target="#few-organizational-constraints">Few organizational constraints</a></li>
+  <li><a href="#form-and-representation" id="toc-form-and-representation" class="nav-link" data-scroll-target="#form-and-representation">Form and representation</a></li>
+  <li><a href="#tidy-data" id="toc-tidy-data" class="nav-link" data-scroll-target="#tidy-data">Tidy data</a></li>
+  <li><a href="#semantics-and-structure" id="toc-semantics-and-structure" class="nav-link" data-scroll-target="#semantics-and-structure">Semantics and structure</a></li>
+  <li><a href="#data-semantics" id="toc-data-semantics" class="nav-link" data-scroll-target="#data-semantics">Data semantics</a></li>
+  <li><a href="#units-variables-and-observations" id="toc-units-variables-and-observations" class="nav-link" data-scroll-target="#units-variables-and-observations">Units, variables, and observations</a></li>
+  <li><a href="#identifying-units-variables-and-observations" id="toc-identifying-units-variables-and-observations" class="nav-link" data-scroll-target="#identifying-units-variables-and-observations">Identifying units, variables, and observations</a></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn</a></li>
+  <li><a href="#data-structure" id="toc-data-structure" class="nav-link" data-scroll-target="#data-structure">Data structure</a></li>
+  <li><a href="#the-tidy-standard" id="toc-the-tidy-standard" class="nav-link" data-scroll-target="#the-tidy-standard">The tidy standard</a></li>
+  <li><a href="#tidy-or-messy" id="toc-tidy-or-messy" class="nav-link" data-scroll-target="#tidy-or-messy">Tidy or messy?</a></li>
+  <li><a href="#tidy-or-messy-1" id="toc-tidy-or-messy-1" class="nav-link" data-scroll-target="#tidy-or-messy-1">Tidy or messy?</a></li>
+  <li><a href="#tidy-or-messy-2" id="toc-tidy-or-messy-2" class="nav-link" data-scroll-target="#tidy-or-messy-2">Tidy or messy?</a></li>
+  <li><a href="#tidy-or-messy-3" id="toc-tidy-or-messy-3" class="nav-link" data-scroll-target="#tidy-or-messy-3">Tidy or messy?</a></li>
+  <li><a href="#common-messes" id="toc-common-messes" class="nav-link" data-scroll-target="#common-messes">Common messes</a></li>
+  <li><a href="#tidying-operations" id="toc-tidying-operations" class="nav-link" data-scroll-target="#tidying-operations">Tidying operations</a></li>
+  <li><a href="#melt" id="toc-melt" class="nav-link" data-scroll-target="#melt">Melt</a></li>
+  <li><a href="#melt-1" id="toc-melt-1" class="nav-link" data-scroll-target="#melt-1">Melt</a></li>
+  <li><a href="#pivot" id="toc-pivot" class="nav-link" data-scroll-target="#pivot">Pivot</a></li>
+  <li><a href="#pivot-1" id="toc-pivot-1" class="nav-link" data-scroll-target="#pivot-1">Pivot</a></li>
+  <li><a href="#pivot-and-melt" id="toc-pivot-and-melt" class="nav-link" data-scroll-target="#pivot-and-melt">Pivot and melt</a></li>
+  <li><a href="#pivot-and-melt-1" id="toc-pivot-and-melt-1" class="nav-link" data-scroll-target="#pivot-and-melt-1">Pivot and melt</a></li>
+  <li><a href="#merge" id="toc-merge" class="nav-link" data-scroll-target="#merge">Merge</a></li>
+  <li><a href="#merge-1" id="toc-merge-1" class="nav-link" data-scroll-target="#merge-1">Merge</a></li>
+  <li><a href="#merge-2" id="toc-merge-2" class="nav-link" data-scroll-target="#merge-2">Merge</a></li>
+  <li><a href="#next-time" id="toc-next-time" class="nav-link" data-scroll-target="#next-time">Next time</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="week2-tidy.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tidy data</h1>
 </div>
 
-  <p class="date">Invalid Date</p>
-</section>
-<section id="announcements" class="slide level2">
-<h2>Announcements</h2>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>PSTAT100 Fall 2023 </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="announcements" class="level2">
+<h2 class="anchored" data-anchor-id="announcements">Announcements</h2>
 <ul>
-<li class="fragment">PDF export fixed on JupyterHub</li>
-<li class="fragment">Lab 0 due today 11:59PM; late submissions allowed until Wednesday 11:59PM</li>
-<li class="fragment">Complete Q1-Q4 (<code>fruit_info</code> section) of Lab 1 before section</li>
+<li>Complete Q1-Q4 (<code>fruit_info</code> section) of Lab 1 before section</li>
 </ul>
 </section>
-<section id="this-week" class="slide level2">
-<h2>This week</h2>
+<section id="this-week" class="level2">
+<h2 class="anchored" data-anchor-id="this-week">This week</h2>
 <ul>
-<li class="fragment"><strong>Tabular data</strong>
+<li><strong>Tabular data</strong>
 <ul>
-<li class="fragment">Many ways to structure a dataset</li>
-<li class="fragment">Few organizational constraints ‘in the wild’</li>
+<li>Many ways to structure a dataset</li>
+<li>Few organizational constraints ‘in the wild’</li>
 </ul></li>
-<li class="fragment"><strong>Principles of tidy data: matching semantics with structure</strong>
+<li><strong>Principles of tidy data: matching semantics with structure</strong>
 <ul>
-<li class="fragment">Data semantics: observations and variables</li>
-<li class="fragment">Tabular structure: rows and columns</li>
-<li class="fragment">The tidy standard</li>
-<li class="fragment">Common messes</li>
-<li class="fragment">Tidying operations</li>
+<li>Data semantics: observations and variables</li>
+<li>Tabular structure: rows and columns</li>
+<li>The tidy standard</li>
+<li>Common messes</li>
+<li>Tidying operations</li>
 </ul></li>
-<li class="fragment"><strong>Transforming data frames</strong>
+<li><strong>Transforming data frames</strong>
 <ul>
-<li class="fragment">Subsetting (slicing and filtering)</li>
-<li class="fragment">Derived variables</li>
-<li class="fragment">Aggregation and summary statistics</li>
+<li>Subsetting (slicing and filtering)</li>
+<li>Derived variables</li>
+<li>Aggregation and summary statistics</li>
 </ul></li>
 </ul>
 </section>
-<section id="tabular-data" class="slide level2">
-<h2>Tabular data</h2>
+<section id="tabular-data" class="level2">
+<h2 class="anchored" data-anchor-id="tabular-data">Tabular data</h2>
 <ul>
-<li class="fragment">Many possible layouts for tabular data</li>
-<li class="fragment">‘Real’ datasets have few organizational constraints</li>
+<li>Many possible layouts for tabular data</li>
+<li>‘Real’ datasets have few organizational constraints</li>
 </ul>
-<div class="fragment">
+<p>. . .</p>
 <p>Most data are stored in tables, but <strong>there are always multiple possible tabular layouts for the same underlying data</strong>.</p>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Let’s look at some examples.</p>
-</div>
 </section>
-<section id="mammal-data-long-layouts" class="slide level2">
-<h2>Mammal data: long layouts</h2>
+<section id="mammal-data-long-layouts" class="level2">
+<h2 class="anchored" data-anchor-id="mammal-data-long-layouts">Mammal data: long layouts</h2>
 <p>Below is the Allison 1976 mammal brain-body weight dataset from last time shown in two ‘long’ layouts:</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">body_wt</th>
 <th data-quarto-table-cell-role="th">brain_wt</th>
@@ -510,28 +300,14 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="4">
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">measurement</th>
 <th data-quarto-table-cell-role="th">weight</th>
@@ -569,32 +345,18 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="mammal-data-wide-layout" class="slide level2">
-<h2>Mammal data: wide layout</h2>
+<section id="mammal-data-wide-layout" class="level2">
+<h2 class="anchored" data-anchor-id="mammal-data-wide-layout">Mammal data: wide layout</h2>
 <p>Here’s a third possible layout for the mammal brain-body weight data:</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="5">
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th">species</th>
 <th data-quarto-table-cell-role="th">Africanelephant</th>
 <th data-quarto-table-cell-role="th">Africangiantpouchedrat</th>
@@ -630,32 +392,18 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="gdp-growth-data-wide-layout" class="slide level2">
-<h2>GDP growth data: wide layout</h2>
+<section id="gdp-growth-data-wide-layout" class="level2">
+<h2 class="anchored" data-anchor-id="gdp-growth-data-wide-layout">GDP growth data: wide layout</h2>
 <p>Here’s another example: World Bank data on annual GDP growth for 264 countries from 1961 – 2019.</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">Country Name</th>
 <th data-quarto-table-cell-role="th">Country Code</th>
@@ -711,31 +459,18 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="gdp-growth-data-long-layout" class="slide level2">
-<h2>GDP growth data: long layout</h2>
+<section id="gdp-growth-data-long-layout" class="level2">
+<h2 class="anchored" data-anchor-id="gdp-growth-data-long-layout">GDP growth data: long layout</h2>
 <p>Here’s an alternative layout for the annual GDP growth data:</p>
 <div class="cell" data-tags="[]" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">year</th>
 <th data-quarto-table-cell-role="th">growth_pct</th>
@@ -784,30 +519,17 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </section>
-<section id="sb-weather-data-long-layouts" class="slide level2">
-<h2>SB weather data: long layouts</h2>
+<section id="sb-weather-data-long-layouts" class="level2">
+<h2 class="anchored" data-anchor-id="sb-weather-data-long-layouts">SB weather data: long layouts</h2>
 <p>A third example: daily minimum and maximum temperatures recorded at Santa Barbara Municipal Airport from January 2021 through March 2021.</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">STATION</th>
 <th data-quarto-table-cell-role="th">TMAX</th>
@@ -851,32 +573,18 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="sb-weather-data-wide-layout" class="slide level2">
-<h2>SB weather data: wide layout</h2>
+<section id="sb-weather-data-wide-layout" class="level2">
+<h2 class="anchored" data-anchor-id="sb-weather-data-wide-layout">SB weather data: wide layout</h2>
 <p>Here’s a wide layout for the SB weather data:</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="10">
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">DAY</th>
 <th data-quarto-table-cell-role="th">1</th>
@@ -938,33 +646,19 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="un-development-data-multiple-tables" class="slide level2">
-<h2>UN development data: multiple tables</h2>
+<section id="un-development-data-multiple-tables" class="level2">
+<h2 class="anchored" data-anchor-id="un-development-data-multiple-tables">UN development data: multiple tables</h2>
 <p>A final example: United Nations country development data organized into different tables according to variable type.</p>
 <p>Here is a table of population measurements:</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="12">
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">total_pop</th>
 <th data-quarto-table-cell-role="th">urban_pct_pop</th>
@@ -1005,28 +699,14 @@ PSTAT100 Spring 2023
 </div>
 </div>
 <p>And here is a table of a few gender-related variables:</p>
-</div>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="13">
 <div class="cell-output cell-output-display" data-execution_count="13">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">gender_inequality</th>
 <th data-quarto-table-cell-role="th">parliament_pct_women</th>
@@ -1062,31 +742,18 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="un-development-data-one-table" class="slide level2">
-<h2>UN development data: one table</h2>
+<section id="un-development-data-one-table" class="level2">
+<h2 class="anchored" data-anchor-id="un-development-data-one-table">UN development data: one table</h2>
 <p>Here are both tables merged by country:</p>
 <div class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display" data-execution_count="15">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">total_pop</th>
 <th data-quarto-table-cell-role="th">urban_pct_pop</th>
@@ -1155,29 +822,17 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </section>
-<section id="un-development-data-one-longer-table" class="slide level2">
-<h2>UN development data: one (longer) table</h2>
+<section id="un-development-data-one-longer-table" class="level2">
+<h2 class="anchored" data-anchor-id="un-development-data-one-longer-table">UN development data: one (longer) table</h2>
 <p>And here is another arrangement of the merged table:</p>
 <div class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display" data-execution_count="17">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">gender_variable</th>
 <th data-quarto-table-cell-role="th">gender_value</th>
@@ -1235,111 +890,96 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </section>
-<section id="what-are-the-differences" class="slide level2">
-<h2>What are the differences?</h2>
+<section id="what-are-the-differences" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-the-differences">What are the differences?</h2>
 <p>In short, the alternate layouts differ in three respects:</p>
 <ol type="1">
-<li class="fragment">Rows</li>
-<li class="fragment">Columns</li>
-<li class="fragment">Number of tables</li>
+<li>Rows</li>
+<li>Columns</li>
+<li>Number of tables</li>
 </ol>
 </section>
-<section id="how-to-choose" class="slide level2">
-<h2>How to choose?</h2>
+<section id="how-to-choose" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-choose">How to choose?</h2>
 <p>Return to one of the examples and review the different layouts with your neighbor.</p>
 <ol type="1">
-<li class="fragment">List a few advantages and disadvantages for each layout.</li>
-<li class="fragment">Which do you prefer and why?</li>
+<li>List a few advantages and disadvantages for each layout.</li>
+<li>Which do you prefer and why?</li>
 </ol>
 </section>
-<section id="few-organizational-constraints" class="slide level2">
-<h2>Few organizational constraints</h2>
+<section id="few-organizational-constraints" class="level2">
+<h2 class="anchored" data-anchor-id="few-organizational-constraints">Few organizational constraints</h2>
 <p>It’s surprisingly difficult to articulate reasons why one layout might be preferable to another.</p>
 <ul>
-<li class="fragment">Usually the choice of layout isn’t principled</li>
-<li class="fragment">Idiosyncratic: two people are likely to make different choices</li>
+<li>Usually the choice of layout isn’t principled</li>
+<li>Idiosyncratic: two people are likely to make different choices</li>
 </ul>
-<div class="fragment">
+<p>. . .</p>
 <p>As a result:</p>
 <ul>
-<li class="fragment">Few widely used conventions</li>
-<li class="fragment">Lots of variability ‘in the wild’</li>
-<li class="fragment">Datasets are often organized in bizarre ways</li>
+<li>Few widely used conventions</li>
+<li>Lots of variability ‘in the wild’</li>
+<li>Datasets are often organized in bizarre ways</li>
 </ul>
-</div>
 </section>
-<section id="form-and-representation" class="slide level2">
-<h2>Form and representation</h2>
+<section id="form-and-representation" class="level2">
+<h2 class="anchored" data-anchor-id="form-and-representation">Form and representation</h2>
 <p>Because of the wide range of possible layouts for a dataset, and the variety of choices that are made about how to store data, <strong>data scientists are constantly faced with determining how best to reorganize datasets in a way that facilitates exploration and analysis.</strong></p>
-<div class="fragment">
+<p>. . .</p>
 <p>Broadly, this involves two interdependent choices:</p>
 <ul>
-<li class="fragment"><em>Choice of <strong>representation</strong>: how to encode information.</em>
+<li><em>Choice of <strong>representation</strong>: how to encode information.</em>
 <ul>
-<li class="fragment">Example: parse dates as ‘MM/DD/YYYY’ (one variable) or ‘MM’, ‘DD’, ‘YYYY’ (three variables)?</li>
-<li class="fragment">Example: use values 1, 2, 3 or ‘low’, ‘med’, ‘high’?</li>
-<li class="fragment">Example: name variables ‘question1’, ‘question2’, …, or ‘age’, ‘income’, …?</li>
+<li>Example: parse dates as ‘MM/DD/YYYY’ (one variable) or ‘MM’, ‘DD’, ‘YYYY’ (three variables)?</li>
+<li>Example: use values 1, 2, 3 or ‘low’, ‘med’, ‘high’?</li>
+<li>Example: name variables ‘question1’, ‘question2’, …, or ‘age’, ‘income’, …?</li>
 </ul></li>
-<li class="fragment"><em>Choice of <strong>form</strong>: how to display information</em>
+<li><em>Choice of <strong>form</strong>: how to display information</em>
 <ul>
-<li class="fragment">Example: wide table or long table?</li>
-<li class="fragment">Example: one table or many?</li>
+<li>Example: wide table or long table?</li>
+<li>Example: one table or many?</li>
 </ul></li>
 </ul>
-</div>
 </section>
-<section id="tidy-data" class="slide level2">
-<h2>Tidy data</h2>
+<section id="tidy-data" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-data">Tidy data</h2>
 <p>The <strong>tidy data standard</strong> is a principled way of organizing tabular data. It has two main advantages:</p>
 <ol type="1">
-<li class="fragment">Facilitates workflow by establishing a consistent dataset structure.</li>
-<li class="fragment">Principles are designed to make transformation, exploration, visualization, and modeling easy.</li>
+<li>Facilitates workflow by establishing a consistent dataset structure.</li>
+<li>Principles are designed to make transformation, exploration, visualization, and modeling easy.</li>
 </ol>
 </section>
-<section id="semantics-and-structure" class="slide level2">
-<h2>Semantics and structure</h2>
-<blockquote>
+<section id="semantics-and-structure" class="level2">
+<h2 class="anchored" data-anchor-id="semantics-and-structure">Semantics and structure</h2>
+<blockquote class="blockquote">
 <p>“Tidying your data means storing it in a consistent form that matches the semantics of the dataset with the way it is stored.” <em>Wickham and Grolemund, R for Data Science, 2017.</em></p>
 </blockquote>
-<div class="fragment">
+<p>. . .</p>
 <p>A dataset is a collection of values.</p>
 <ul>
-<li class="fragment"><p>the <em>semantics</em> of a dataset are the meanings of the values</p></li>
-<li class="fragment"><p>the <em>structure</em> of a dataset is the arrangement of the values</p></li>
+<li><p>the <em>semantics</em> of a dataset are the meanings of the values</p></li>
+<li><p>the <em>structure</em> of a dataset is the arrangement of the values</p></li>
 </ul>
-</div>
 </section>
-<section id="data-semantics" class="slide level2">
-<h2>Data semantics</h2>
+<section id="data-semantics" class="level2">
+<h2 class="anchored" data-anchor-id="data-semantics">Data semantics</h2>
 <p>To introduce some general vocabulary, each value in a dataset is</p>
 <ul>
-<li class="fragment">an <strong>observation</strong></li>
-<li class="fragment">of a <strong>variable</strong></li>
-<li class="fragment">taken on an <strong>observational unit</strong>.</li>
+<li>an <strong>observation</strong></li>
+<li>of a <strong>variable</strong></li>
+<li>taken on an <strong>observational unit</strong>.</li>
 </ul>
 </section>
-<section id="units-variables-and-observations" class="slide level2">
-<h2>Units, variables, and observations</h2>
+<section id="units-variables-and-observations" class="level2">
+<h2 class="anchored" data-anchor-id="units-variables-and-observations">Units, variables, and observations</h2>
 <div class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display" data-execution_count="18">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">total_pop</th>
 <th data-quarto-table-cell-role="th">urban_pct_pop</th>
@@ -1368,44 +1008,32 @@ PSTAT100 Spring 2023
 </div>
 </div>
 <ul>
-<li class="fragment">An <strong>observational unit</strong> is the entity measured.
+<li>An <strong>observational unit</strong> is the entity measured.
 <ul>
-<li class="fragment">Above, country</li>
+<li>Above, country</li>
 </ul></li>
-<li class="fragment">A <strong>variable</strong> is an attribute measured on each unit.
+<li>A <strong>variable</strong> is an attribute measured on each unit.
 <ul>
-<li class="fragment">Above, total population and urban percentage</li>
+<li>Above, total population and urban percentage</li>
 </ul></li>
-<li class="fragment">An <strong>observation</strong> is a collection of measurements taken on one unit.
+<li>An <strong>observation</strong> is a collection of measurements taken on one unit.
 <ul>
-<li class="fragment">Above, 38.0 and 25.8</li>
+<li>Above, 38.0 and 25.8</li>
 </ul></li>
 </ul>
 </section>
-<section id="identifying-units-variables-and-observations" class="slide level2">
-<h2>Identifying units, variables, and observations</h2>
+<section id="identifying-units-variables-and-observations" class="level2">
+<h2 class="anchored" data-anchor-id="identifying-units-variables-and-observations">Identifying units, variables, and observations</h2>
 <p>Let’s do an example. Here’s one record from the GDP growth data:</p>
-<div class="fragment">
+<p>. . .</p>
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="19">
 <div class="cell-output cell-output-display" data-execution_count="19">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">year</th>
 <th data-quarto-table-cell-role="th">growth_pct</th>
@@ -1428,35 +1056,20 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Above, the <em>values</em> -13.605441 and 1961 are observations of the <em>variables</em> GDP growth and year recorded for the <em>observational unit</em> Algeria.</p>
-</div>
 </section>
-<section id="your-turn" class="slide level2">
-<h2>Your turn</h2>
+<section id="your-turn" class="level2">
+<h2 class="anchored" data-anchor-id="your-turn">Your turn</h2>
 <p>What are the units, variables and observations?</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="20">
 <div class="cell-output cell-output-display" data-execution_count="20">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">DAY</th>
 <th data-quarto-table-cell-role="th">1</th>
@@ -1510,55 +1123,43 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Think about it, then confer with your neighbor.</p>
-</div>
 </section>
-<section id="data-structure" class="slide level2">
-<h2>Data structure</h2>
+<section id="data-structure" class="level2">
+<h2 class="anchored" data-anchor-id="data-structure">Data structure</h2>
 <p><em>Data structure</em> refers to the form in which it is stored.</p>
-<div class="fragment">
+<p>. . .</p>
 <p>Tabular data is arranged in rows and columns.</p>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>As we saw, there are multiple structures – arrangements of rows and columns – available to represent any dataset.</p>
-</div>
 </section>
-<section id="the-tidy-standard" class="slide level2">
-<h2>The tidy standard</h2>
+<section id="the-tidy-standard" class="level2">
+<h2 class="anchored" data-anchor-id="the-tidy-standard">The tidy standard</h2>
 <p>The tidy standard consists in matching semantics and structure. A dataset is <strong>tidy</strong> if:</p>
 <ol type="1">
-<li class="fragment">Each variable is a column.</li>
-<li class="fragment">Each observation is a row.</li>
-<li class="fragment">Each table contains measurements on only one type of observational unit.</li>
+<li>Each variable is a column.</li>
+<li>Each observation is a row.</li>
+<li>Each table contains measurements on only one type of observational unit.</li>
 </ol>
-
-<img data-src="figures/tidy-layout.png" class="r-stretch quarto-figure-center"><p class="caption">Tidy data.</p></section>
-<section id="tidy-or-messy" class="slide level2">
-<h2>Tidy or messy?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/tidy-layout.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Tidy data.</figcaption>
+</figure>
+</div>
+</section>
+<section id="tidy-or-messy" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-or-messy">Tidy or messy?</h2>
 <p>Let’s revisit some of our examples of multiple layouts.</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="21">
 <div class="cell-output cell-output-display" data-execution_count="21">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">Country Name</th>
 <th data-quarto-table-cell-role="th">Country Code</th>
@@ -1598,10 +1199,9 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>We can compare the semantics and structure for alignment:</p>
-<table>
+<table class="table">
 <thead>
 <tr class="header">
 <th>Semantics</th>
@@ -1631,34 +1231,19 @@ PSTAT100 Spring 2023
 </tr>
 </tbody>
 </table>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Rules 1 and 2 are violated, since column names are values (of year), not variables. <em>Not tidy</em>.</p>
-</div>
 </section>
-<section id="tidy-or-messy-1" class="slide level2">
-<h2>Tidy or messy?</h2>
-<div class="fragment">
+<section id="tidy-or-messy-1" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-or-messy-1">Tidy or messy?</h2>
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="22">
 <div class="cell-output cell-output-display" data-execution_count="22">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">year</th>
 <th data-quarto-table-cell-role="th">growth_pct</th>
@@ -1696,10 +1281,9 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Comparison of semantics and structure:</p>
-<table>
+<table class="table">
 <thead>
 <tr class="header">
 <th>Semantics</th>
@@ -1729,34 +1313,19 @@ PSTAT100 Spring 2023
 </tr>
 </tbody>
 </table>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>All three rules are met: rows are observations, columns are variables, and there’s one unit type and one table. <em>Tidy</em>.</p>
-</div>
 </section>
-<section id="tidy-or-messy-2" class="slide level2">
-<h2>Tidy or messy?</h2>
-<div class="fragment">
+<section id="tidy-or-messy-2" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-or-messy-2">Tidy or messy?</h2>
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="23">
 <div class="cell-output cell-output-display" data-execution_count="23">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">STATION</th>
 <th data-quarto-table-cell-role="th">TMAX</th>
@@ -1802,35 +1371,21 @@ PSTAT100 Spring 2023
 </div>
 <p>Try this one on your own. Then compare with your neighbor.</p>
 <ol type="1">
-<li class="fragment">Identify the observations and variables</li>
-<li class="fragment">What are the observational units?</li>
+<li>Identify the observations and variables</li>
+<li>What are the observational units?</li>
 </ol>
-</div>
 </section>
-<section id="tidy-or-messy-3" class="slide level2">
-<h2>Tidy or messy?</h2>
+<section id="tidy-or-messy-3" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-or-messy-3">Tidy or messy?</h2>
 <p>In <code>undev1</code> and <code>undev2</code>:</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="24">
 <div class="cell-output cell-output-display" data-execution_count="24">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">total_pop</th>
 <th data-quarto-table-cell-role="th">urban_pct_pop</th>
@@ -1870,28 +1425,14 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="25">
 <div class="cell-output cell-output-display" data-execution_count="25">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">gender_inequality</th>
 <th data-quarto-table-cell-role="th">parliament_pct_women</th>
@@ -1927,85 +1468,71 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Here there are multiple tables. To discuss:</p>
 <ul>
-<li class="fragment">Are the observational units the same or different?</li>
-<li class="fragment">Based on your answer above, is the data tidy or not?</li>
+<li>Are the observational units the same or different?</li>
+<li>Based on your answer above, is the data tidy or not?</li>
 </ul>
-</div>
 </section>
-<section id="common-messes" class="slide level2">
-<h2>Common messes</h2>
-<blockquote>
+<section id="common-messes" class="level2">
+<h2 class="anchored" data-anchor-id="common-messes">Common messes</h2>
+<blockquote class="blockquote">
 <p>“Well, here’s another nice mess you’ve gotten me into” – Oliver Hardy</p>
 </blockquote>
 <p>These examples illustrate some common messes:</p>
 <ol type="1">
-<li class="fragment"><em>Columns are values, not variables</em>
+<li><em>Columns are values, not variables</em>
 <ul>
-<li class="fragment">GDP data: columns are 1961, 1962, …</li>
+<li>GDP data: columns are 1961, 1962, …</li>
 </ul></li>
-<li class="fragment"><em>Multiple variables are stored in one column</em>
+<li><em>Multiple variables are stored in one column</em>
 <ul>
-<li class="fragment">Mammal data: weight column contains both body and brain weights</li>
+<li>Mammal data: weight column contains both body and brain weights</li>
 </ul></li>
-<li class="fragment"><em>Variables or values are stored in rows and columns</em>
+<li><em>Variables or values are stored in rows and columns</em>
 <ul>
-<li class="fragment">Weather data: date values are stored in rows and columns, each column contains both min and max temperatures</li>
+<li>Weather data: date values are stored in rows and columns, each column contains both min and max temperatures</li>
 </ul></li>
-<li class="fragment"><em>Measurements on one type of observational unit are divided into multiple tables.</em>
+<li><em>Measurements on one type of observational unit are divided into multiple tables.</em>
 <ul>
-<li class="fragment">UN development data: one table for population statistics and a separate table for gender statistics.</li>
+<li>UN development data: one table for population statistics and a separate table for gender statistics.</li>
 </ul></li>
 </ol>
 </section>
-<section id="tidying-operations" class="slide level2">
-<h2>Tidying operations</h2>
+<section id="tidying-operations" class="level2">
+<h2 class="anchored" data-anchor-id="tidying-operations">Tidying operations</h2>
 <p>These common messes can be cleaned up by some simple operations:</p>
 <ul>
-<li class="fragment"><em>melt</em>
+<li><em>melt</em>
 <ul>
-<li class="fragment">reshape a dataframe from wide to long format</li>
+<li>reshape a dataframe from wide to long format</li>
 </ul></li>
-<li class="fragment"><em>pivot</em>
+<li><em>pivot</em>
 <ul>
-<li class="fragment">reshape a dataframe from long to wide format</li>
+<li>reshape a dataframe from long to wide format</li>
 </ul></li>
-<li class="fragment"><em>merge</em>
+<li><em>merge</em>
 <ul>
-<li class="fragment">combine two dataframes row-wise by matching the values of certain columns</li>
+<li>combine two dataframes row-wise by matching the values of certain columns</li>
 </ul></li>
 </ul>
 </section>
-<section id="melt" class="slide level2">
-<h2>Melt</h2>
+<section id="melt" class="level2">
+<h2 class="anchored" data-anchor-id="melt">Melt</h2>
 <p>Melting resolves the problem of having values stored as columns (common mess 1).</p>
-
-<img data-src="figures/tidy-melt.png" class="r-stretch"></section>
-<section id="melt-1" class="slide level2">
-<h2>Melt</h2>
+<p><img src="figures/tidy-melt.png" class="img-fluid"></p>
+</section>
+<section id="melt-1" class="level2">
+<h2 class="anchored" data-anchor-id="melt-1">Melt</h2>
 <div class="cell" data-tags="[]" data-execution_count="26">
 <div class="cell-output cell-output-display" data-execution_count="26">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">Country Name</th>
 <th data-quarto-table-cell-role="th">Country Code</th>
@@ -2086,33 +1613,20 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># in pandas</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>gdp1.melt(</span>
-<span id="cb1-3"><a href="#cb1-3"></a>    id_vars <span class="op">=</span> [<span class="st">'Country Name'</span>, <span class="st">'Country Code'</span>], <span class="co"># which variables do you want to retain for each row? .</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>    var_name <span class="op">=</span> <span class="st">'Year'</span>, <span class="co"># what do you want to name the variable that will contain the column names?</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>    value_name <span class="op">=</span> <span class="st">'GDP Growth'</span>, <span class="co"># what do you want to name the variable that will contain the values?</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in pandas</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>gdp1.melt(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    id_vars <span class="op">=</span> [<span class="st">'Country Name'</span>, <span class="st">'Country Code'</span>], <span class="co"># which variables do you want to retain for each row? .</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    var_name <span class="op">=</span> <span class="st">'Year'</span>, <span class="co"># what do you want to name the variable that will contain the column names?</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    value_name <span class="op">=</span> <span class="st">'GDP Growth'</span>, <span class="co"># what do you want to name the variable that will contain the values?</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="27">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">Country Name</th>
 <th data-quarto-table-cell-role="th">Country Code</th>
@@ -2141,35 +1655,22 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="pivot" class="slide level2">
-<h2>Pivot</h2>
+<section id="pivot" class="level2">
+<h2 class="anchored" data-anchor-id="pivot">Pivot</h2>
 <p>Pivoting resolves the issue of having multiple variables stored in one column (common mess 2). It’s the inverse operation of melting.</p>
-
-<img data-src="figures/tidy-pivot.png" class="r-stretch"></section>
-<section id="pivot-1" class="slide level2">
-<h2>Pivot</h2>
+<p><img src="figures/tidy-pivot.png" class="img-fluid"></p>
+</section>
+<section id="pivot-1" class="level2">
+<h2 class="anchored" data-anchor-id="pivot-1">Pivot</h2>
 <div class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display" data-execution_count="28">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">measurement</th>
 <th data-quarto-table-cell-role="th">weight</th>
@@ -2208,30 +1709,18 @@ PSTAT100 Spring 2023
 </div>
 </div>
 <div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># in pandas</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>mammal2.pivot(</span>
-<span id="cb2-3"><a href="#cb2-3"></a>    columns <span class="op">=</span> <span class="st">'measurement'</span>, <span class="co"># which variable(s) do you want to send to new column names?</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>    values <span class="op">=</span> <span class="st">'weight'</span> <span class="co"># which variable(s) do you want to use to populate the new columns?</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in pandas</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mammal2.pivot(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'measurement'</span>, <span class="co"># which variable(s) do you want to send to new column names?</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> <span class="st">'weight'</span> <span class="co"># which variable(s) do you want to use to populate the new columns?</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="29">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th">measurement</th>
 <th data-quarto-table-cell-role="th">body_wt</th>
 <th data-quarto-table-cell-role="th">brain_wt</th>
@@ -2260,30 +1749,17 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </section>
-<section id="pivot-and-melt" class="slide level2">
-<h2>Pivot and melt</h2>
+<section id="pivot-and-melt" class="level2">
+<h2 class="anchored" data-anchor-id="pivot-and-melt">Pivot and melt</h2>
 <p>Common mess 3 is a combination of messes 1 and 2: values or variables are stored in both rows and columns. Pivoting and melting in sequence can usually fix this.</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="30">
 <div class="cell-output cell-output-display" data-execution_count="30">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">DAY</th>
 <th data-quarto-table-cell-role="th">1</th>
@@ -2489,39 +1965,26 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-</div>
 </section>
-<section id="pivot-and-melt-1" class="slide level2">
-<h2>Pivot and melt</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">First, melt</a></li><li><a href="#tabset-1-2">Then, pivot</a></li></ul>
+<section id="pivot-and-melt-1" class="level2">
+<h2 class="anchored" data-anchor-id="pivot-and-melt-1">Pivot and melt</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">First, melt</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Then, pivot</a></li></ul>
 <div class="tab-content">
-<div id="tabset-1-1">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>weather3.melt(</span>
-<span id="cb3-2"><a href="#cb3-2"></a>    ignore_index <span class="op">=</span> <span class="va">False</span>,</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    var_name <span class="op">=</span> <span class="st">'day'</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>    value_name <span class="op">=</span> <span class="st">'temp'</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>weather3.melt(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    ignore_index <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    var_name <span class="op">=</span> <span class="st">'day'</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    value_name <span class="op">=</span> <span class="st">'temp'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="31">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">day</th>
@@ -2570,36 +2033,24 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </div>
-<div id="tabset-1-2">
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>weather3.melt(</span>
-<span id="cb4-2"><a href="#cb4-2"></a>    ignore_index <span class="op">=</span> <span class="va">False</span>,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    var_name <span class="op">=</span> <span class="st">'day'</span>,</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    value_name <span class="op">=</span> <span class="st">'temp'</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>).reset_index().pivot(</span>
-<span id="cb4-6"><a href="#cb4-6"></a>    index <span class="op">=</span> [<span class="st">'MONTH'</span>, <span class="st">'day'</span>],</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    columns <span class="op">=</span> <span class="st">'type'</span>,</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    values <span class="op">=</span> <span class="st">'temp'</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>).reset_index().rename_axis(columns <span class="op">=</span> {<span class="st">'type'</span>: <span class="st">''</span>}).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>weather3.melt(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    ignore_index <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    var_name <span class="op">=</span> <span class="st">'day'</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    value_name <span class="op">=</span> <span class="st">'temp'</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>).reset_index().pivot(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> [<span class="st">'MONTH'</span>, <span class="st">'day'</span>],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'type'</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> <span class="st">'temp'</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>).reset_index().rename_axis(columns <span class="op">=</span> {<span class="st">'type'</span>: <span class="st">''</span>}).head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">MONTH</th>
 <th data-quarto-table-cell-role="th">day</th>
@@ -2653,35 +2104,23 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </section>
-<section id="merge" class="slide level2">
-<h2>Merge</h2>
+<section id="merge" class="level2">
+<h2 class="anchored" data-anchor-id="merge">Merge</h2>
 <p>Merging resolves the issue of storing observations or variables on one unit type in multiple tables (mess 4). The basic idea is to combine by matching rows.</p>
-
-<img data-src="figures/join-diagram.png" class="r-stretch"></section>
-<section id="merge-1" class="slide level2">
-<h2>Merge</h2>
+<p><img src="figures/join-diagram.png" class="img-fluid"></p>
+</section>
+<section id="merge-1" class="level2">
+<h2 class="anchored" data-anchor-id="merge-1">Merge</h2>
 <p>The code below combines columns in each table by matching rows based on country.</p>
 <div class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>pd.merge(undev1, undev2, on <span class="op">=</span> <span class="st">'country'</span>).head(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pd.merge(undev1, undev2, on <span class="op">=</span> <span class="st">'country'</span>).head(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="33">
 <div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
-<tr class="header" style="text-align: right;">
+<tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">total_pop</th>
 <th data-quarto-table-cell-role="th">urban_pct_pop</th>
@@ -2762,395 +2201,273 @@ PSTAT100 Spring 2023
 </div>
 </div>
 </section>
-<section id="merge-2" class="slide level2">
-<h2>Merge</h2>
+<section id="merge-2" class="level2">
+<h2 class="anchored" data-anchor-id="merge-2">Merge</h2>
 <p>There are various rules for exactly how to merge, but the general syntactical procedure to merge dataframes <code>df1</code> and <code>df2</code> is this.</p>
 <ul>
-<li class="fragment"><p>Specify an <strong>order</strong>: <code>merge(df1, df2)</code> or <code>merge(df2, df1)</code>.</p></li>
-<li class="fragment"><p>Specify <strong>keys</strong>: the shared columns to use for matching rows of <code>df1</code> with rows of <code>df2</code>.</p>
+<li><p>Specify an <strong>order</strong>: <code>merge(df1, df2)</code> or <code>merge(df2, df1)</code>.</p></li>
+<li><p>Specify <strong>keys</strong>: the shared columns to use for matching rows of <code>df1</code> with rows of <code>df2</code>.</p>
 <ul>
-<li class="fragment">for example, merging on <code>date</code> will align rows in <code>df2</code> with rows of <code>df1</code> that have the same value for <code>date</code></li>
+<li>for example, merging on <code>date</code> will align rows in <code>df2</code> with rows of <code>df1</code> that have the same value for <code>date</code></li>
 </ul></li>
-<li class="fragment"><p>Specify a <strong>rule</strong> for which rows to return after merging</p>
+<li><p>Specify a <strong>rule</strong> for which rows to return after merging</p>
 <ul>
-<li class="fragment">keep all rows with key entries in <code>df1</code>, drop non-matching rows in <code>df2</code> (‘left’ join)</li>
-<li class="fragment">keep all rows with key entries in <code>df2</code> drop non-matching rows in <code>df1</code> (‘right’ join)</li>
-<li class="fragment">keep all rows with key entries in either <code>df1</code> or <code>df2</code>, inducing missing values (‘outer’ join)</li>
-<li class="fragment">keep all rows with key entries in both <code>df1</code> and <code>df2</code> (‘inner’ join)</li>
+<li>keep all rows with key entries in <code>df1</code>, drop non-matching rows in <code>df2</code> (‘left’ join)</li>
+<li>keep all rows with key entries in <code>df2</code> drop non-matching rows in <code>df1</code> (‘right’ join)</li>
+<li>keep all rows with key entries in either <code>df1</code> or <code>df2</code>, inducing missing values (‘outer’ join)</li>
+<li>keep all rows with key entries in both <code>df1</code> and <code>df2</code> (‘inner’ join)</li>
 </ul></li>
 </ul>
 </section>
-<section id="next-time" class="slide level2">
-<h2>Next time</h2>
+<section id="next-time" class="level2">
+<h2 class="anchored" data-anchor-id="next-time">Next time</h2>
 <p>Transformations of tabular data</p>
 <ul>
-<li class="fragment">Slicing and filtering</li>
-<li class="fragment">Defining new variables</li>
-<li class="fragment">Vectorized operatioons</li>
-<li class="fragment">Aggregation and grouping</li>
+<li>Slicing and filtering</li>
+<li>Defining new variables</li>
+<li>Vectorized operatioons</li>
+<li>Aggregation and grouping</li>
 </ul>
 
-<div class="footer footer-default">
 
-</div>
 </section>
-    </div>
-  </div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': false,
-'smaller': true,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': true,
- 
-        // Display controls in the bottom right corner
-        controls: false,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: 'c/t',
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1050,
-
-        height: 700,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
-      });
-    </script>
-    <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
       }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
       }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
           }
-        }
-        return false;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
           }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      });
-      function tippyHover(el, contentFn) {
-        const config = {
-          allowHTML: true,
-          content: contentFn,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start'
-        };
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          return note.innerHTML;
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
+          selectedAnnoteEl = annoteEl;
         }
       };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
-          });
-        }
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
       }
-    });
-    </script>
-    
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
 
 </body></html>

@@ -19,3 +19,23 @@ format: html
 
 **Wednesday**: Data science lifecycle [[slides](slides/week1-lifecycle.qmd)]
 
+## Week 2
+
+*Readings*:
+
+- Wickham (2014). Tidy data. *Journal of statistical software* 59(10). [[link to paper](https://www.jstatsoft.org/article/view/v059i10)]
+- PDSH3.1 [Introducing pandas objects](https://jakevdp.github.io/PythonDataScienceHandbook/03.01-introducing-pandas-objects.html)
+- PDSH3.2 [Data indexing and selection](https://jakevdp.github.io/PythonDataScienceHandbook/03.02-data-indexing-and-selection.html)
+- PDSH3.7 [Merge and join](https://jakevdp.github.io/PythonDataScienceHandbook/03.07-merge-and-join.html)
+- PDSH3.8 [Aggregation and grouping](https://jakevdp.github.io/PythonDataScienceHandbook/03.08-aggregation-and-grouping.html)
+
+*Assignments*: 
+
+* HW1, BRFSS case study, due Monday, April 24 [[html](hw/hw1-brfss/hw1-brfss.ipynb)]
+
+**Monday**: Tidy data [[slides](slides/week2-tidy.qmd)]
+
+**Lab sections**: Pandas [[html](labs/lab1-pandas/lab1-pandas.ipynb)]
+
+**Wednesday**: Dataframe transformations [[slides](slides/week2-transform.qmd)]
+

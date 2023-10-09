@@ -1,0 +1,580 @@
+---
+title: "Dataframe Transformations"
+author: "PSTAT100 Fall 2023"
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+jupyter: python3
+execute:
+    echo: false
+---
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+import pandas as pd
+import numpy as np
+import altair as alt
+
+weather1 = pd.read_csv('data/sb_weather.csv')
+weather2 = weather1.copy()
+weather2['MONTH'] = pd.to_datetime(weather1.DATE, infer_datetime_format = True).dt.month
+weather2['DAY'] = pd.to_datetime(weather1.DATE, infer_datetime_format = True).dt.day
+weather2['YEAR'] = pd.to_datetime(weather1.DATE, infer_datetime_format = True).dt.year
+weather2 = weather2.drop(columns = ['NAME', 'DATE'])
+weather3 = weather2.set_index(
+    ['MONTH', 'DAY']
+).melt(
+    value_name = 'temp',
+    var_name = 'type',
+    value_vars = ['TMAX', 'TMIN'],
+    ignore_index = False
+).reset_index().pivot(index = ['MONTH', 'type'], columns = 'DAY', values = 'temp')
+
+undev1 = pd.read_csv(
+    'data/hdi3.csv', 
+    encoding = 'latin1',
+    na_values = '..'
+).drop(
+    columns = 'hdi_rank'
+).set_index(
+    'country'
+).sort_index()
+
+undev2 = pd.read_csv(
+    'data/hdi2.csv', 
+    encoding = 'latin1',
+    na_values = '..'
+).drop(
+    columns = ['hdi_rank', 'maternal_mortality']
+).set_index('country')
+
+undev = pd.merge(undev1, undev2, on = 'country')
+
+undev['total_pop'] = undev.total_pop.str.replace(',', '').astype('float')
+undev['pop_15to64'] = undev.pop_15to64.str.replace(',', '').astype('float')
+```
+
+## Recap: tidy data
+
+The tidy standard consists in matching semantics and structure. 
+
+. . .
+
+A dataset is **tidy** if:
+
+1. Each variable is a column.
+2. Each observation is a row.
+3. Each table contains measurements on only one type of observational unit.
+
+. . .
+
+![](figures/tidy-layout.png)
+
+## Why tidy?
+
+> *Why use the tidy standard? Wouldn't any system of organization do just as well?*
+
+. . .
+
+The tidy standard has three main advantages:
+
+1. Having a **consistent system of organization** makes it easier to focus on analysis and exploration. (True of any system)
+2. Many **software tools** are designed to work with tidy data inputs. (Tidy only)
+3. **Transformation** of tidy data is especially natural in most computing environments due to vectorized operations. (Tidy only)
+
+## Transformations
+
+**Transformations** of data frames are _**operations that modify the shape or values of a data frame**_. These include: 
+
+* Slicing rows and columns by index
+* Filtering rows by logical conditions
+* Defining new variables from scratch or by operations on existing variables
+* Aggregations (min, mean, max, etc.)
+
+## Slicing
+
+**Slicing** refers to retrieving a (usually contiguous) subset (a 'slice') of rows/columns from a data frame.
+
+. . .
+
+Uses:
+
+* data inspection/retrieval
+* subsetting for further analysis/manipulation
+* data display
+
+## Data display
+
+Recall the UN Development data:
+```{python}
+#| echo: true
+# preview UN data -- note indexed by country
+undev.head(3)
+```
+
+. . .
+
+*Aside:* `.head()` is a slicing operation -- it returns the 'top' slice of rows.
+
+## Data inspection/retrieval
+
+To inspect the percentage of women in parliament in Mexico, slice accordingly:
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+#| echo: true
+undev.loc[['Mexico'], ['parliament_pct_women']]
+```
+
+## Review: `.loc` and `.iloc`
+
+The primary slicing functions in pandas are 
+
+- `.loc` (location) to slice by index
+- `.iloc` (integer location) to slice by position
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| echo: true
+# .iloc equivalent of previous slice
+undev.iloc[[111], [6]]
+```
+
+. . .
+
+*Check your understanding:* which row in the dataframe is the observation for Mexico?
+
+. . .
+
+If a single index rather than a list is provided -- *e.g.*, `Mexico` rather than `[Mexico]`, -- these functions will return the raw value as a float rather than a dataframe.
+
+```{python}
+#| echo: true
+undev.loc['Mexico', 'parliament_pct_women']
+```
+
+## Larger slices
+
+More typically, a slice will be a contiguous chunk of rows and columns. 
+
+. . .
+
+Slicing operations can interpret `start:end` as shorthand for a range of indices.
+
+```{python}
+#| echo: true
+undev.loc['Mexico':'Mongolia', ['parliament_pct_women']]
+```
+
+. . .
+
+*Note*: `start:end` is inclusive of both endpoints with `.loc`, but not inclusive of the right endpoint with `.iloc`. Get in the habit of double-checking results.
+
+## Defining new variables
+
+Vectorization of operations in pandas and numpy make tidy data especially nice to manipulate mathematically. For example:
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+#| echo: true
+weather2['TRANGE'] = weather2.TMAX - weather2.TMIN
+weather2.loc[0:3, ['TMAX', 'TMIN', 'TRANGE']]
+```
+
+. . .
+
+This computes $t_{min, i} - t_{max, i}$ for all observations $i = 1, \dots, n$.
+
+. . .
+
+*Check your understanding*: express this calculation as a linear algebra arithmetic operation.
+
+## Your turn
+
+Let's take another example -- consider this slice of the `undev` data:
+
+```{python}
+undev.loc[:, ['total_pop', 'urban_pct_pop']].head(3)
+```
+
+. . .
+
+With your neighbor, write a line of code that calculates the percentage of the population living in rural areas.
+
+## Filtering {.scrollable}
+
+**Filtering** refers to removing a subset of rows based on one or more conditions. (Think of "filtering out" certain rows.)
+
+. . .
+
+For example, suppose we wanted to retrieve only the countries with populations exceeding 1Bn people:
+
+```{python}
+#| echo: true
+undev[undev.total_pop > 1000]
+```
+
+## Filtering
+
+Technically, filtering works by slicing according to a long logical vector with one entry per row specifying whether to retain (`True`) or drop (`False`).
+
+```{python}
+#| echo: true
+undev.total_pop > 1000
+``` 
+
+## A small puzzle
+
+Consider a random filter:
+
+```{python}
+#| echo: true
+random_filter = np.random.binomial(n = 1, p = 0.03, size = undev.shape[0]).astype('bool')
+
+random_filter
+```
+
+. . .
+
+1. How many rows will `undev[random_filter]` have?
+2. How many rows should this random filtering produce on average?
+
+## Logical comparisons
+
+Any of the following relations can be used to define filtering conditions
+
+Symbol | Usage      | Meaning 
+------ | ---------- | -------------------
+`==`   | `a == b`   | Does a equal b?
+`<=`   | `a <= b`   | Is a less than or equal to b?
+`>=`   | `a >= b`   | Is a greater than or equal to b?
+`<`    | `a < b`    | Is a less than b?
+`>`    | `a > b`    | Is a greater than b?
+`~`    | `~p`       | Returns negation of p
+ <code>&#124;</code>    | `p`  <code>&#124;</code> `q` | p OR q
+`&`    | `p & q`    | p AND q
+`^`    | `p ^ q` | p XOR q (exclusive or)
+
+## Aggregation 
+
+**Aggregation** refers to any operation that combines many values into fewer values.
+
+. . .
+
+Common aggregation operations include:
+
+* summation $\sum_{i} x_i$
+* averaging $n^{-1} \sum_i x_i$
+* extrema $\text{min}_i x_i$ and $\text{max}_i x_i$
+* statistics: median, variance, standard deviation, mean absolute deviation, order statistics, quantiles
+
+## Aggregation vs. other transformations
+
+Aggregations *reduce* the number of values, whereas other transformations do not. 
+
+. . .
+
+A bit more formally:
+
+* aggregations map larger sets of values to smaller sets of values
+* transformations map sets of values to sets of the same size
+
+. . .
+
+*Check your understanding*: 
+
+* is $(f*g)(x_i) = \int f(h)g(x_i - h)dh$ an aggregation?
+* is $f(x_1, x_2, \dots, x_n) = \left(\prod_i x_i\right)^{\frac{1}{n}}$  an aggregation?
+
+## Aggregation?
+
+![Gaussian blur.](figures/gaussian-blur.jpg)
+
+## Example aggregations
+
+In numpy, the most common aggregations are implemented as functions:
+
+numpy | function
+---|---
+`np.sum()` | $\sum_i x_i$
+`np.max()` | $\text{max}(x_1, \dots, x_n)$
+`np.min()` | $\text{min}(x_1, \dots, x_n)$
+`np.median()` | $\text{median}(x_1, \dots, x_n)$
+`np.mean()` | $n^{-1}\sum_{i = 1}^n x_i$
+`np.var()` | $(n - 1)^{-1}\sum_{i = 1}^n (x_i - \bar{x})^2$
+`np.std()` | $\sqrt{(n - 1)^{-1}\sum_{i = 1}^n (x_i - \bar{x})^2}$
+`np.prod()` | $\prod_i x_i$
+`np.percentile()` | $\hat{F}^{-1}(q)$
+
+## Argmin and argmax
+
+$\text{argmax}_D f(x)$ refers to the value or values in the domain $D$ of $f$ at which the function attains its maximum -- the *argument in $D$ maximizing $f$*.
+
+. . .
+
+Similarly, $\text{argmax}_i x_i$ refers to the index (or indices, if ties) of the largest value in the set $\{x_i\}$.
+
+. . .
+
+*Check your understanding*: what does the following return?
+
+```{python}
+#| echo: true
+#| eval: false
+np.array([1, 5, 10, 2]).argmin()
+```
+
+## Argmin and argmax
+
+These index retrieval functions can be handy for slicing rows of interest. 
+
+. . .
+
+For example, which country had the largest percentage of women in parliament in the year the UN development data was collected?
+
+```{python}
+#| echo: true
+#| slideshow: {slide_type: fragment}
+undev.index[undev.parliament_pct_women.argmax()]
+```
+
+. . .
+
+And what were the observations?
+
+```{python}
+#| echo: true
+#| slideshow: {slide_type: fragment}
+undev.iloc[undev.parliament_pct_women.argmax(), :]
+```
+
+## Dataframe aggregations
+
+In pandas, the numpy aggregation operations are available as dataframe methods that apply the corresponding operation over each column:
+
+```{python}
+#| echo: true
+# mean of every column
+undev.mean()
+```
+
+## Row-wise aggregation
+
+In general, supplying the argument `axis = 1` will compute *rowwise* aggregations. For example:
+
+```{python}
+#| echo: true
+# sum `pop_under5`, `pop_15to64`, and `pop_over65`
+undev.iloc[:, 2:5].sum(axis = 1).head(3)
+```
+
+. . .
+
+This facilitates, for example:
+
+```{python}
+#| echo: true
+undev['pop_5to14'] = undev.total_pop - undev.iloc[:, 2:5].sum(axis = 1)
+```
+
+## Argmin/idxmin and argmax/idxmax
+
+In pandas, `np.argmin()` and `np.argmax()` are implemented as `pd.df.idxmin()` and `pd.df.idxmax()`.
+
+```{python}
+#| echo: true
+undev.idxmax()
+```
+
+## Other functions {.scrollable}
+
+Pandas has a wide array of other aggregation and transformation functions. To show just one example:
+
+```{python}
+#| echo: true
+## slice weather data
+weather4 = weather1.set_index('DATE').iloc[:, 2:4]
+weather4.head(2)
+```
+
+. . .
+
+```{python}
+#| echo: true
+# rolling average
+weather4.rolling(window = 7).mean().head(10)
+```
+
+## Check your understanding
+
+Interpret this result:
+
+```{python}
+#| echo: true
+weather4.rolling(window = 7).mean().idxmax()
+```
+
+(The weather data is January through March.)
+
+## Custom functions
+
+See the [documentation](https://pandas.pydata.org/docs/reference/frame.html) for a comprehensive list of transformations and aggregations.
+
+. . .
+
+If pandas doesn't have a method for an operation you're wanting to perform, you can implement custom transformations/aggregations with:
+
+* `pd.df.apply()` or `pd.df.transform()` apply a function row-wise or column-wise
+* `pd.df.agg()` or `pd.df.aggregate()`
+
+## Custom functions
+
+Here's an example:
+
+```{python}
+# read in gdp data
+gdp = pd.read_csv('data/annual_growth.csv', encoding = 'latin1').set_index('Country Name').drop(columns = 'Country Code').dropna(axis = 0)
+
+gdp.head(2)
+```
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| echo: true
+# convert percentages to proportions
+gdp_prop = gdp.transform(lambda x: x/100 + 1)
+
+# compute geometric mean
+gdp_prop.aggregate(
+    lambda x: np.prod(x)**(1/len(x)), 
+    axis = 1).head(4)
+```
+
+## Your turn
+
+Here's the country with the highest annualized GDP growth for the period 1961-2019:
+
+```{python}
+gdp_annualized = gdp_prop.aggregate(
+    lambda x: np.prod(x)**(1/len(x)), 
+    axis = 1)
+    
+gdp_annualized[[gdp_annualized.idxmax()]]
+```
+
+. . .
+
+*How did I find this?* Suppose that the result on the previous slide were stored as `gdp_annualized`. Write a line of code that generates the result shown above.
+
+## Grouped aggregations
+
+Suppose we wanted to compute annualized growth by decade for each country.
+
+. . .
+
+To do so, we'd compute the same aggregation (geometric mean) repeatedly for subsets of data values. This is called a **grouped** aggregation.
+
+. . .
+
+Usually, one defines a grouping of dataframe rows using columns in the dataset. For example:
+
+```{python}
+# rearrange data for grouping
+gdp_long = gdp_prop.melt(
+    value_name = 'growth', 
+    var_name = 'year', 
+    ignore_index = False
+).reset_index()
+
+gdp_long['year'] = gdp_long.year.astype('int')
+gdp_long['decade'] = (gdp_long.year - np.mod(gdp_long.year, 10))
+
+gdp_decades = gdp_long.drop(columns = 'year')
+```
+
+```{python}
+#| echo: true
+gdp_decades.head(4)
+```
+
+. . .
+
+*How should the rows be grouped?*
+
+## `.groupby`
+
+In pandas, `df.groupby('COLUMN')` defines a grouping of dataframe rows in which each group is a set of rows with the same value of `'COLUMN'`. 
+
+* There will be exactly as many groups as the number of unique values in `'COLUMN'`.
+* Multiple columns may be specified to define a grouping, *e.g.*, `df.groupby(['COL1', 'COL2'])`
+* Subsequent operations will be performed group-wise
+
+## Annualized GDP growth by decade {.scrollable}
+
+Returning to our example:
+
+```{python}
+#| echo: true
+gdp_anngrowth = gdp_decades.groupby(
+    ['Country Name', 'decade']
+    ).aggregate(
+    lambda x: np.prod(x)**(1/len(x))
+    )
+
+gdp_anngrowth
+```
+
+## Your turn
+
+*How do you find the country with the highest annualized GDP growth for each decade?*
+
+. . .
+
+Write a line of code that would perform this calculation.
+
+```{python}
+#| echo: true
+#| eval: false
+gdp_anngrowth...
+```
+
+```{python}
+#| slideshow: {slide_type: fragment}
+gdp_anngrowth.groupby('decade').idxmax()
+```
+
+## Recap
+
+* In tidy data, rows and columns correspond to observations and variables.
+    + This provides a standard dataset structure that facilitates exploration and analysis.
+    + Many datasets are not stored in this format.
+    + Transformation operations are a lot easier with tidy data, due in part to the way tools in pandas are designed.
+
+* Transformations are operations that modify the shape or values of dataframes. We discussed
+    + slicing
+    + filtering
+    + creating new variables
+    + aggregations (mean, min, max, argmin, etc.)
+    + grouped aggregations
+
+* Dataframe manipulations will be used throughout the course to tidy up data and perform various inspections and summaries.
+
+## Up next
+
+We started *en media res* at this stage of the lifecyle (tidy) so that you could start developing skills that would enable you to jump right into playing with datasets.
+
+. . .
+
+Next week, we'll backtrack to the data collection and assessment stages of a project and discuss:
+
+* sampling
+* scope of inference
+* data assessment
+* missing data
+
