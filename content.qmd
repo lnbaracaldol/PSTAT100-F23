@@ -31,7 +31,7 @@ format: html
 
 *Assignments*: 
 
-* HW1, BRFSS case study, due Monday, April 24 [[html](hw/hw1-brfss/hw1-brfss.ipynb)]
+* HW1, BRFSS case study, due Monday, October 16 [[html](hw/hw1-brfss/hw1-brfss.ipynb)]
 
 **Monday**: Tidy data [[slides](slides/week2-tidy.qmd)]
 

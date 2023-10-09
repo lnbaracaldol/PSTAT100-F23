@@ -2377,7 +2377,7 @@
     "href": "content.html#week-2",
     "title": "Materials",
     "section": "Week 2",
-    "text": "Week 2\nReadings:\n\nWickham (2014). Tidy data. Journal of statistical software 59(10). [link to paper]\nPDSH3.1 Introducing pandas objects\nPDSH3.2 Data indexing and selection\nPDSH3.7 Merge and join\nPDSH3.8 Aggregation and grouping\n\nAssignments:\n\nHW1, BRFSS case study, due Monday, April 24 [html]\n\nMonday: Tidy data [slides]\nLab sections: Pandas [html]\nWednesday: Dataframe transformations [slides]"
+    "text": "Week 2\nReadings:\n\nWickham (2014). Tidy data. Journal of statistical software 59(10). [link to paper]\nPDSH3.1 Introducing pandas objects\nPDSH3.2 Data indexing and selection\nPDSH3.7 Merge and join\nPDSH3.8 Aggregation and grouping\n\nAssignments:\n\nHW1, BRFSS case study, due Monday, October 16 [html]\n\nMonday: Tidy data [slides]\nLab sections: Pandas [html]\nWednesday: Dataframe transformations [slides]"
   },
   {
     "objectID": "content.html#week-3",
