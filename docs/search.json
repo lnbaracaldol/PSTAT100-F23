@@ -2384,7 +2384,7 @@
     "href": "content.html#week-3",
     "title": "Materials",
     "section": "Week 3",
-    "text": "Week 3\nReadings:\n\nLDS2.2 Population, frame, sample\nVan Buuren, Flexible Imputation of Missing Data, section 2.2 Concepts in incomplete data\nPDSH3.4 Handling missing data\n\nAssignments:\n\nMini project 1, due Monday, May 1 [html]\n\nMonday: Sampling, bias, and missingness [slides]\nLab sections: Exploring sampling bias through simulation [html]\nWednesday: Voter fraud case study [slides] [activity html]"
+    "text": "Week 3\nReadings:\n\nLDS2.2 Population, frame, sample\nVan Buuren, Flexible Imputation of Missing Data, section 2.2 Concepts in incomplete data\nPDSH3.4 Handling missing data\n\nAssignments:\n\nMini project 1, due Monday, Oct 23 [html]\n\nMonday: Sampling, bias, and missingness [slides]\nLab sections: Exploring sampling bias through simulation [html]"
   },
   {
     "objectID": "content.html#week-4",
@@ -3350,7 +3350,7 @@
     "href": "slides/week3-sampling.html#announcements",
     "title": "Sampling and missingness",
     "section": "Announcements",
-    "text": "Announcements\n\nFirst mini project released: air quality in U.S. cities\nLab 1 (pandas) due Monday 4/17 11:59pm PST\nHW 1 due in one week on Monday 4/24"
+    "text": "Announcements\n\nFirst mini project released: air quality in U.S. cities"
   },
   {
     "objectID": "slides/week3-sampling.html#this-week",

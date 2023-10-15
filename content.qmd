@@ -39,3 +39,23 @@ format: html
 
 **Wednesday**: Dataframe transformations [[slides](slides/week2-transform.qmd)]
 
+## Week 3
+
+*Readings*:
+
+- LDS2.2 [Population, frame, sample](https://learningds.org/ch/02/data_scope_construct.html#)
+- Van Buuren, Flexible Imputation of Missing Data, section 2.2 [Concepts in incomplete data](https://stefvanbuuren.name/fimd/sec-idconcepts.html)
+- PDSH3.4 [Handling missing data](https://jakevdp.github.io/PythonDataScienceHandbook/03.04-missing-values.html)
+
+
+*Assignments*:
+
+- Mini project 1, due Monday, Oct 23 [[html](projects/mp1/mp1-airquality.ipynb)]
+
+**Monday**: Sampling, bias, and missingness [[slides](slides/week3-sampling.qmd)]
+
+**Lab sections**: Exploring sampling bias through simulation [[html](labs/lab2-sampling/lab2-sampling.ipynb)]
+
+
+
+
