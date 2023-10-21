@@ -2118,7 +2118,7 @@
     "href": "slides/week4-principles.html#redundancy",
     "title": "Figure design",
     "section": "Redundancy",
-    "text": "Redundancy\nWhen possible, use ‘redundant coding’ – map the same variable to color and one other aesthetic.\n\n\n\n\n\n\n\n\n\n\n\nRedundancy provides a failsafe against any circumstance that might compromise the effectiveness of color:\n\nprinters or black-and-white printing\nprojectors, displays, and lighting conditions\nCVD"
+    "text": "Redundancy\nWhen possible, use ‘redundant coding’ – map the same variable to color and one other aesthetic.\n\n\n\n\n\n\n\n\n\n\nRedundancy provides a failsafe against any circumstance that might compromise the effectiveness of color:\n\nprinters or black-and-white printing\nprojectors, displays, and lighting conditions\nCVD"
   },
   {
     "objectID": "slides/week4-principles.html#faceting",
@@ -2391,7 +2391,7 @@
     "href": "content.html#week-4",
     "title": "Materials",
     "section": "Week 4",
-    "text": "Week 4\nReadings:\n\nWilke, Fundamentals of Data Visualization Ch. 2-5\nLDS11.1 Choosing scale to reveal structure\n(Recommended) Cook, D., Lee, E. K., & Majumder, M. (2016). Data visualization and statistical graphics in big data analysis. Annual Review of Statistics and Its Application, 3, 133-159. [link to paper]\n(Recommended) Gelman, A., & Unwin, A. (2013). Infovis and statistical graphics: different goals, different looks. Journal of Computational and Graphical Statistics, 22(1), 2-28. [link to paper]\n(Recommended) Iliinsky, N. (2010). On beauty. Beautiful visualization: Looking at data through the eyes of experts, 1-13. [link to chapter]\n\nAssignments:\n\nHW2, SEDA case study, due Monday, May 8 [html]\n\nMonday: Statistical graphics [slides]\nLab sections: Data visualization [html]\nWednesday: Principles of figure design [slides]"
+    "text": "Week 4\nReadings:\n\nWilke, Fundamentals of Data Visualization Ch. 2-5\nLDS11.1 Choosing scale to reveal structure\n(Recommended) Cook, D., Lee, E. K., & Majumder, M. (2016). Data visualization and statistical graphics in big data analysis. Annual Review of Statistics and Its Application, 3, 133-159. [link to paper]\n(Recommended) Gelman, A., & Unwin, A. (2013). Infovis and statistical graphics: different goals, different looks. Journal of Computational and Graphical Statistics, 22(1), 2-28. [link to paper]\n(Recommended) Iliinsky, N. (2010). On beauty. Beautiful visualization: Looking at data through the eyes of experts, 1-13. [link to chapter]\n\nAssignments:\n\nHW2, SEDA case study, due Monday, Oct 30 [html]\n\nMonday: Statistical graphics [slides]\nLab sections: Data visualization [html]\nWednesday: Principles of figure design [slides]"
   },
   {
     "objectID": "content.html#week-5",
@@ -4302,35 +4302,35 @@
     "href": "slides/week4-graphics.html#statistical-graphics-are-mappings",
     "title": "Statistical graphics",
     "section": "Statistical graphics are mappings",
-    "text": "Statistical graphics are mappings\nStatistical graphics are mappings of dataframe columns and attributes to graphical elements: axes, geometric objects, and aesthetic attributes.\n\nFor a simple example, consider the following time series of Cuba’s population by year:\n\n\n\n\n\n\n\n\n\n\n\n\nMappings:\n\npopulation \\(\\longrightarrow\\) y coordinate of axis;\nyear \\(\\longrightarrow\\) x coordinate of axis;\nobservations \\(\\longrightarrow\\) line"
+    "text": "Statistical graphics are mappings\nStatistical graphics are mappings of dataframe columns and attributes to graphical elements: axes, geometric objects, and aesthetic attributes.\n\nFor a simple example, consider the following time series of Cuba’s population by year:\n\n\n\n\n\n\n\n\n\n\n\nMappings:\n\npopulation \\(\\longrightarrow\\) y coordinate of axis;\nyear \\(\\longrightarrow\\) x coordinate of axis;\nobservations \\(\\longrightarrow\\) line"
   },
   {
     "objectID": "slides/week4-graphics.html#mapping-columns-to-aesthetics",
     "href": "slides/week4-graphics.html#mapping-columns-to-aesthetics",
     "title": "Statistical graphics",
     "section": "Mapping columns to aesthetics",
-    "text": "Mapping columns to aesthetics\nNow consider aggregated populations by global region and year:\n\n\n\n\n\n\n\n\n\n\n\nMappings:\n\npopulation \\(\\longrightarrow\\) y\nyear \\(\\longrightarrow\\) x\nregion \\(\\longrightarrow\\) color\nobservations \\(\\longrightarrow\\) line (groupwise by color)"
+    "text": "Mapping columns to aesthetics\nNow consider aggregated populations by global region and year:\n\n\n\n\n\n\n\n\n\n\nMappings:\n\npopulation \\(\\longrightarrow\\) y\nyear \\(\\longrightarrow\\) x\nregion \\(\\longrightarrow\\) color\nobservations \\(\\longrightarrow\\) line (groupwise by color)"
   },
   {
     "objectID": "slides/week4-graphics.html#using-aesthetics",
     "href": "slides/week4-graphics.html#using-aesthetics",
     "title": "Statistical graphics",
     "section": "Using aesthetics",
-    "text": "Using aesthetics\nThe ability to map variables to the elements of a graphic is essential because it means we can display more than two variables at a time by leveraging aesthetic attributes.\n\nFor example, in lab you’ll begin with this scatterplot:\n\n\n\n\n\n\n\n\n\n\nEach point represents a country in a particular year. The graphic shows that life expectancy increases with GDP per capita."
+    "text": "Using aesthetics\nThe ability to map variables to the elements of a graphic is essential because it means we can display more than two variables at a time by leveraging aesthetic attributes.\n\nFor example, in lab you’ll begin with this scatterplot:\n\n\n\n\n\n\n\n\n\nEach point represents a country in a particular year. The graphic shows that life expectancy increases with GDP per capita."
   },
   {
     "objectID": "slides/week4-graphics.html#using-aesthetics-1",
     "href": "slides/week4-graphics.html#using-aesthetics-1",
     "title": "Statistical graphics",
     "section": "Using aesthetics",
-    "text": "Using aesthetics\nIn the lab you’ll add aesthetic mappings step by step until arriving at this plot:\n\n\n\n\n\n\n\n\n\nThis figure displays the same x-y relationship as before, but together with time, continental region, and population.\n\n\nVerges on too complex."
+    "text": "Using aesthetics\nIn the lab you’ll add aesthetic mappings step by step until arriving at this plot:\n\n\n\n\n\n\n\n\nThis figure displays the same x-y relationship as before, but together with time, continental region, and population.\n\n\nVerges on too complex."
   },
   {
     "objectID": "slides/week4-graphics.html#using-graphics-for-discovery",
     "href": "slides/week4-graphics.html#using-graphics-for-discovery",
     "title": "Statistical graphics",
     "section": "Using graphics for discovery",
-    "text": "Using graphics for discovery\nFurther incorporating sex shows that GDP per capita is associated with differential life expectancy gaps between men and women:\n\n\n\n\n\n\n\n\n\nIn other words, on average women outlive men by longer in wealtheir countries.\n\nMaybe just by an additional 2-3 years in wealthier countries\nClear pattern but lots of variation for a given GDP/capita"
+    "text": "Using graphics for discovery\nFurther incorporating sex shows that GDP per capita is associated with differential life expectancy gaps between men and women:\n\n\n\n\n\n\n\n\nIn other words, on average women outlive men by longer in wealtheir countries.\n\nMaybe just by an additional 2-3 years in wealthier countries\nClear pattern but lots of variation for a given GDP/capita"
   },
   {
     "objectID": "slides/week4-graphics.html#altair",
@@ -4351,7 +4351,7 @@
     "href": "slides/week4-graphics.html#choice-of-scale",
     "title": "Statistical graphics",
     "section": "Choice of scale",
-    "text": "Choice of scale\nThe choice of scales for each mapping can either reveal or obscure patterns in data.\n\nWhen population is mapped onto a logarithmic rather than linear scale, rates of increase become evident in less populous regions:\n\n\n\n\nCode\nalt.Chart( \n    popregion\n).mark_line( \n).encode( \n    x = 'Year:T',\n    y = alt.Y('Population', scale = alt.Scale(type = 'log')), # change axis scale\n    color = 'Region'\n).properties(\n    width = 350, height = 100 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\nNote: scale is adjusted at the encoding level by alt.Y(...); every encoding channel has an analogous function, e.g., alt.X(...), alt.Color(...), alt.Shape(...), etc., with optional scale arguments."
+    "text": "Choice of scale\nThe choice of scales for each mapping can either reveal or obscure patterns in data.\n\nWhen population is mapped onto a logarithmic rather than linear scale, rates of increase become evident in less populous regions:\n\n\n\n\nCode\nalt.Chart( \n    popregion\n).mark_line( \n).encode( \n    x = 'Year:T',\n    y = alt.Y('Population', scale = alt.Scale(type = 'log')), # change axis scale\n    color = 'Region'\n).properties(\n    width = 350, height = 100 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n)\n\n\n\n\n\n\n\n\n\nNote: scale is adjusted at the encoding level by alt.Y(...); every encoding channel has an analogous function, e.g., alt.X(...), alt.Color(...), alt.Shape(...), etc., with optional scale arguments."
   },
   {
     "objectID": "slides/week4-graphics.html#common-statistical-graphics",
@@ -4372,14 +4372,14 @@
     "href": "slides/week4-graphics.html#histograms",
     "title": "Statistical graphics",
     "section": "Histograms",
-    "text": "Histograms\nHistograms show the relative frequencies of values of a single variable.\n\n\nCode\nalt.Chart(\n    popcountry.loc[\"1970\"]\n).mark_bar().encode(\n    x = alt.X('log(Population)', \n            bin = alt.Bin(maxbins = 50)),\n    y = 'count()'\n).properties(\n    height = 150,\n    title = 'National populations in 1970'\n).properties(\n    width = 500, height = 300 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\n\nThe main advantage of the histogram is it shows the shape of a distribution."
+    "text": "Histograms\nHistograms show the relative frequencies of values of a single variable.\n\n\nCode\nalt.Chart(\n    popcountry.loc[\"1970\"]\n).mark_bar().encode(\n    x = alt.X('log(Population)', \n            bin = alt.Bin(maxbins = 50)),\n    y = 'count()'\n).properties(\n    height = 150,\n    title = 'National populations in 1970'\n).properties(\n    width = 500, height = 300 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\nThe main advantage of the histogram is it shows the shape of a distribution."
   },
   {
     "objectID": "slides/week4-graphics.html#bin-widths",
     "href": "slides/week4-graphics.html#bin-widths",
     "title": "Statistical graphics",
     "section": "Bin widths",
-    "text": "Bin widths\nThe main downside is that the shape depends on bin width, which is an arbitrary parameter.\n\n\n\n\nCode\nalt.Chart(\n    popcountry.loc[\"1970\"]\n).mark_bar().encode(\n    x = alt.X('log(Population)', \n            bin = alt.Bin(maxbins = 10)),\n    y = 'count()'\n).properties(\n    height = 150,\n    title = 'National populations in 1970'\n).properties(\n    width = 350, height = 100 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\nalt.Chart(\n    popcountry.loc[\"1970\"]\n).mark_bar().encode(\n    x = alt.X('log(Population)', \n            bin = alt.Bin(maxbins = 50)),\n    y = 'count()'\n).properties(\n    height = 150,\n    title = 'National populations in 1970'\n).properties(\n    width = 350, height = 100 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\n\nAlways experiment with multiple bin widths to ensure you don’t overlook any important details such as outliers, multiple modes, etc.\n\nBinning at left is too coarse, obscures outlying values\nBinning at right is good"
+    "text": "Bin widths\nThe main downside is that the shape depends on bin width, which is an arbitrary parameter.\n\n\n\n\nCode\nalt.Chart(\n    popcountry.loc[\"1970\"]\n).mark_bar().encode(\n    x = alt.X('log(Population)', \n            bin = alt.Bin(maxbins = 10)),\n    y = 'count()'\n).properties(\n    height = 150,\n    title = 'National populations in 1970'\n).properties(\n    width = 350, height = 100 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\nCode\nalt.Chart(\n    popcountry.loc[\"1970\"]\n).mark_bar().encode(\n    x = alt.X('log(Population)', \n            bin = alt.Bin(maxbins = 50)),\n    y = 'count()'\n).properties(\n    height = 150,\n    title = 'National populations in 1970'\n).properties(\n    width = 350, height = 100 \n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\nAlways experiment with multiple bin widths to ensure you don’t overlook any important details such as outliers, multiple modes, etc.\n\nBinning at left is too coarse, obscures outlying values\nBinning at right is good"
   },
   {
     "objectID": "slides/week4-graphics.html#density-plots",
@@ -4456,7 +4456,7 @@
     "href": "slides/week4-graphics.html#scatterplots",
     "title": "Statistical graphics",
     "section": "Scatterplots",
-    "text": "Scatterplots\nScatterplots display relationships between two variables.\n\n\nCode\nalt.Chart(\n    lifegdp.loc[2015]\n).mark_point().encode(\n    x = alt.X('GDP per capita', scale = alt.Scale(type = 'log')),\n    y = alt.Y('All', scale = alt.Scale(zero = False), \n    title = 'Life expectancy at birth')\n).properties(\n    width = 600\n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\n\nYou’ll make extensive use of scatter and bubble plots for displaying this relationship in lab 4."
+    "text": "Scatterplots\nScatterplots display relationships between two variables.\n\n\nCode\nalt.Chart(\n    lifegdp.loc[2015]\n).mark_point().encode(\n    x = alt.X('GDP per capita', scale = alt.Scale(type = 'log')),\n    y = alt.Y('All', scale = alt.Scale(zero = False), \n    title = 'Life expectancy at birth')\n).properties(\n    width = 600\n).configure_axis(\n    labelFontSize = 16, titleFontSize = 16\n).configure_legend(\n    labelFontSize = 16, titleFontSize = 16\n).configure_title(\n    fontSize = 16\n)\n\n\n\n\n\n\n\n\nYou’ll make extensive use of scatter and bubble plots for displaying this relationship in lab 4."
   },
   {
     "objectID": "slides/week4-graphics.html#alternatives-to-bar-plots",

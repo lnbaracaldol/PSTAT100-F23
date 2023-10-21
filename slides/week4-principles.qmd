@@ -1,0 +1,526 @@
+---
+title: "Figure design"
+author: "PSTAT100 Fall 2023"
+
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+        scrollable: false
+jupyter: python3
+execute:
+    echo: false
+---
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+# libraries
+import pandas as pd
+import numpy as np
+import altair as alt
+
+# disable row limit for plotting
+alt.data_transformers.disable_max_rows()
+```
+
+
+## Principles of effective design
+
+A good figure should:
+
+* convey a clear message or story
+* avoid excessive complexity
+* look nice
+* be well-labeled and appropriately sized
+* stand alone with a short caption
+
+. . .
+
+Here we'll mostly look at lots of examples.
+
+## On color
+
+Color is one of the most frequently used aesthetics and is easy to misuse.
+
+* choice of color scale should match the data
+* use of color should take account of colorblindness
+* color can only encode a limited amount of information
+
+## Color scales
+
+There are three types of color scales.
+
+1. *Qualitative* scales are non-monotonic sets of colors.
+2. *Sequential* scales are monotonic sets of colors spanning a color gradient.
+3. *Diverging* scales are sequential scales centered at a neutral color.
+
+## Qualitative scales
+
+*Qualitative* scales are non-monotonic sets of colors.
+
+![](figures/qualitative-scales-1.png)
+
+. . .
+
+Useful for displaying categorical variables with few levels.
+
+## Sequential scales
+
+*Sequential* scales are monotonic sets of colors spanning a color gradient.
+
+![](figures/sequential-scales-1.png)
+
+. . .
+
+Useful for continuous variables.
+
+## Sequential scales
+
+![Example sequential color scale](figures/map-Texas-income-1.png)
+
+## Diverging scales
+
+*Diverging* scales are sequential scales centered at a neutral color.
+
+![](figures/diverging-scales-1.png)
+
+. . .
+
+Useful for continuous variables with a 'natural' center.
+
+## Diverging scales
+
+![](figures/map-Texas-race-1.png)
+
+## Use of color
+
+Common mistakes:
+
+1. Encoding too much information
+2. Poor choice of scale
+3. Not accounting for colorblindness
+
+## TMI
+
+![](figures/popgrowth-vs-popsize-colored-1.png)
+
+## Better
+
+![](figures/popgrowth-vs-popsize-bw-1.png)
+
+. . .
+
+*Avoid encoding more than 5 categories using color*
+
+## Inappropriate scales
+
+The color scale doesn't match the data well, since the rainbow scale emphasizes arbitrary data values. In addition, colors here are too intense.
+
+![](figures/map-Texas-rainbow-1.png)
+
+## Better
+
+![](figures/map-Texas-race-1.png)
+
+. . .
+
+A diverging scale is appropriate here because 50% is a natural midpoint in context.
+
+## Color blindness
+
+Color vision deficiency (CVD) or colorblindness refers to difficulty distinguishing specific colors.
+
+* red-green CVD: protanomaly and deuteranomaly
+* blue-yellow CVD: tritanomaly
+
+## CVD-friendly scales
+
+Some color scales still retain visible contrast for different types of color vision deficiency (CVD). 
+
+Here is a simulation (for those without CVD).
+
+![Color scale shown for different types of colorblindness using CVD simulator](figures/heat-cvd-sim-1.png)
+
+## CVD-unfriendly scales
+
+Other scales get muddled.
+
+![](figures/red-green-cvd-sim-1.png)
+
+. . .
+
+*When in doubt, use a CVD simulator to check figures*
+
+## Another approach: redundancy
+
+When possible, use 'redundant coding' -- map the same variable to color *and* one other aesthetic.
+
+![](figures/iris-scatter-three-shapes-1.png)
+
+## Redundancy
+
+When possible, use 'redundant coding' -- map the same variable to color *and* one other aesthetic.
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+
+pop = pd.read_csv('data/population.csv', encoding = 'latin1').melt(
+    id_vars = ['Country Name', 'Country Code'],
+    var_name = 'Year',
+    value_name = 'Population'
+)
+
+countryinfo = pd.read_csv('data/country-info.csv').rename(
+    columns = {'alpha-3': 'Country Code', 'region': 'Region'}
+).loc[:, ['Country Code', 'Region']]
+
+popregion = pd.merge(
+    countryinfo, 
+    pop, 
+    how = 'right', 
+    on = ['Country Code']
+).dropna().astype(
+    {'Region': 'category'}
+).groupby(
+    ['Region', 'Year']
+).sum().reset_index()
+
+alt.Chart(
+    popregion
+).mark_line(
+).encode(
+    x = 'Year:T',
+    y = alt.Y('Population', scale = alt.Scale(type = 'log', zero = False)),
+    color = 'Region',
+    strokeDash = 'Region'
+).properties(
+    width = 500, height = 150
+).configure_axis(
+    labelFontSize = 16,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 16,
+    titleFontSize = 16
+)
+```
+
+. . .
+
+Redundancy provides a failsafe against *any* circumstance that might compromise the effectiveness of color:
+
+- printers or black-and-white printing
+- projectors, displays, and lighting conditions
+- CVD
+
+## Faceting
+
+You've already made a faceted plot. 
+
+![](figures/brfs-ace.png)
+
+. . .
+
+Notice the redundant use of color!
+
+## Faceting
+
+Facets are another way to encode categorical variables *when side-by-side comparisons are of interest*.
+
+. . .
+
+The most common blunders with faceting are:
+
+1. Free axis scales are misleading
+2. Facet layout isn't conducive to comparison of interest
+
+## Many facets
+
+Often a big panel of scatterplots can be a useful exploratory graphic.
+
+::: {.columns}
+
+::: {.column width=60%}
+![Movie ratings from IMDB](figures/movie-rankings-1.png){width=500}
+:::
+
+::: {.column width=40%}
+The figure shows a lot:
+
+1. Timespan of data 1906-2005
+2. More observations (movies) in later years
+3. Higher vote counts in later years
+4. Higher rating variance among movies with fewer votes
+5. Long term reversal of voting/rating trend
+:::
+
+:::
+
+## Use fixed axis scales
+
+![Example of facets with different y axes](figures/BA-degrees-variable-y-lims-1.png)
+
+. . .
+
+Suggests, misleadingly, that Education declined by the same amount as social science and history.
+
+## Use fixed axis scales
+
+![Same as before, with common fixed axis scales.](figures/BA-degrees-fixed-y-lims-1.png)
+
+## What about this?
+
+One axis is fixed, one is free.
+
+![A figure from HW2](figures/seda-fig1.png)
+
+. . .
+
+The variable of interest, Gap, is still comparable across facets. So only one axis needs to be fixed.
+
+. . .
+
+What would it look like if all axis scales were fixed? Would comparisons be easier or harder?
+
+## Labels and legends
+
+The most common blunders with regard to labels are:
+
+1. Use of dataframe column names as labels
+2. Obscure or uninterpretable labels
+3. Too small or too big
+
+. . .
+
+For sizing, it's important to pay attention to the *balance* of labels, whitespace, and graphical elements.
+
+## Sizing
+
+Usually figure defaults look fine on your IDE but render too small when graphics are exported.
+
+![These will be illegible in slide presentations, reports, etc.](figures/Aus-athletes-small-1.png)
+
+## Sizing
+
+These labels are legible, but still too small -- they take up a minimum of space in the figure.
+
+![Unbalanced text/graphic/whitespace](figures/Aus-athletes-ugly-1.png)
+
+## Sizing
+
+Use larger labels than you think you'll need.
+
+![Balanced](figures/Aus-athletes-good-1.png)
+
+. . .
+
+Note also the mark size is increased a bit.
+
+## Sizing
+
+Don't overdo it.
+
+![Unbalanced again](figures/Aus-athletes-big-ugly-1.png)
+
+## Sizing
+
+If the figure will be reproduced in a scaled-down size, increase all sizes in proportion.
+
+![](figures/Aus-athletes-big-good-1.png)
+
+## Critiques
+
+Series from [NYC Life Expectancy Dropped 4.6 Years in 2020](https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html)
+
+::: {.columns}
+
+::: {.column width=60%}
+![](figures/nyt-nyc-death-rate-over-time.PNG)
+:::
+
+::: {.column width=40%}
+Positive:
+
+* effective use of labels
+* effective use of highlighting
+* well-proportioned
+* clean axes
+
+Negative:
+
+* COVID spike looks minimal, contrary to story?
+* the most striking feature of the plot is the time trend and variance stabilization 
+:::
+
+:::
+
+## Critiques
+
+Series from [NYC Life Expectancy Dropped 4.6 Years in 2020](https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html)
+
+::: {.columns}
+
+::: {.column width=60%}
+![](figures/nyt-nyc-life-expectancy-2011-to-2020.PNG)
+:::
+
+::: {.column width=40%}
+Positive:
+
+* same as before
+
+Negative:
+
+* doesn't convey proportional change in decrease efficiently, but that's what the caption emphasizes
+* 'overall' looks like a fourth group
+:::
+
+:::
+
+## Critiques
+
+Series from [NYC Life Expectancy Dropped 4.6 Years in 2020](https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html)
+
+::: {.columns}
+
+::: {.column width=60%}
+![](figures/nyt-nyc-premature-death-map.PNG){width=450}
+:::
+
+::: {.column width=40%}
+Positive:
+
+* exemplary use of color scale/palette
+* line shading shows missing data clearly
+* effective use of labels
+
+Negative:
+
+* no clear story
+* lacking a baseline comparison
+:::
+
+:::
+
+## Critiques
+
+Series from [NYC Life Expectancy Dropped 4.6 Years in 2020](https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html)
+
+::: {.columns}
+
+::: {.column width=60%}
+![](figures/nyc-nyt-leading-causes-premature-death.PNG)
+:::
+
+::: {.column width=40%}
+Positive:
+
+* clear story
+
+Negative:
+
+* awkward/distracting to include time, since no history for COVID
+* not the most efficient display of the captioned message
+
+Remark:
+
+* it would be more interesting to see the time courses *after* 2020
+
+:::
+
+:::
+
+## More critiques
+
+::: {.columns}
+
+::: {.column width=60%}
+![](figures/nyt-spelling-bee-easy.PNG)
+:::
+
+::: {.column width=40%}
+Positive:
+
+* clear labels
+* unambiguous
+
+Negative:
+
+* bars take up all of the plot here
+* many words seem equivalent
+
+Suggestions:
+
+* find an alternative to the bar plot
+* consider emphasizing comparisons between word clusters rather than individual words
+:::
+
+:::
+
+## Tidy graphics?
+
+Graphics should avoid conflating data semantics.
+
+* observational units should be clearly distinguished
+* different types of observational units should be shown on different graphics
+
+. . .
+
+In addition, they should avoid conflating observed from inferred quantities.
+
+* aggregated values should be clearly distinguished from individual observations
+* predictions, inferred trends, or uncertainty should be shown using a *different* graphical element than observed data
+* unless comparing estimates and observations is the point, make separate graphics
+
+## An untidy plot
+
+The starting plot in lab 3 is actually a bad plot because all years are shown together -- so observationational units (countries) are not clearly distinguished.
+
+![](figures/gdp-expectancy-bad.png)
+
+## A tidy plot
+
+![](figures/gdp-expectancy.png)
+
+This is tidy, because within facets:
+
+* each bubble represents a country
+* any two bubbles represent distinct countries
+
+## Exploration or presentation?
+
+In data exploration, it's more important to generate lots of figures quickly than put a lot of care into details.
+
+* do **not** need to be scrupulous about labels, sizing, color scales, proportionality, etc.
+* do need to attend to axis scales and appropriate choice of graphical display (*e.g.*, boxplots vs. densities)
+* should keep plots simple; don't try to visualize too much information at once
+
+. . .
+
+In developing presentation graphics, details matter.
+
+* consider all visualization principles, especially sizing, color, etc.
+* optimize for communication
+
+## Presenting graphics
+
+Here is my approach to presenting a graphic. I use this for both written and oral presentations.
+
+1. Describe clearly each graphical element and what each represents. 
+    + Start with the highest-level graphical elements (axes) and work progressively to the lowest-level elements (aesthetics)
+2. Describe clearly what is shown visually in the graphic *without* interpreting any patterns.
+3. Finally, say what the graphic shows.
+
+## Practice
+
+![](figures/electrocorticography.png)
+
+## Practice
+
+![](figures/brfs-ace.png)
+
+## Practice
+
+![](figures/seda-fig.png)
