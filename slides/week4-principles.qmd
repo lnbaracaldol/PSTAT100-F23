@@ -504,23 +504,7 @@ In developing presentation graphics, details matter.
 * consider all visualization principles, especially sizing, color, etc.
 * optimize for communication
 
-## Presenting graphics
 
-Here is my approach to presenting a graphic. I use this for both written and oral presentations.
 
-1. Describe clearly each graphical element and what each represents. 
-    + Start with the highest-level graphical elements (axes) and work progressively to the lowest-level elements (aesthetics)
-2. Describe clearly what is shown visually in the graphic *without* interpreting any patterns.
-3. Finally, say what the graphic shows.
 
-## Practice
 
-![](figures/electrocorticography.png)
-
-## Practice
-
-![](figures/brfs-ace.png)
-
-## Practice
-
-![](figures/seda-fig.png)
