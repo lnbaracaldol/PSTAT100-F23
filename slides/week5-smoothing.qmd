@@ -1,0 +1,695 @@
+---
+title: "Density estimation, mixture models, and smoothing"
+author: "PSTAT100 Fall 2023"
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+        scrollable: true
+        code-fold: true
+jupyter: python3
+execute:
+    echo: true
+---
+
+## Outline for today
+
+* More on density estimation
+    + non-Gaussian kernels
+    + multivariate KDE
+    + mixture models
+* Scatterplot smoothing
+    + Kernel smoothing
+    + LOESS
+
+```{python}
+#| echo: false
+#| output: false
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
+import numpy as np
+import pandas as pd
+import altair as alt
+import statsmodels.api as sm
+from statsmodels.nonparametric.kde import kernel_switch
+from sklearn import mixture
+alt.data_transformers.disable_max_rows()
+```
+
+## Sustainability data
+
+We'll work with sustainability index data for US cities to explore density estimation further.
+
+```{python}
+sust = pd.read_csv('data/sustainability.csv')
+sust.iloc[:, 1:5].head(2)
+```
+
+* 933 distinct cities 
+* indices for sustainability in enviornmental, social, and eonomic domains
+
+## Environmental sustainability index
+
+Let's use the environmental sustainability index (`Env_Domain`) initially. The distribution of environmental sustainability across cities is shown below.
+
+```{python}
+hist = alt.Chart(
+    sust
+).transform_bin(
+    'esi',
+    field = 'Env_Domain',
+    bin = alt.Bin(step = 0.02)
+).transform_aggregate(
+    count = 'count()',
+    groupby = ['esi']
+).transform_calculate(
+    Density = 'datum.count/(0.02*933)',
+    ESI = 'datum.esi + 0.01'
+).mark_bar(size = 8).encode(
+    x = 'ESI:Q',
+    y = 'Density:Q'
+)
+
+hist.configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## KDE bandwidth selection
+
+A common choice for Gaussian KDE bandwidth is Scott's rule: 
+
+$$
+b = 1.06 \times s \times n^{-1/5}
+$$
+
+```{python}
+# bandwitdth parameter
+n, p = sust.shape
+sigma_hat = sust.Env_Domain.std()
+bw_scott = 1.06*sigma_hat*n**(-1/5)
+
+# plot
+smooth = alt.Chart(
+    sust
+).transform_density(
+  'Env_Domain',
+  as_ = ['Environmental sustainability index', 'Density'],
+  extent = [0.1, 0.8],
+  bandwidth = bw_scott
+).mark_line(color = 'black').encode(
+    x = 'Environmental sustainability index:Q',
+    y = 'Density:Q'
+)
+
+(hist + smooth).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## KDEs with statsmodels
+
+The `statsmodels` package has KDE implementations with finer control. This will allow us to experiment with other kernels.
+
+```{python}
+#| code-fold: false
+# compute the gaussian KDE using statsmodels
+kde = sm.nonparametric.KDEUnivariate(sust.Env_Domain)
+kde.fit(bw = bw_scott)
+```
+
+. . .
+
+The object `kde` has `.support` ($x$) and `.density` ($\hat{f}(x)$) attributes:
+
+```{python}
+#| code-line-numbers: "2-3"
+kde_df = pd.DataFrame({
+    'Environmental sustainability index': kde.support, 
+    'Density': kde.density
+    })
+kde_df.head(3)
+```
+
+## Other kernels
+
+Now let's try varying the kernel. The 'local histogram' introduced last lecture is a KDE with a uniform kernel.
+
+```{python}
+#| code-line-numbers: "3"
+# compute density estimate
+kde = sm.nonparametric.KDEUnivariate(sust.Env_Domain)
+kde.fit(kernel = 'uni', fft = False, bw = 0.02)
+
+# arrange as dataframe
+kde_df = pd.DataFrame({'Environmental sustainability index': kde.support, 'Density': kde.density})
+
+# plot
+smooth2 = alt.Chart(
+    kde_df
+).mark_line(color = 'black').encode(
+    x = 'Environmental sustainability index:Q',
+    y = alt.Y('Density:Q', scale = alt.Scale(domain = [0, 12]))
+)
+
+(hist + smooth2 + smooth2.mark_area(opacity = 0.3)).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Other kernels
+
+![](figures/kernel-functions.png)
+
+* Titles indicate `statsmodels.nonparametric.KDEUnivariate` abbreviations
+* Note different axis scales -- not as similar as they look!
+
+## Explore
+
+Take 5-6 minutes with your neighbor and use the activity notebook to experiment and answer the following.
+
+* How does the KDE differ if a parabolic (`epa`) kernel is used in place of a Gaussian (`gau`) kernel while the bandwidth is held constant?
+* What effect does a triangular kernel (`tri`) have on how local peaks appear?
+* Pick two kernels. What will happen to the KDE for large bandwidths?
+* Which kernel seems to do the best job at capturing the shape closely without under-smoothing?
+
+## Multivariate KDE
+
+Now let's estimate the joint distribution of environmental and economic sustainability indices. Here are the values:
+
+```{python}
+alt.Chart(
+    sust
+).mark_point().encode(
+    x = alt.X('Env_Domain', title = 'Environmental sustainability'),
+    y = alt.Y('Econ_Domain', title = 'Economic sustainability')
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Multivariate histograms
+
+There are a few options for displaying a 2-D histogram. One is to bin and plot a heatmap, as we saw before:
+
+```{python}
+#| code-line-numbers: "4-6"
+alt.Chart(
+    sust
+).mark_rect().encode(
+    x = alt.X('Env_Domain', bin = alt.Bin(maxbins = 40), title = 'Environmental sustainability'),
+    y = alt.Y('Econ_Domain', bin = alt.Bin(maxbins = 40), title = 'Economic sustainability'),
+    color = alt.Color('count()', scale = alt.Scale(scheme = 'bluepurple'), title = 'Number of U.S. cities')
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14, 
+    titleFontSize = 16
+)
+```
+
+## Multivariate histograms
+
+Another option is to make a bubble chart with the size of the bubble proportional to the count of observations in the corresponding bin:
+
+```{python}
+alt.Chart(
+    sust
+).mark_circle().encode(
+    x = alt.X('Env_Domain', bin = alt.Bin(maxbins = 40), title = 'Environmental sustainability'),
+    y = alt.Y('Econ_Domain', bin = alt.Bin(maxbins = 40), title = 'Economic sustainability'),
+    size = alt.Size('count()', scale = alt.Scale(scheme = 'bluepurple'))
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14, 
+    titleFontSize = 16
+)
+```
+
+## Multivariate KDE
+
+The following computes a multivariate Gaussian KDE
+
+```{python}
+#| code-fold: false
+#| code-line-numbers: "5"
+# retrieve data as 2-d array (num observations, num variables)
+fit_ary = sust.loc[:, ['Env_Domain', 'Econ_Domain']].values
+
+# compute KDE
+kde = sm.nonparametric.KDEMultivariate(data = fit_ary, var_type = 'cc')
+kde
+```
+
+* input: 2-D array $(\text{observations} \times \text{variables})$
+* variable type specification, one per variate: continuous, discrete, etc.
+* method of bandwidth selection (not shown)
+
+## Prediction grids
+
+A common visualization strategy is to generate a *prediction grid*: a mesh of values spanning a domain of interest, for the purpose of computing a function at each grid point.
+
+. . .
+
+Here is a 20 x 20 mesh:
+
+```{python}
+# resolution of grid (number of points to use along each axis)
+grid_res = 20
+
+# find grid point coordinates along each axis
+x1 = np.linspace(start = sust.Env_Domain.min(), stop = sust.Env_Domain.max(), num = grid_res)
+x2 = np.linspace(start = sust.Econ_Domain.min(), stop = sust.Econ_Domain.max(), num = grid_res)
+
+# generate a mesh from the coordinates
+grid1, grid2 = np.meshgrid(x1, x2, indexing = 'ij')
+grid_ary = np.array([grid1.ravel(), grid2.ravel()]).T
+
+# plot grid points
+alt.Chart(
+    pd.DataFrame(grid_ary).rename(columns = {0: 'env', 1: 'econ'})
+).mark_point(color = 'black').encode(
+    x = alt.X('env', scale = alt.Scale(zero = False)),
+    y = alt.Y('econ', scale = alt.Scale(zero = False))
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+
+## Prediction grids
+
+We'll use a 100 x 100 mesh and `kde.pdf()` to compute the estimated density at each grid point:
+
+```{python}
+#| code-line-numbers: "13"
+# resolution of grid (number of points to use along each axis)
+grid_res = 100
+
+# find grid point coordinates along each axis
+x1 = np.linspace(start = sust.Env_Domain.min(), stop = sust.Env_Domain.max(), num = grid_res)
+x2 = np.linspace(start = sust.Econ_Domain.min(), stop = sust.Econ_Domain.max(), num = grid_res)
+
+# generate a mesh from the coordinates
+grid1, grid2 = np.meshgrid(x1, x2, indexing = 'ij')
+grid_ary = np.array([grid1.ravel(), grid2.ravel()]).T
+
+# compute the density at each grid point
+f_hat = kde.pdf(grid_ary)
+
+# rearrange as a dataframe
+grid_df = pd.DataFrame({'env': grid1.reshape(grid_res**2), 
+                        'econ': grid2.reshape(grid_res**2),
+                        'density': f_hat})
+
+# preview, for understanding
+grid_df.head()
+```
+
+## Multivariate KDE heatmap
+
+```{python}
+# kde
+kde_smooth = alt.Chart(
+    grid_df, title = 'Gaussian KDE'
+).mark_rect(opacity = 0.8).encode(
+    x = alt.X('env', bin = alt.Bin(maxbins = grid_res), title = 'Environmental sustainability'),
+    y = alt.Y('econ', bin = alt.Bin(maxbins = grid_res), title = 'Economic sustainability'),
+    color = alt.Color('mean(density)', # a bit hacky, but works
+                      scale = alt.Scale(scheme = 'bluepurple', type = 'sqrt'),
+                      title = 'Density')
+)
+
+# histogram
+bubble = alt.Chart(
+    sust
+).mark_circle().encode(
+    x = alt.X('Env_Domain', bin = alt.Bin(maxbins = 40), title = 'Environmental sustainability'),
+    y = alt.Y('Econ_Domain', bin = alt.Bin(maxbins = 40), title = 'Economic sustainability'),
+    size = alt.Size('count()', scale = alt.Scale(scheme = 'bluepurple'), title = 'Cities')
+)
+
+# layer
+(bubble + kde_smooth).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14, 
+    titleFontSize = 16
+)
+```
+
+* Does the KDE seem like a good estimate?
+* What, if anything, does the graphic convey about the sustainability of cities?
+
+## Mixture models
+
+KDE is a *nonparametric* technique: it involves no population parameters.
+
+. . .
+
+Mixture models are a parametric alternative for density estimation. The Gaussian mixture model is: 
+$$
+f(x) = a_1 \varphi(x; \mu_1, \sigma_1) + \cdots + a_n \varphi(x; \mu_n, \sigma_n)
+$$
+
+* $f(x)$ is the distribution of interest
+* $\varphi(\cdot; \mu, \sigma)$ denotes a Gaussian density with mean $\mu$ and standard deviation $\sigma$
+* the model has $n$ components
+* $a_1, \dots, a_n$ are the mixing parameters 
+* fitted using the EM algorithm
+
+## Bivariate mixture model
+
+Let's fit a mixture to the joint distribution of environmental and economic sustainability indices:
+```{python}
+#| code-fold: false
+#| output: false
+# configure and fit mixture model
+gmm = mixture.GaussianMixture(n_components = 2, covariance_type = 'full')
+gmm.fit(fit_ary)
+```
+
+. . .
+
+We can inspect the estimated components' centers (means):
+
+```{python}
+centers = pd.DataFrame(gmm.means_).rename(columns = {0: 'env', 1: 'econ'})
+centers
+```
+
+. . .
+
+And the mixing parameters:
+
+```{python}
+print('mixing parameters', gmm.weights_)
+```
+
+## Bivariate mixture model
+
+```{python}
+# evaluate log-likelihood
+grid_df['gmm'] = np.exp(gmm.score_samples(grid_ary))
+
+# gmm
+gmm_smooth = alt.Chart(
+    grid_df, title = 'GMM'
+).mark_rect(opacity = 0.8).encode(
+    x = alt.X('env', bin = alt.Bin(maxbins = grid_res), title = 'Environmental sustainability'),
+    y = alt.Y('econ', bin = alt.Bin(maxbins = grid_res), title = 'Economic sustainability'),
+    color = alt.Color('mean(gmm)', # a bit hacky, but works
+                      scale = alt.Scale(scheme = 'bluepurple', type = 'sqrt'),
+                      title = 'Density')
+)
+
+# centers of mixture components
+ctr = alt.Chart(centers).mark_point(color = 'black', shape = 'triangle').encode(x = 'env', y = 'econ')
+
+((bubble + gmm_smooth + ctr) | (bubble + kde_smooth)).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14, 
+    titleFontSize = 16
+)
+```
+
+* What differences do you observe? 
+* Which do you prefer and why?
+
+## Pros and Cons
+
+KDE is a nonparametric method and is sometimes called a *memory-based* procedure: it uses all available data every time an estimated value is calculated.
+
+* Advantages: minimal assumptions, highly flexible
+* Disadvantages: not parsimonious, computationally intensive
+
+. . .
+
+GMM's are *parametric* models.
+
+* Advantages: closed-form structure, good for multimodal distributions, various kinds of inference and prediction are possible
+* Disadvantages: estimation is less straightforward, may over-smooth, possible identifiability issues
+
+## GMMs for capturing subpopulations
+
+The GMM is especially useful if there are latent subpopulations in the data. Recall the simulated population of hawks:
+
+```{python}
+# for reproducibility
+np.random.seed(40721)
+
+# simulate hypothetical population
+female_hawks = pd.DataFrame(
+    data = {'length': np.random.normal(loc = 57.5, scale = 3, size = 3000),
+            'sex': np.repeat('female', 3000)}
+)
+
+male_hawks = pd.DataFrame(
+    data = {'length': np.random.normal(loc = 50.5, scale = 3, size = 2000),
+            'sex': np.repeat('male', 2000)}
+)
+
+population_hawks = pd.concat([female_hawks, male_hawks], axis = 0)
+
+population_hawks.groupby('sex').head(1)
+```
+
+. . .
+
+Let's imagine we have a sample but without recorded sexes.
+
+```{python}
+np.random.seed(50223)
+samp = population_hawks.sample(n = 500).drop(columns = 'sex')
+samp.head(3)
+```
+
+## Hawks
+
+The histogram is not obviously bimodal, but we can suppose we're aware of the sex differences in length and just don't have that information.
+
+```{python}
+hist_hawks = alt.Chart(samp).transform_bin(
+    'length',
+    field = 'length',
+    bin = alt.Bin(step = 2)
+).transform_aggregate(
+    count = 'count()',
+    groupby = ['length']
+).transform_calculate(
+    density = 'datum.count/1000',
+    length = 'datum.length + 1'
+).mark_bar(size = 20).encode(
+    x = 'length:Q', 
+    y = 'density:Q'
+)
+
+hist_hawks.configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Recovering subpopulations
+
+If we fit a mixture model with two components, amazingly, the mixture components accurately recover the distributions for each sex, even though this was a latent (unobserved) variable:
+
+```{python}
+#| code-fold: false
+#| code-line-numbers: "2-3"
+# configure and fit mixture model
+gmm_hawks = mixture.GaussianMixture(n_components = 2)
+gmm_hawks.fit(samp.length.values.reshape(-1, 1))
+
+# compare components with subpopulations
+print('gmm component means: ', gmm_hawks.means_.ravel())
+print('population means by sex: ', np.sort(population_hawks.groupby('sex').mean().values.ravel()))
+
+print('gmm component variances: ', gmm_hawks.covariances_.ravel())
+print('population variances by sex: ', np.sort(population_hawks.groupby('sex').var().values.ravel()))
+```
+
+. . . 
+
+Note that the means and variances are estimated from the sample but compared with the population values above.
+
+## GMM density estimate
+
+Further, the density estimate fits reasonably well:
+
+```{python}
+# compute a grid of lengths
+grid_hawks = np.linspace(population_hawks.length.min(), population_hawks.length.max(), num = 500)
+dens = np.exp(gmm_hawks.score_samples(grid_hawks.reshape(-1, 1)))
+
+gmm_smooth_hawks = alt.Chart(
+    pd.DataFrame({'length': grid_hawks, 'density': dens})
+).mark_line(color = 'black').encode(
+    x = 'length',
+    y = 'density'
+)
+
+(hist_hawks + gmm_smooth_hawks).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Explore
+
+Take 2 minutes with your neighbor and use the activity notebook to explore the following questions.
+
+* What happens if you fit the GMM with different numbers of components? 
+* Does the solution change if the GMM is re-fitted?
+
+## Kernel smoothing
+
+Kernel smoothing is a technique similar to KDE used to visualize and estimate *relationships* (rather than distributions). 
+
+. . . 
+
+We'll use the GDP and life expectancy data from lab 3 to illustrate.
+
+```{python}
+# read in data and subset
+life = pd.read_csv('data/life-gdp.csv')
+life = life[life.Year == 2000].loc[:, ['Country Name', 'All', 'GDP per capita']]
+life['GDP per capita'] = np.log(life['GDP per capita'])
+life.rename(columns = {'GDP per capita': 'log_gdp', 'All': 'life_exp', 'Country Name': 'country'}, inplace=True)
+
+# scatterplot
+scatter = alt.Chart(
+    life
+).mark_point().encode(
+    x = alt.X('log_gdp', scale = alt.Scale(zero = False), title = 'log(GDP/capita)'),
+    y = alt.Y('life_exp', scale = alt.Scale(zero = False), title = 'Life expectancy')
+)
+
+scatter.configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## The method
+
+The technique consists in estimating trend by local weighted averaging; a kernel function is used to determine the exact weights.
+
+$$
+\hat{y}(x) = \frac{\sum_i K_b (x_i - x) y_i}{\sum_i K_b(x_i - x)}
+$$
+
+. . .
+
+![Illustration of kernel smoothing](figures/kernel-smoothing-1.PNG){width=800}
+
+## Example
+
+```{python}
+# calculate kernel smoother
+kernreg = sm.nonparametric.KernelReg(endog = life.life_exp.values,
+                                     exog = life.log_gdp.values,
+                                     reg_type = 'lc', 
+                                     var_type = 'c',
+                                     ckertype = 'gaussian')
+
+# grid of gdp values
+gdp_grid = np.linspace(life.log_gdp.min(), life.log_gdp.max(), num = 100)
+
+# calculate kernel smooth at each value
+fitted_values = kernreg.fit(gdp_grid)[0]
+
+# arrange as data frame
+pred_df = pd.DataFrame({'log_gdp': gdp_grid, 'life_exp': fitted_values})
+
+# plot
+kernel_smooth = alt.Chart(
+    pred_df
+).mark_line(
+    color = 'black'
+).encode(
+    x = 'log_gdp', 
+    y = alt.Y('life_exp', scale = alt.Scale(zero = False))
+)
+
+(scatter + kernel_smooth).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+. . .
+
+Notice that the kernel smooth trails off a bit near the boundary -- this is because fewer points are being averaged once the smoothing window begins to extend beyond the range of the data.
+
+## LOESS
+
+Locally weighted scatterplot smoothing (LOESS or LOWESS) largely corrects this issue by stitching together lines (or low-order polynomials) fitted to local subsets of data; this way, near the boundary, the estimate still takes account of any trend present in the data.
+
+![](figures/kernel-smoothing-2.PNG)
+
+## LOESS example
+
+```{python}
+# fit loess smooth
+loess = sm.nonparametric.lowess(endog = life.life_exp.values,
+                                exog = life.log_gdp.values, 
+                                frac = 0.3,
+                                xvals = gdp_grid)
+
+# store as data frame
+loess_df = pd.DataFrame({'log_gdp': gdp_grid, 'life_exp': loess})
+
+# plot
+loess_smooth = alt.Chart(
+    loess_df
+).mark_line(
+    color = 'blue',
+    strokeDash = [8, 8]
+).encode(
+    x = 'log_gdp', 
+    y = alt.Y('life_exp', scale = alt.Scale(zero = False))
+)
+
+(scatter + loess_smooth).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Comparison
+
+If we compare the LOESS curve with the kernel smoother, the different behavior on the boundary is evident:
+
+```{python}
+(scatter + loess_smooth + kernel_smooth).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+
+<!--
+## Explore
+
+Take 2-3 minutes with your neighbor and use the activity notebook to answer the following questions.
+
+* Are there any bandwidths that give you a straight-line fit?
+* What seems to be the minimum bandwidth?
+* Which bandwidth best captures the pattern of scatter?
+-->
+
+
+

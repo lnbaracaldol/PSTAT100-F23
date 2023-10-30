@@ -466,6 +466,7 @@ gdp_annualized = gdp_prop.aggregate(
     axis = 1)
     
 gdp_annualized[[gdp_annualized.idxmax()]]
+
 ```
 
 . . .

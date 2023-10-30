@@ -76,4 +76,26 @@ format: html
 
 **Wednesday**: Principles of figure design [[slides](slides/week4-principles.qmd)]
 
+## Week 5
+
+*Readings*:
+
+- LDS 11.2 [Smoothing and aggregating data](https://learningds.org/ch/11/viz_smoothing.html)
+- Scott, D.W. (2012). Multivariate Density Estimation and Visualization. In: Gentle, J., Härdle, W., Mori, Y. (eds) Handbook of Computational Statistics. [[link to chapter](https://doi.org/10.1007/978-3-642-21551-3_19)]
+
+*Assignments*:
+
+- HW3, Diatom paleoclimatology case study, due Monday, Nov 13 [[html](hw/hw3-diatom/hw3-diatom.ipynb)]
+
+**Monday**: Exploratory analysis and density estimation [[slides](slides/week5-density.qmd)]
+
+**Lab sections**: Smoothing [[html](labs/lab4-smoothing/lab4-smoothing.ipynb)]
+
+**Wednesday**: Multivariate KDE, mixture models, and scatterplot smoothing [[slides](slides/week5-smoothing.qmd)]
+
+<!--
+[[activity html](activities/week5-activity-smoothing.ipynb)]
+-->
+
+
 
