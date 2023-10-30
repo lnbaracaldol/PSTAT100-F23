@@ -90,6 +90,7 @@ For example, a secondary trial target might is to assess saftey by gathering obs
 
 ![](figures/vax-side-effects.png){height=400}
 
+
 ## EDA then CDA
 
 The picture that most practitioners have of modern data science is that EDA precedes confirmatory data analysis (CDA).
