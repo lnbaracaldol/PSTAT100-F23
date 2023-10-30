@@ -476,7 +476,7 @@ In addition, they should avoid conflating observed from inferred quantities.
 
 ## An untidy plot
 
-The starting plot in lab 3 is actually a bad plot because all years are shown together -- so observationational units (countries) are not clearly distinguished.
+The starting plot in lab 3 is actually a bad plot because all years are shown together -- so observational units (countries) are not clearly distinguished.
 
 ![](figures/gdp-expectancy-bad.png)
 

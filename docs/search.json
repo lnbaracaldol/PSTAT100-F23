@@ -851,7 +851,7 @@
     "href": "slides/week5-density.html#data-as-information",
     "title": "Exploratory analysis and density estimation",
     "section": "Data as information",
-    "text": "Data as information\nBy contrast, observational data more often serve the role of information about some phenomenon.\n\nFor example, a secondary trial target might is to assess saftey by gathering observational data on side effects; for this there is no hypothesis."
+    "text": "Data as information\nBy contrast, observational data more often serve the role of information about some phenomenon.\n\nFor example, a secondary trial target might is to assess safety by gathering observational data on side effects; for this there is no hypothesis."
   },
   {
     "objectID": "slides/week5-density.html#eda-then-cda",
