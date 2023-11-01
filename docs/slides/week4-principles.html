@@ -1,490 +1,345 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="PSTAT100 Fall 2023">
+
+<title>PSTAT100 - Figure design</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.433">
-
-  <meta name="author" content="PSTAT100 Fall 2023">
-  <title>PSTAT100 - Figure design</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
-  <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-      vertical-align: middle;
-    }
-  </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
-  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
-
-  <script type="text/javascript">
-
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
-  </script>
-  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-H3YKZX4J88"></script>
 
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
+<script type="text/javascript">
 
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
 
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-titled.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-titled) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-titled .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-titled .callout-title  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-titled.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-titled.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-title {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-title {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-title {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
-  }
-
-  .callout.callout-titled .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-titled) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-title {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-title {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-title {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-title {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-title {
-    background-color: #ffe5d0
-  }
-
-  </style>
-  <style type="text/css">
-    .reveal div.sourceCode {
-      margin: 0;
-      overflow: auto;
-    }
-    .reveal div.hanging-indent {
-      margin-left: 1em;
-      text-indent: -1em;
-    }
-    .reveal .slide:not(.center) {
-      height: 100%;
-    }
-    .reveal .slide.scrollable {
-      overflow-y: auto;
-    }
-    .reveal .footnotes {
-      height: 100%;
-      overflow-y: auto;
-    }
-    .reveal .slide .absolute {
-      position: absolute;
-      display: block;
-    }
-    .reveal .footnotes ol {
-      counter-reset: ol;
-      list-style-type: none; 
-      margin-left: 0;
-    }
-    .reveal .footnotes ol li:before {
-      counter-increment: ol;
-      content: counter(ol) ". "; 
-    }
-    .reveal .footnotes ol li > p:first-child {
-      display: inline-block;
-    }
-    .reveal .slide ul,
-    .reveal .slide ol {
-      margin-bottom: 0.5em;
-    }
-    .reveal .slide ul li,
-    .reveal .slide ol li {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide ul[role="tablist"] li {
-      margin-bottom: 0;
-    }
-    .reveal .slide ul li > *:first-child,
-    .reveal .slide ol li > *:first-child {
-      margin-block-start: 0;
-    }
-    .reveal .slide ul li > *:last-child,
-    .reveal .slide ol li > *:last-child {
-      margin-block-end: 0;
-    }
-    .reveal .slide .columns:nth-child(3) {
-      margin-block-start: 0.8em;
-    }
-    .reveal blockquote {
-      box-shadow: none;
-    }
-    .reveal .tippy-content>* {
-      margin-top: 0.2em;
-      margin-bottom: 0.7em;
-    }
-    .reveal .tippy-content>*:last-child {
-      margin-bottom: 0.2em;
-    }
-    .reveal .slide > img.stretch.quarto-figure-center,
-    .reveal .slide > img.r-stretch.quarto-figure-center {
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-left,
-    .reveal .slide > img.r-stretch.quarto-figure-left  {
-      display: block;
-      margin-left: 0;
-      margin-right: auto; 
-    }
-    .reveal .slide > img.stretch.quarto-figure-right,
-    .reveal .slide > img.r-stretch.quarto-figure-right  {
-      display: block;
-      margin-left: auto;
-      margin-right: 0; 
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<link rel="stylesheet" href="../styles.css">
 </head>
-<body class="quarto-light">
-  <div class="reveal">
-    <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Figure design</h1>
+<body class="nav-fixed">
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-PSTAT100 Fall 2023 
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PSTAT100</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">Course syllabus</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../content.html" rel="" target="">
+ <span class="menu-text">Materials</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#principles-of-effective-design" id="toc-principles-of-effective-design" class="nav-link active" data-scroll-target="#principles-of-effective-design">Principles of effective design</a></li>
+  <li><a href="#on-color" id="toc-on-color" class="nav-link" data-scroll-target="#on-color">On color</a></li>
+  <li><a href="#color-scales" id="toc-color-scales" class="nav-link" data-scroll-target="#color-scales">Color scales</a></li>
+  <li><a href="#qualitative-scales" id="toc-qualitative-scales" class="nav-link" data-scroll-target="#qualitative-scales">Qualitative scales</a></li>
+  <li><a href="#sequential-scales" id="toc-sequential-scales" class="nav-link" data-scroll-target="#sequential-scales">Sequential scales</a></li>
+  <li><a href="#sequential-scales-1" id="toc-sequential-scales-1" class="nav-link" data-scroll-target="#sequential-scales-1">Sequential scales</a></li>
+  <li><a href="#diverging-scales" id="toc-diverging-scales" class="nav-link" data-scroll-target="#diverging-scales">Diverging scales</a></li>
+  <li><a href="#diverging-scales-1" id="toc-diverging-scales-1" class="nav-link" data-scroll-target="#diverging-scales-1">Diverging scales</a></li>
+  <li><a href="#use-of-color" id="toc-use-of-color" class="nav-link" data-scroll-target="#use-of-color">Use of color</a></li>
+  <li><a href="#tmi" id="toc-tmi" class="nav-link" data-scroll-target="#tmi">TMI</a></li>
+  <li><a href="#better" id="toc-better" class="nav-link" data-scroll-target="#better">Better</a></li>
+  <li><a href="#inappropriate-scales" id="toc-inappropriate-scales" class="nav-link" data-scroll-target="#inappropriate-scales">Inappropriate scales</a></li>
+  <li><a href="#better-1" id="toc-better-1" class="nav-link" data-scroll-target="#better-1">Better</a></li>
+  <li><a href="#color-blindness" id="toc-color-blindness" class="nav-link" data-scroll-target="#color-blindness">Color blindness</a></li>
+  <li><a href="#cvd-friendly-scales" id="toc-cvd-friendly-scales" class="nav-link" data-scroll-target="#cvd-friendly-scales">CVD-friendly scales</a></li>
+  <li><a href="#cvd-unfriendly-scales" id="toc-cvd-unfriendly-scales" class="nav-link" data-scroll-target="#cvd-unfriendly-scales">CVD-unfriendly scales</a></li>
+  <li><a href="#another-approach-redundancy" id="toc-another-approach-redundancy" class="nav-link" data-scroll-target="#another-approach-redundancy">Another approach: redundancy</a></li>
+  <li><a href="#redundancy" id="toc-redundancy" class="nav-link" data-scroll-target="#redundancy">Redundancy</a></li>
+  <li><a href="#faceting" id="toc-faceting" class="nav-link" data-scroll-target="#faceting">Faceting</a></li>
+  <li><a href="#faceting-1" id="toc-faceting-1" class="nav-link" data-scroll-target="#faceting-1">Faceting</a></li>
+  <li><a href="#many-facets" id="toc-many-facets" class="nav-link" data-scroll-target="#many-facets">Many facets</a></li>
+  <li><a href="#use-fixed-axis-scales" id="toc-use-fixed-axis-scales" class="nav-link" data-scroll-target="#use-fixed-axis-scales">Use fixed axis scales</a></li>
+  <li><a href="#use-fixed-axis-scales-1" id="toc-use-fixed-axis-scales-1" class="nav-link" data-scroll-target="#use-fixed-axis-scales-1">Use fixed axis scales</a></li>
+  <li><a href="#what-about-this" id="toc-what-about-this" class="nav-link" data-scroll-target="#what-about-this">What about this?</a></li>
+  <li><a href="#labels-and-legends" id="toc-labels-and-legends" class="nav-link" data-scroll-target="#labels-and-legends">Labels and legends</a></li>
+  <li><a href="#sizing" id="toc-sizing" class="nav-link" data-scroll-target="#sizing">Sizing</a></li>
+  <li><a href="#sizing-1" id="toc-sizing-1" class="nav-link" data-scroll-target="#sizing-1">Sizing</a></li>
+  <li><a href="#sizing-2" id="toc-sizing-2" class="nav-link" data-scroll-target="#sizing-2">Sizing</a></li>
+  <li><a href="#sizing-3" id="toc-sizing-3" class="nav-link" data-scroll-target="#sizing-3">Sizing</a></li>
+  <li><a href="#sizing-4" id="toc-sizing-4" class="nav-link" data-scroll-target="#sizing-4">Sizing</a></li>
+  <li><a href="#critiques" id="toc-critiques" class="nav-link" data-scroll-target="#critiques">Critiques</a></li>
+  <li><a href="#critiques-1" id="toc-critiques-1" class="nav-link" data-scroll-target="#critiques-1">Critiques</a></li>
+  <li><a href="#critiques-2" id="toc-critiques-2" class="nav-link" data-scroll-target="#critiques-2">Critiques</a></li>
+  <li><a href="#critiques-3" id="toc-critiques-3" class="nav-link" data-scroll-target="#critiques-3">Critiques</a></li>
+  <li><a href="#more-critiques" id="toc-more-critiques" class="nav-link" data-scroll-target="#more-critiques">More critiques</a></li>
+  <li><a href="#tidy-graphics" id="toc-tidy-graphics" class="nav-link" data-scroll-target="#tidy-graphics">Tidy graphics?</a></li>
+  <li><a href="#an-untidy-plot" id="toc-an-untidy-plot" class="nav-link" data-scroll-target="#an-untidy-plot">An untidy plot</a></li>
+  <li><a href="#a-tidy-plot" id="toc-a-tidy-plot" class="nav-link" data-scroll-target="#a-tidy-plot">A tidy plot</a></li>
+  <li><a href="#exploration-or-presentation" id="toc-exploration-or-presentation" class="nav-link" data-scroll-target="#exploration-or-presentation">Exploration or presentation?</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="week4-principles.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Figure design</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>PSTAT100 Fall 2023 </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}" data-tags="[]" data-execution_count="1">
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>DataTransformerRegistry.enable('default')</code></pre>
 </div>
 </div>
-</div>
-
-</section>
-<section id="principles-of-effective-design" class="slide level2">
-<h2>Principles of effective design</h2>
+<section id="principles-of-effective-design" class="level2">
+<h2 class="anchored" data-anchor-id="principles-of-effective-design">Principles of effective design</h2>
 <p>A good figure should:</p>
 <ul>
-<li class="fragment">convey a clear message or story</li>
-<li class="fragment">avoid excessive complexity</li>
-<li class="fragment">look nice</li>
-<li class="fragment">be well-labeled and appropriately sized</li>
-<li class="fragment">stand alone with a short caption</li>
+<li>convey a clear message or story</li>
+<li>avoid excessive complexity</li>
+<li>look nice</li>
+<li>be well-labeled and appropriately sized</li>
+<li>stand alone with a short caption</li>
 </ul>
-<div class="fragment">
+<p>. . .</p>
 <p>Here we’ll mostly look at lots of examples.</p>
-</div>
 </section>
-<section id="on-color" class="slide level2">
-<h2>On color</h2>
+<section id="on-color" class="level2">
+<h2 class="anchored" data-anchor-id="on-color">On color</h2>
 <p>Color is one of the most frequently used aesthetics and is easy to misuse.</p>
 <ul>
-<li class="fragment">choice of color scale should match the data</li>
-<li class="fragment">use of color should take account of colorblindness</li>
-<li class="fragment">color can only encode a limited amount of information</li>
+<li>choice of color scale should match the data</li>
+<li>use of color should take account of colorblindness</li>
+<li>color can only encode a limited amount of information</li>
 </ul>
 </section>
-<section id="color-scales" class="slide level2">
-<h2>Color scales</h2>
+<section id="color-scales" class="level2">
+<h2 class="anchored" data-anchor-id="color-scales">Color scales</h2>
 <p>There are three types of color scales.</p>
 <ol type="1">
-<li class="fragment"><em>Qualitative</em> scales are non-monotonic sets of colors.</li>
-<li class="fragment"><em>Sequential</em> scales are monotonic sets of colors spanning a color gradient.</li>
-<li class="fragment"><em>Diverging</em> scales are sequential scales centered at a neutral color.</li>
+<li><em>Qualitative</em> scales are non-monotonic sets of colors.</li>
+<li><em>Sequential</em> scales are monotonic sets of colors spanning a color gradient.</li>
+<li><em>Diverging</em> scales are sequential scales centered at a neutral color.</li>
 </ol>
 </section>
-<section id="qualitative-scales" class="slide level2">
-<h2>Qualitative scales</h2>
+<section id="qualitative-scales" class="level2">
+<h2 class="anchored" data-anchor-id="qualitative-scales">Qualitative scales</h2>
 <p><em>Qualitative</em> scales are non-monotonic sets of colors.</p>
-
-<img data-src="figures/qualitative-scales-1.png" class="r-stretch"><div class="fragment">
+<p><img src="figures/qualitative-scales-1.png" class="img-fluid"></p>
+<p>. . .</p>
 <p>Useful for displaying categorical variables with few levels.</p>
-</div>
 </section>
-<section id="sequential-scales" class="slide level2">
-<h2>Sequential scales</h2>
+<section id="sequential-scales" class="level2">
+<h2 class="anchored" data-anchor-id="sequential-scales">Sequential scales</h2>
 <p><em>Sequential</em> scales are monotonic sets of colors spanning a color gradient.</p>
-
-<img data-src="figures/sequential-scales-1.png" class="r-stretch"><div class="fragment">
+<p><img src="figures/sequential-scales-1.png" class="img-fluid"></p>
+<p>. . .</p>
 <p>Useful for continuous variables.</p>
+</section>
+<section id="sequential-scales-1" class="level2">
+<h2 class="anchored" data-anchor-id="sequential-scales-1">Sequential scales</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/map-Texas-income-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Example sequential color scale</figcaption>
+</figure>
 </div>
 </section>
-<section id="sequential-scales-1" class="slide level2">
-<h2>Sequential scales</h2>
-
-<img data-src="figures/map-Texas-income-1.png" class="r-stretch quarto-figure-center"><p class="caption">Example sequential color scale</p></section>
-<section id="diverging-scales" class="slide level2">
-<h2>Diverging scales</h2>
+<section id="diverging-scales" class="level2">
+<h2 class="anchored" data-anchor-id="diverging-scales">Diverging scales</h2>
 <p><em>Diverging</em> scales are sequential scales centered at a neutral color.</p>
-
-<img data-src="figures/diverging-scales-1.png" class="r-stretch"><div class="fragment">
+<p><img src="figures/diverging-scales-1.png" class="img-fluid"></p>
+<p>. . .</p>
 <p>Useful for continuous variables with a ‘natural’ center.</p>
-</div>
 </section>
-<section id="diverging-scales-1" class="slide level2">
-<h2>Diverging scales</h2>
-
-<img data-src="figures/map-Texas-race-1.png" class="r-stretch"></section>
-<section id="use-of-color" class="slide level2">
-<h2>Use of color</h2>
+<section id="diverging-scales-1" class="level2">
+<h2 class="anchored" data-anchor-id="diverging-scales-1">Diverging scales</h2>
+<p><img src="figures/map-Texas-race-1.png" class="img-fluid"></p>
+</section>
+<section id="use-of-color" class="level2">
+<h2 class="anchored" data-anchor-id="use-of-color">Use of color</h2>
 <p>Common mistakes:</p>
 <ol type="1">
-<li class="fragment">Encoding too much information</li>
-<li class="fragment">Poor choice of scale</li>
-<li class="fragment">Not accounting for colorblindness</li>
+<li>Encoding too much information</li>
+<li>Poor choice of scale</li>
+<li>Not accounting for colorblindness</li>
 </ol>
 </section>
-<section id="tmi" class="slide level2">
-<h2>TMI</h2>
-
-<img data-src="figures/popgrowth-vs-popsize-colored-1.png" class="r-stretch"></section>
-<section id="better" class="slide level2">
-<h2>Better</h2>
-
-<img data-src="figures/popgrowth-vs-popsize-bw-1.png" class="r-stretch"><div class="fragment">
+<section id="tmi" class="level2">
+<h2 class="anchored" data-anchor-id="tmi">TMI</h2>
+<p><img src="figures/popgrowth-vs-popsize-colored-1.png" class="img-fluid"></p>
+</section>
+<section id="better" class="level2">
+<h2 class="anchored" data-anchor-id="better">Better</h2>
+<p><img src="figures/popgrowth-vs-popsize-bw-1.png" class="img-fluid"></p>
+<p>. . .</p>
 <p><em>Avoid encoding more than 5 categories using color</em></p>
-</div>
 </section>
-<section id="inappropriate-scales" class="slide level2">
-<h2>Inappropriate scales</h2>
+<section id="inappropriate-scales" class="level2">
+<h2 class="anchored" data-anchor-id="inappropriate-scales">Inappropriate scales</h2>
 <p>The color scale doesn’t match the data well, since the rainbow scale emphasizes arbitrary data values. In addition, colors here are too intense.</p>
-
-<img data-src="figures/map-Texas-rainbow-1.png" class="r-stretch"></section>
-<section id="better-1" class="slide level2">
-<h2>Better</h2>
-
-<img data-src="figures/map-Texas-race-1.png" class="r-stretch"><div class="fragment">
-<p>A diverging scale is appropriate here because 50% is a natural midpoint in context.</p>
-</div>
+<p><img src="figures/map-Texas-rainbow-1.png" class="img-fluid"></p>
 </section>
-<section id="color-blindness" class="slide level2">
-<h2>Color blindness</h2>
+<section id="better-1" class="level2">
+<h2 class="anchored" data-anchor-id="better-1">Better</h2>
+<p><img src="figures/map-Texas-race-1.png" class="img-fluid"></p>
+<p>. . .</p>
+<p>A diverging scale is appropriate here because 50% is a natural midpoint in context.</p>
+</section>
+<section id="color-blindness" class="level2">
+<h2 class="anchored" data-anchor-id="color-blindness">Color blindness</h2>
 <p>Color vision deficiency (CVD) or colorblindness refers to difficulty distinguishing specific colors.</p>
 <ul>
-<li class="fragment">red-green CVD: protanomaly and deuteranomaly</li>
-<li class="fragment">blue-yellow CVD: tritanomaly</li>
+<li>red-green CVD: protanomaly and deuteranomaly</li>
+<li>blue-yellow CVD: tritanomaly</li>
 </ul>
 </section>
-<section id="cvd-friendly-scales" class="slide level2">
-<h2>CVD-friendly scales</h2>
+<section id="cvd-friendly-scales" class="level2">
+<h2 class="anchored" data-anchor-id="cvd-friendly-scales">CVD-friendly scales</h2>
 <p>Some color scales still retain visible contrast for different types of color vision deficiency (CVD).</p>
 <p>Here is a simulation (for those without CVD).</p>
-
-<img data-src="figures/heat-cvd-sim-1.png" class="r-stretch quarto-figure-center"><p class="caption">Color scale shown for different types of colorblindness using CVD simulator</p></section>
-<section id="cvd-unfriendly-scales" class="slide level2">
-<h2>CVD-unfriendly scales</h2>
-<p>Other scales get muddled.</p>
-
-<img data-src="figures/red-green-cvd-sim-1.png" class="r-stretch"><div class="fragment">
-<p><em>When in doubt, use a CVD simulator to check figures</em></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/heat-cvd-sim-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Color scale shown for different types of colorblindness using CVD simulator</figcaption>
+</figure>
 </div>
 </section>
-<section id="another-approach-redundancy" class="slide level2">
-<h2>Another approach: redundancy</h2>
+<section id="cvd-unfriendly-scales" class="level2">
+<h2 class="anchored" data-anchor-id="cvd-unfriendly-scales">CVD-unfriendly scales</h2>
+<p>Other scales get muddled.</p>
+<p><img src="figures/red-green-cvd-sim-1.png" class="img-fluid"></p>
+<p>. . .</p>
+<p><em>When in doubt, use a CVD simulator to check figures</em></p>
+</section>
+<section id="another-approach-redundancy" class="level2">
+<h2 class="anchored" data-anchor-id="another-approach-redundancy">Another approach: redundancy</h2>
 <p>When possible, use ‘redundant coding’ – map the same variable to color <em>and</em> one other aesthetic.</p>
-
-<img data-src="figures/iris-scatter-three-shapes-1.png" class="r-stretch"></section>
-<section id="redundancy" class="slide level2">
-<h2>Redundancy</h2>
+<p><img src="figures/iris-scatter-three-shapes-1.png" class="img-fluid"></p>
+</section>
+<section id="redundancy" class="level2">
+<h2 class="anchored" data-anchor-id="redundancy">Redundancy</h2>
 <p>When possible, use ‘redundant coding’ – map the same variable to color <em>and</em> one other aesthetic.</p>
-<div class="fragment">
 <div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}" data-tags="[]" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\lnbar\AppData\Local\Temp\ipykernel_25140\1928961422.py:20: FutureWarning:
 
-<div id="altair-viz-17d396161aa149f3833f28251404e8b1"></div>
+The default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.
+
+C:\Users\lnbar\AppData\Local\Programs\Python\Python311\Lib\site-packages\altair\utils\core.py:317: FutureWarning:
+
+iteritems is deprecated and will be removed in a future version. Use .items instead.
+</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+
+<div id="altair-viz-3925e5ba7531414bbcb81ac0573102e1"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-17d396161aa149f3833f28251404e8b1") {
-      outputDiv = document.getElementById("altair-viz-17d396161aa149f3833f28251404e8b1");
+    if (outputDiv.id !== "altair-viz-3925e5ba7531414bbcb81ac0573102e1") {
+      outputDiv = document.getElementById("altair-viz-3925e5ba7531414bbcb81ac0573102e1");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -534,636 +389,538 @@ PSTAT100 Fall 2023
 </script>
 </div>
 </div>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>Redundancy provides a failsafe against <em>any</em> circumstance that might compromise the effectiveness of color:</p>
 <ul>
-<li class="fragment">printers or black-and-white printing</li>
-<li class="fragment">projectors, displays, and lighting conditions</li>
-<li class="fragment">CVD</li>
+<li>printers or black-and-white printing</li>
+<li>projectors, displays, and lighting conditions</li>
+<li>CVD</li>
 </ul>
-</div>
 </section>
-<section id="faceting" class="slide level2">
-<h2>Faceting</h2>
+<section id="faceting" class="level2">
+<h2 class="anchored" data-anchor-id="faceting">Faceting</h2>
 <p>You’ve already made a faceted plot.</p>
-
-<img data-src="figures/brfs-ace.png" class="r-stretch"><div class="fragment">
+<p><img src="figures/brfs-ace.png" class="img-fluid"></p>
+<p>. . .</p>
 <p>Notice the redundant use of color!</p>
-</div>
 </section>
-<section id="faceting-1" class="slide level2">
-<h2>Faceting</h2>
+<section id="faceting-1" class="level2">
+<h2 class="anchored" data-anchor-id="faceting-1">Faceting</h2>
 <p>Facets are another way to encode categorical variables <em>when side-by-side comparisons are of interest</em>.</p>
-<div class="fragment">
+<p>. . .</p>
 <p>The most common blunders with faceting are:</p>
 <ol type="1">
-<li class="fragment">Free axis scales are misleading</li>
-<li class="fragment">Facet layout isn’t conducive to comparison of interest</li>
+<li>Free axis scales are misleading</li>
+<li>Facet layout isn’t conducive to comparison of interest</li>
 </ol>
-</div>
 </section>
-<section id="many-facets" class="slide level2">
-<h2>Many facets</h2>
+<section id="many-facets" class="level2">
+<h2 class="anchored" data-anchor-id="many-facets">Many facets</h2>
 <p>Often a big panel of scatterplots can be a useful exploratory graphic.</p>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figures/movie-rankings-1.png" width="500"></p>
-<figcaption>Movie ratings from IMDB</figcaption>
+<figure class="figure">
+<p><img src="figures/movie-rankings-1.png" class="img-fluid figure-img" width="500"></p>
+<figcaption class="figure-caption">Movie ratings from IMDB</figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:40%;">
 <p>The figure shows a lot:</p>
 <ol type="1">
-<li class="fragment">Timespan of data 1906-2005</li>
-<li class="fragment">More observations (movies) in later years</li>
-<li class="fragment">Higher vote counts in later years</li>
-<li class="fragment">Higher rating variance among movies with fewer votes</li>
-<li class="fragment">Long term reversal of voting/rating trend</li>
+<li>Timespan of data 1906-2005</li>
+<li>More observations (movies) in later years</li>
+<li>Higher vote counts in later years</li>
+<li>Higher rating variance among movies with fewer votes</li>
+<li>Long term reversal of voting/rating trend</li>
 </ol>
 </div>
 </div>
 </section>
-<section id="use-fixed-axis-scales" class="slide level2">
-<h2>Use fixed axis scales</h2>
-
-<img data-src="figures/BA-degrees-variable-y-lims-1.png" class="r-stretch quarto-figure-center"><p class="caption">Example of facets with different y axes</p><div class="fragment">
+<section id="use-fixed-axis-scales" class="level2">
+<h2 class="anchored" data-anchor-id="use-fixed-axis-scales">Use fixed axis scales</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/BA-degrees-variable-y-lims-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Example of facets with different y axes</figcaption>
+</figure>
+</div>
+<p>. . .</p>
 <p>Suggests, misleadingly, that Education declined by the same amount as social science and history.</p>
+</section>
+<section id="use-fixed-axis-scales-1" class="level2">
+<h2 class="anchored" data-anchor-id="use-fixed-axis-scales-1">Use fixed axis scales</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/BA-degrees-fixed-y-lims-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Same as before, with common fixed axis scales.</figcaption>
+</figure>
 </div>
 </section>
-<section id="use-fixed-axis-scales-1" class="slide level2">
-<h2>Use fixed axis scales</h2>
-
-<img data-src="figures/BA-degrees-fixed-y-lims-1.png" class="r-stretch quarto-figure-center"><p class="caption">Same as before, with common fixed axis scales.</p></section>
-<section id="what-about-this" class="slide level2">
-<h2>What about this?</h2>
+<section id="what-about-this" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-this">What about this?</h2>
 <p>One axis is fixed, one is free.</p>
-
-<img data-src="figures/seda-fig1.png" class="r-stretch quarto-figure-center"><p class="caption">A figure from HW2</p><div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/seda-fig1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A figure from HW2</figcaption>
+</figure>
+</div>
+<p>. . .</p>
 <p>The variable of interest, Gap, is still comparable across facets. So only one axis needs to be fixed.</p>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>What would it look like if all axis scales were fixed? Would comparisons be easier or harder?</p>
-</div>
 </section>
-<section id="labels-and-legends" class="slide level2">
-<h2>Labels and legends</h2>
+<section id="labels-and-legends" class="level2">
+<h2 class="anchored" data-anchor-id="labels-and-legends">Labels and legends</h2>
 <p>The most common blunders with regard to labels are:</p>
 <ol type="1">
-<li class="fragment">Use of dataframe column names as labels</li>
-<li class="fragment">Obscure or uninterpretable labels</li>
-<li class="fragment">Too small or too big</li>
+<li>Use of dataframe column names as labels</li>
+<li>Obscure or uninterpretable labels</li>
+<li>Too small or too big</li>
 </ol>
-<div class="fragment">
+<p>. . .</p>
 <p>For sizing, it’s important to pay attention to the <em>balance</em> of labels, whitespace, and graphical elements.</p>
-</div>
 </section>
-<section id="sizing" class="slide level2">
-<h2>Sizing</h2>
+<section id="sizing" class="level2">
+<h2 class="anchored" data-anchor-id="sizing">Sizing</h2>
 <p>Usually figure defaults look fine on your IDE but render too small when graphics are exported.</p>
-
-<img data-src="figures/Aus-athletes-small-1.png" class="r-stretch quarto-figure-center"><p class="caption">These will be illegible in slide presentations, reports, etc.</p></section>
-<section id="sizing-1" class="slide level2">
-<h2>Sizing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/Aus-athletes-small-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">These will be illegible in slide presentations, reports, etc.</figcaption>
+</figure>
+</div>
+</section>
+<section id="sizing-1" class="level2">
+<h2 class="anchored" data-anchor-id="sizing-1">Sizing</h2>
 <p>These labels are legible, but still too small – they take up a minimum of space in the figure.</p>
-
-<img data-src="figures/Aus-athletes-ugly-1.png" class="r-stretch quarto-figure-center"><p class="caption">Unbalanced text/graphic/whitespace</p></section>
-<section id="sizing-2" class="slide level2">
-<h2>Sizing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/Aus-athletes-ugly-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Unbalanced text/graphic/whitespace</figcaption>
+</figure>
+</div>
+</section>
+<section id="sizing-2" class="level2">
+<h2 class="anchored" data-anchor-id="sizing-2">Sizing</h2>
 <p>Use larger labels than you think you’ll need.</p>
-
-<img data-src="figures/Aus-athletes-good-1.png" class="r-stretch quarto-figure-center"><p class="caption">Balanced</p><div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/Aus-athletes-good-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Balanced</figcaption>
+</figure>
+</div>
+<p>. . .</p>
 <p>Note also the mark size is increased a bit.</p>
-</div>
 </section>
-<section id="sizing-3" class="slide level2">
-<h2>Sizing</h2>
+<section id="sizing-3" class="level2">
+<h2 class="anchored" data-anchor-id="sizing-3">Sizing</h2>
 <p>Don’t overdo it.</p>
-
-<img data-src="figures/Aus-athletes-big-ugly-1.png" class="r-stretch quarto-figure-center"><p class="caption">Unbalanced again</p></section>
-<section id="sizing-4" class="slide level2">
-<h2>Sizing</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/Aus-athletes-big-ugly-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Unbalanced again</figcaption>
+</figure>
+</div>
+</section>
+<section id="sizing-4" class="level2">
+<h2 class="anchored" data-anchor-id="sizing-4">Sizing</h2>
 <p>If the figure will be reproduced in a scaled-down size, increase all sizes in proportion.</p>
-
-<img data-src="figures/Aus-athletes-big-good-1.png" class="r-stretch"></section>
-<section id="critiques" class="slide level2">
-<h2>Critiques</h2>
+<p><img src="figures/Aus-athletes-big-good-1.png" class="img-fluid"></p>
+</section>
+<section id="critiques" class="level2">
+<h2 class="anchored" data-anchor-id="critiques">Critiques</h2>
 <p>Series from <a href="https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html">NYC Life Expectancy Dropped 4.6 Years in 2020</a></p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figures/nyt-nyc-death-rate-over-time.PNG"></p>
+<p><img src="figures/nyt-nyc-death-rate-over-time.PNG" class="img-fluid"></p>
 </div><div class="column" style="width:40%;">
 <p>Positive:</p>
 <ul>
-<li class="fragment">effective use of labels</li>
-<li class="fragment">effective use of highlighting</li>
-<li class="fragment">well-proportioned</li>
-<li class="fragment">clean axes</li>
+<li>effective use of labels</li>
+<li>effective use of highlighting</li>
+<li>well-proportioned</li>
+<li>clean axes</li>
 </ul>
 <p>Negative:</p>
 <ul>
-<li class="fragment">COVID spike looks minimal, contrary to story?</li>
-<li class="fragment">the most striking feature of the plot is the time trend and variance stabilization</li>
+<li>COVID spike looks minimal, contrary to story?</li>
+<li>the most striking feature of the plot is the time trend and variance stabilization</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="critiques-1" class="slide level2">
-<h2>Critiques</h2>
+<section id="critiques-1" class="level2">
+<h2 class="anchored" data-anchor-id="critiques-1">Critiques</h2>
 <p>Series from <a href="https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html">NYC Life Expectancy Dropped 4.6 Years in 2020</a></p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figures/nyt-nyc-life-expectancy-2011-to-2020.PNG"></p>
+<p><img src="figures/nyt-nyc-life-expectancy-2011-to-2020.PNG" class="img-fluid"></p>
 </div><div class="column" style="width:40%;">
 <p>Positive:</p>
 <ul>
-<li class="fragment">same as before</li>
+<li>same as before</li>
 </ul>
 <p>Negative:</p>
 <ul>
-<li class="fragment">doesn’t convey proportional change in decrease efficiently, but that’s what the caption emphasizes</li>
-<li class="fragment">‘overall’ looks like a fourth group</li>
+<li>doesn’t convey proportional change in decrease efficiently, but that’s what the caption emphasizes</li>
+<li>‘overall’ looks like a fourth group</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="critiques-2" class="slide level2">
-<h2>Critiques</h2>
+<section id="critiques-2" class="level2">
+<h2 class="anchored" data-anchor-id="critiques-2">Critiques</h2>
 <p>Series from <a href="https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html">NYC Life Expectancy Dropped 4.6 Years in 2020</a></p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figures/nyt-nyc-premature-death-map.PNG" width="450"></p>
+<p><img src="figures/nyt-nyc-premature-death-map.PNG" class="img-fluid" width="450"></p>
 </div><div class="column" style="width:40%;">
 <p>Positive:</p>
 <ul>
-<li class="fragment">exemplary use of color scale/palette</li>
-<li class="fragment">line shading shows missing data clearly</li>
-<li class="fragment">effective use of labels</li>
+<li>exemplary use of color scale/palette</li>
+<li>line shading shows missing data clearly</li>
+<li>effective use of labels</li>
 </ul>
 <p>Negative:</p>
 <ul>
-<li class="fragment">no clear story</li>
-<li class="fragment">lacking a baseline comparison</li>
+<li>no clear story</li>
+<li>lacking a baseline comparison</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="critiques-3" class="slide level2">
-<h2>Critiques</h2>
+<section id="critiques-3" class="level2">
+<h2 class="anchored" data-anchor-id="critiques-3">Critiques</h2>
 <p>Series from <a href="https://www.nytimes.com/2023/04/07/nyregion/nyc-covid-deaths.html">NYC Life Expectancy Dropped 4.6 Years in 2020</a></p>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figures/nyc-nyt-leading-causes-premature-death.PNG"></p>
+<p><img src="figures/nyc-nyt-leading-causes-premature-death.PNG" class="img-fluid"></p>
 </div><div class="column" style="width:40%;">
 <p>Positive:</p>
 <ul>
-<li class="fragment">clear story</li>
+<li>clear story</li>
 </ul>
 <p>Negative:</p>
 <ul>
-<li class="fragment">awkward/distracting to include time, since no history for COVID</li>
-<li class="fragment">not the most efficient display of the captioned message</li>
+<li>awkward/distracting to include time, since no history for COVID</li>
+<li>not the most efficient display of the captioned message</li>
 </ul>
 <p>Remark:</p>
 <ul>
-<li class="fragment">it would be more interesting to see the time courses <em>after</em> 2020</li>
+<li>it would be more interesting to see the time courses <em>after</em> 2020</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="more-critiques" class="slide level2">
-<h2>More critiques</h2>
+<section id="more-critiques" class="level2">
+<h2 class="anchored" data-anchor-id="more-critiques">More critiques</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p><img data-src="figures/nyt-spelling-bee-easy.PNG"></p>
+<p><img src="figures/nyt-spelling-bee-easy.PNG" class="img-fluid"></p>
 </div><div class="column" style="width:40%;">
 <p>Positive:</p>
 <ul>
-<li class="fragment">clear labels</li>
-<li class="fragment">unambiguous</li>
+<li>clear labels</li>
+<li>unambiguous</li>
 </ul>
 <p>Negative:</p>
 <ul>
-<li class="fragment">bars take up all of the plot here</li>
-<li class="fragment">many words seem equivalent</li>
+<li>bars take up all of the plot here</li>
+<li>many words seem equivalent</li>
 </ul>
 <p>Suggestions:</p>
 <ul>
-<li class="fragment">find an alternative to the bar plot</li>
-<li class="fragment">consider emphasizing comparisons between word clusters rather than individual words</li>
+<li>find an alternative to the bar plot</li>
+<li>consider emphasizing comparisons between word clusters rather than individual words</li>
 </ul>
 </div>
 </div>
 </section>
-<section id="tidy-graphics" class="slide level2">
-<h2>Tidy graphics?</h2>
+<section id="tidy-graphics" class="level2">
+<h2 class="anchored" data-anchor-id="tidy-graphics">Tidy graphics?</h2>
 <p>Graphics should avoid conflating data semantics.</p>
 <ul>
-<li class="fragment">observational units should be clearly distinguished</li>
-<li class="fragment">different types of observational units should be shown on different graphics</li>
+<li>observational units should be clearly distinguished</li>
+<li>different types of observational units should be shown on different graphics</li>
 </ul>
-<div class="fragment">
+<p>. . .</p>
 <p>In addition, they should avoid conflating observed from inferred quantities.</p>
 <ul>
-<li class="fragment">aggregated values should be clearly distinguished from individual observations</li>
-<li class="fragment">predictions, inferred trends, or uncertainty should be shown using a <em>different</em> graphical element than observed data</li>
-<li class="fragment">unless comparing estimates and observations is the point, make separate graphics</li>
+<li>aggregated values should be clearly distinguished from individual observations</li>
+<li>predictions, inferred trends, or uncertainty should be shown using a <em>different</em> graphical element than observed data</li>
+<li>unless comparing estimates and observations is the point, make separate graphics</li>
 </ul>
-</div>
 </section>
-<section id="an-untidy-plot" class="slide level2">
-<h2>An untidy plot</h2>
-<p>The starting plot in lab 3 is actually a bad plot because all years are shown together – so observationational units (countries) are not clearly distinguished.</p>
-
-<img data-src="figures/gdp-expectancy-bad.png" class="r-stretch"></section>
-<section id="a-tidy-plot" class="slide level2">
-<h2>A tidy plot</h2>
-
-<img data-src="figures/gdp-expectancy.png" class="r-stretch"><p>This is tidy, because within facets:</p>
+<section id="an-untidy-plot" class="level2">
+<h2 class="anchored" data-anchor-id="an-untidy-plot">An untidy plot</h2>
+<p>The starting plot in lab 3 is actually a bad plot because all years are shown together – so observational units (countries) are not clearly distinguished.</p>
+<p><img src="figures/gdp-expectancy-bad.png" class="img-fluid"></p>
+</section>
+<section id="a-tidy-plot" class="level2">
+<h2 class="anchored" data-anchor-id="a-tidy-plot">A tidy plot</h2>
+<p><img src="figures/gdp-expectancy.png" class="img-fluid"></p>
+<p>This is tidy, because within facets:</p>
 <ul>
-<li class="fragment">each bubble represents a country</li>
-<li class="fragment">any two bubbles represent distinct countries</li>
+<li>each bubble represents a country</li>
+<li>any two bubbles represent distinct countries</li>
 </ul>
 </section>
-<section id="exploration-or-presentation" class="slide level2">
-<h2>Exploration or presentation?</h2>
+<section id="exploration-or-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="exploration-or-presentation">Exploration or presentation?</h2>
 <p>In data exploration, it’s more important to generate lots of figures quickly than put a lot of care into details.</p>
 <ul>
-<li class="fragment">do <strong>not</strong> need to be scrupulous about labels, sizing, color scales, proportionality, etc.</li>
-<li class="fragment">do need to attend to axis scales and appropriate choice of graphical display (<em>e.g.</em>, boxplots vs.&nbsp;densities)</li>
-<li class="fragment">should keep plots simple; don’t try to visualize too much information at once</li>
+<li>do <strong>not</strong> need to be scrupulous about labels, sizing, color scales, proportionality, etc.</li>
+<li>do need to attend to axis scales and appropriate choice of graphical display (<em>e.g.</em>, boxplots vs.&nbsp;densities)</li>
+<li>should keep plots simple; don’t try to visualize too much information at once</li>
 </ul>
-<div class="fragment">
+<p>. . .</p>
 <p>In developing presentation graphics, details matter.</p>
 <ul>
-<li class="fragment">consider all visualization principles, especially sizing, color, etc.</li>
-<li class="fragment">optimize for communication</li>
+<li>consider all visualization principles, especially sizing, color, etc.</li>
+<li>optimize for communication</li>
 </ul>
 
-<div class="footer footer-default">
 
-</div>
-</div>
 </section>
-    </div>
-  </div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../site_libs/revealjs/dist/reveal.js"></script>
-  <!-- reveal.js plugins -->
-  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
-  
-
-  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
-
-  <script>
-
-      // Full list of configuration options available at:
-      // https://revealjs.com/config/
-      Reveal.initialize({
-'controlsAuto': true,
-'previewLinksAuto': false,
-'smaller': true,
-'pdfSeparateFragments': false,
-'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
-'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': true,
- 
-        // Display controls in the bottom right corner
-        controls: false,
-
-        // Help the user learn the controls by providing hints, for example by
-        // bouncing the down arrow when they first encounter a vertical slide
-        controlsTutorial: false,
-
-        // Determines where controls appear, "edges" or "bottom-right"
-        controlsLayout: 'edges',
-
-        // Visibility rule for backwards navigation arrows; "faded", "hidden"
-        // or "visible"
-        controlsBackArrows: 'faded',
-
-        // Display a presentation progress bar
-        progress: true,
-
-        // Display the page number of the current slide
-        slideNumber: 'c/t',
-
-        // 'all', 'print', or 'speaker'
-        showSlideNumber: 'all',
-
-        // Add the current slide number to the URL hash so that reloading the
-        // page/copying the URL will return you to the same slide
-        hash: true,
-
-        // Start with 1 for the hash rather than 0
-        hashOneBasedIndex: false,
-
-        // Flags if we should monitor the hash and change slides accordingly
-        respondToHashChanges: true,
-
-        // Push each slide change to the browser history
-        history: true,
-
-        // Enable keyboard shortcuts for navigation
-        keyboard: true,
-
-        // Enable the slide overview mode
-        overview: true,
-
-        // Disables the default reveal.js slide layout (scaling and centering)
-        // so that you can use custom CSS layout
-        disableLayout: false,
-
-        // Vertical centering of slides
-        center: false,
-
-        // Enables touch navigation on devices with touch input
-        touch: true,
-
-        // Loop the presentation
-        loop: false,
-
-        // Change the presentation direction to be RTL
-        rtl: false,
-
-        // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
-
-        // Randomizes the order of slides each time the presentation loads
-        shuffle: false,
-
-        // Turns fragments on and off globally
-        fragments: true,
-
-        // Flags whether to include the current fragment in the URL,
-        // so that reloading brings you to the same fragment position
-        fragmentInURL: false,
-
-        // Flags if the presentation is running in an embedded mode,
-        // i.e. contained within a limited portion of the screen
-        embedded: false,
-
-        // Flags if we should show a help overlay when the questionmark
-        // key is pressed
-        help: true,
-
-        // Flags if it should be possible to pause the presentation (blackout)
-        pause: true,
-
-        // Flags if speaker notes should be visible to all viewers
-        showNotes: false,
-
-        // Global override for autoplaying embedded media (null/true/false)
-        autoPlayMedia: null,
-
-        // Global override for preloading lazy-loaded iframes (null/true/false)
-        preloadIframes: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: null,
-
-        // Specify the average time in seconds that you think you will spend
-        // presenting each slide. This is used to show a pacing timer in the
-        // speaker view
-        defaultTiming: null,
-
-        // Enable slide navigation via mouse wheel
-        mouseWheel: false,
-
-        // The display mode that will be used to show slides
-        display: 'block',
-
-        // Hide cursor if inactive
-        hideInactiveCursor: true,
-
-        // Time before the cursor is hidden (in ms)
-        hideCursorTime: 5000,
-
-        // Opens links in an iframe preview overlay
-        previewLinks: false,
-
-        // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
-
-        // Transition speed (default/fast/slow)
-        transitionSpeed: 'default',
-
-        // Transition style for full page slide backgrounds
-        // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
-
-        // Number of slides away from the current that are visible
-        viewDistance: 3,
-
-        // Number of slides away from the current that are visible on mobile
-        // devices. It is advisable to set this to a lower number than
-        // viewDistance in order to save resources.
-        mobileViewDistance: 2,
-
-        // The "normal" size of the presentation, aspect ratio will be preserved
-        // when the presentation is scaled to fit different resolutions. Can be
-        // specified using percentage units.
-        width: 1050,
-
-        height: 700,
-
-        // Factor of the display size that should remain empty around the content
-        margin: 0.1,
-
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
-        // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
-
-          RevealMath,
-          RevealNotes,
-          RevealSearch,
-          RevealZoom
-        ]
-      });
-    </script>
-    <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
       }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
       }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
           }
-        }
-        return false;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
           }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      });
-      function tippyHover(el, contentFn) {
-        const config = {
-          allowHTML: true,
-          content: contentFn,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start'
-        };
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          return note.innerHTML;
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
+          selectedAnnoteEl = annoteEl;
         }
       };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
-          });
-        }
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
       }
-    });
-    </script>
-    
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
 
 </body></html>

@@ -81,7 +81,7 @@ format: html
 *Readings*:
 
 - LDS 11.2 [Smoothing and aggregating data](https://learningds.org/ch/11/viz_smoothing.html)
-- Scott, D.W. (2012). Multivariate Density Estimation and Visualization. In: Gentle, J., Härdle, W., Mori, Y. (eds) Handbook of Computational Statistics. [[link to chapter](https://doi.org/10.1007/978-3-642-21551-3_19)]
+- Scott, D.W. (2012). Multivariate Density Estimation and Visualization. In: Gentle, J., HC$rdle, W., Mori, Y. (eds) Handbook of Computational Statistics. [[link to chapter](https://doi.org/10.1007/978-3-642-21551-3_19)]
 
 *Assignments*:
 
@@ -91,11 +91,8 @@ format: html
 
 **Lab sections**: Smoothing [[html](labs/lab4-smoothing/lab4-smoothing.ipynb)]
 
-**Wednesday**: Multivariate KDE, mixture models, and scatterplot smoothing [[slides](slides/week5-smoothing.qmd)]
+**Wednesday**: Multivariate KDE, mixture models, and scatterplot smoothing [[slides](slides/week5-smoothing.qmd)][[activity html](activities/week5-activity-smoothing.ipynb)]
 
-<!--
-[[activity html](activities/week5-activity-smoothing.ipynb)]
--->
 
 
 

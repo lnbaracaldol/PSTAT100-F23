@@ -634,7 +634,7 @@
     "href": "slides/week5-smoothing.html#kdes-with-statsmodels",
     "title": "Density estimation, mixture models, and smoothing",
     "section": "KDEs with statsmodels",
-    "text": "KDEs with statsmodels\nThe statsmodels package has KDE implementations with finer control. This will allow us to experiment with other kernels.\n\n# compute the gaussian KDE using statsmodels\nkde = sm.nonparametric.KDEUnivariate(sust.Env_Domain)\nkde.fit(bw = bw_scott)\n\n&lt;statsmodels.nonparametric.kde.KDEUnivariate at 0x20e80079750&gt;\n\n\n\nThe object kde has .support (\\(x\\)) and .density (\\(\\hat{f}(x)\\)) attributes:\n\n\nCode\nkde_df = pd.DataFrame({\n    'Environmental sustainability index': kde.support, \n    'Density': kde.density\n    })\nkde_df.head(3)\n\n\n\n\n\n\n\n\n\nEnvironmental sustainability index\nDensity\n\n\n\n\n0\n0.088614\n0.000609\n\n\n1\n0.089334\n0.000621\n\n\n2\n0.090054\n0.000645"
+    "text": "KDEs with statsmodels\nThe statsmodels package has KDE implementations with finer control. This will allow us to experiment with other kernels.\n\n# compute the gaussian KDE using statsmodels\nkde = sm.nonparametric.KDEUnivariate(sust.Env_Domain)\nkde.fit(bw = bw_scott)\n\n&lt;statsmodels.nonparametric.kde.KDEUnivariate at 0x213d79a8310&gt;\n\n\n\nThe object kde has .support (\\(x\\)) and .density (\\(\\hat{f}(x)\\)) attributes:\n\n\nCode\nkde_df = pd.DataFrame({\n    'Environmental sustainability index': kde.support, \n    'Density': kde.density\n    })\nkde_df.head(3)\n\n\n\n\n\n\n\n\n\nEnvironmental sustainability index\nDensity\n\n\n\n\n0\n0.088614\n0.000609\n\n\n1\n0.089334\n0.000621\n\n\n2\n0.090054\n0.000645"
   },
   {
     "objectID": "slides/week5-smoothing.html#other-kernels",
@@ -1999,7 +1999,7 @@
     "href": "slides/week4-principles.html#principles-of-effective-design",
     "title": "Figure design",
     "section": "Principles of effective design",
-    "text": "Principles of effective design\nA good figure should:\n\nconvey a clear message or story\navoid excessive complexity\nlook nice\nbe well-labeled and appropriately sized\nstand alone with a short caption\n\n\nHere we’ll mostly look at lots of examples."
+    "text": "Principles of effective design\nA good figure should:\n\nconvey a clear message or story\navoid excessive complexity\nlook nice\nbe well-labeled and appropriately sized\nstand alone with a short caption\n\n. . .\nHere we’ll mostly look at lots of examples."
   },
   {
     "objectID": "slides/week4-principles.html#on-color",
@@ -2020,28 +2020,28 @@
     "href": "slides/week4-principles.html#qualitative-scales",
     "title": "Figure design",
     "section": "Qualitative scales",
-    "text": "Qualitative scales\nQualitative scales are non-monotonic sets of colors.\n\n\nUseful for displaying categorical variables with few levels."
+    "text": "Qualitative scales\nQualitative scales are non-monotonic sets of colors.\n\n. . .\nUseful for displaying categorical variables with few levels."
   },
   {
     "objectID": "slides/week4-principles.html#sequential-scales",
     "href": "slides/week4-principles.html#sequential-scales",
     "title": "Figure design",
     "section": "Sequential scales",
-    "text": "Sequential scales\nSequential scales are monotonic sets of colors spanning a color gradient.\n\n\nUseful for continuous variables."
+    "text": "Sequential scales\nSequential scales are monotonic sets of colors spanning a color gradient.\n\n. . .\nUseful for continuous variables."
   },
   {
     "objectID": "slides/week4-principles.html#sequential-scales-1",
     "href": "slides/week4-principles.html#sequential-scales-1",
     "title": "Figure design",
     "section": "Sequential scales",
-    "text": "Sequential scales\n\nExample sequential color scale"
+    "text": "Sequential scales\n\n\n\nExample sequential color scale"
   },
   {
     "objectID": "slides/week4-principles.html#diverging-scales",
     "href": "slides/week4-principles.html#diverging-scales",
     "title": "Figure design",
     "section": "Diverging scales",
-    "text": "Diverging scales\nDiverging scales are sequential scales centered at a neutral color.\n\n\nUseful for continuous variables with a ‘natural’ center."
+    "text": "Diverging scales\nDiverging scales are sequential scales centered at a neutral color.\n\n. . .\nUseful for continuous variables with a ‘natural’ center."
   },
   {
     "objectID": "slides/week4-principles.html#diverging-scales-1",
@@ -2069,7 +2069,7 @@
     "href": "slides/week4-principles.html#better",
     "title": "Figure design",
     "section": "Better",
-    "text": "Better\n\n\nAvoid encoding more than 5 categories using color"
+    "text": "Better\n\n. . .\nAvoid encoding more than 5 categories using color"
   },
   {
     "objectID": "slides/week4-principles.html#inappropriate-scales",
@@ -2083,7 +2083,7 @@
     "href": "slides/week4-principles.html#better-1",
     "title": "Figure design",
     "section": "Better",
-    "text": "Better\n\n\nA diverging scale is appropriate here because 50% is a natural midpoint in context."
+    "text": "Better\n\n. . .\nA diverging scale is appropriate here because 50% is a natural midpoint in context."
   },
   {
     "objectID": "slides/week4-principles.html#color-blindness",
@@ -2097,14 +2097,14 @@
     "href": "slides/week4-principles.html#cvd-friendly-scales",
     "title": "Figure design",
     "section": "CVD-friendly scales",
-    "text": "CVD-friendly scales\nSome color scales still retain visible contrast for different types of color vision deficiency (CVD).\nHere is a simulation (for those without CVD).\n\nColor scale shown for different types of colorblindness using CVD simulator"
+    "text": "CVD-friendly scales\nSome color scales still retain visible contrast for different types of color vision deficiency (CVD).\nHere is a simulation (for those without CVD).\n\n\n\nColor scale shown for different types of colorblindness using CVD simulator"
   },
   {
     "objectID": "slides/week4-principles.html#cvd-unfriendly-scales",
     "href": "slides/week4-principles.html#cvd-unfriendly-scales",
     "title": "Figure design",
     "section": "CVD-unfriendly scales",
-    "text": "CVD-unfriendly scales\nOther scales get muddled.\n\n\nWhen in doubt, use a CVD simulator to check figures"
+    "text": "CVD-unfriendly scales\nOther scales get muddled.\n\n. . .\nWhen in doubt, use a CVD simulator to check figures"
   },
   {
     "objectID": "slides/week4-principles.html#another-approach-redundancy",
@@ -2118,21 +2118,21 @@
     "href": "slides/week4-principles.html#redundancy",
     "title": "Figure design",
     "section": "Redundancy",
-    "text": "Redundancy\nWhen possible, use ‘redundant coding’ – map the same variable to color and one other aesthetic.\n\n\n\n\n\n\n\n\n\n\nRedundancy provides a failsafe against any circumstance that might compromise the effectiveness of color:\n\nprinters or black-and-white printing\nprojectors, displays, and lighting conditions\nCVD"
+    "text": "Redundancy\nWhen possible, use ‘redundant coding’ – map the same variable to color and one other aesthetic.\n\n\nC:\\Users\\lnbar\\AppData\\Local\\Temp\\ipykernel_25140\\1928961422.py:20: FutureWarning:\n\nThe default value of numeric_only in DataFrameGroupBy.sum is deprecated. In a future version, numeric_only will default to False. Either specify numeric_only or select only columns which should be valid for the function.\n\nC:\\Users\\lnbar\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\altair\\utils\\core.py:317: FutureWarning:\n\niteritems is deprecated and will be removed in a future version. Use .items instead.\n\n\n\n\n\n\n\n\n. . .\nRedundancy provides a failsafe against any circumstance that might compromise the effectiveness of color:\n\nprinters or black-and-white printing\nprojectors, displays, and lighting conditions\nCVD"
   },
   {
     "objectID": "slides/week4-principles.html#faceting",
     "href": "slides/week4-principles.html#faceting",
     "title": "Figure design",
     "section": "Faceting",
-    "text": "Faceting\nYou’ve already made a faceted plot.\n\n\nNotice the redundant use of color!"
+    "text": "Faceting\nYou’ve already made a faceted plot.\n\n. . .\nNotice the redundant use of color!"
   },
   {
     "objectID": "slides/week4-principles.html#faceting-1",
     "href": "slides/week4-principles.html#faceting-1",
     "title": "Figure design",
     "section": "Faceting",
-    "text": "Faceting\nFacets are another way to encode categorical variables when side-by-side comparisons are of interest.\n\nThe most common blunders with faceting are:\n\nFree axis scales are misleading\nFacet layout isn’t conducive to comparison of interest"
+    "text": "Faceting\nFacets are another way to encode categorical variables when side-by-side comparisons are of interest.\n. . .\nThe most common blunders with faceting are:\n\nFree axis scales are misleading\nFacet layout isn’t conducive to comparison of interest"
   },
   {
     "objectID": "slides/week4-principles.html#many-facets",
@@ -2146,56 +2146,56 @@
     "href": "slides/week4-principles.html#use-fixed-axis-scales",
     "title": "Figure design",
     "section": "Use fixed axis scales",
-    "text": "Use fixed axis scales\n\nExample of facets with different y axes\nSuggests, misleadingly, that Education declined by the same amount as social science and history."
+    "text": "Use fixed axis scales\n\n\n\nExample of facets with different y axes\n\n\n. . .\nSuggests, misleadingly, that Education declined by the same amount as social science and history."
   },
   {
     "objectID": "slides/week4-principles.html#use-fixed-axis-scales-1",
     "href": "slides/week4-principles.html#use-fixed-axis-scales-1",
     "title": "Figure design",
     "section": "Use fixed axis scales",
-    "text": "Use fixed axis scales\n\nSame as before, with common fixed axis scales."
+    "text": "Use fixed axis scales\n\n\n\nSame as before, with common fixed axis scales."
   },
   {
     "objectID": "slides/week4-principles.html#what-about-this",
     "href": "slides/week4-principles.html#what-about-this",
     "title": "Figure design",
     "section": "What about this?",
-    "text": "What about this?\nOne axis is fixed, one is free.\n\nA figure from HW2\nThe variable of interest, Gap, is still comparable across facets. So only one axis needs to be fixed.\n\n\nWhat would it look like if all axis scales were fixed? Would comparisons be easier or harder?"
+    "text": "What about this?\nOne axis is fixed, one is free.\n\n\n\nA figure from HW2\n\n\n. . .\nThe variable of interest, Gap, is still comparable across facets. So only one axis needs to be fixed.\n. . .\nWhat would it look like if all axis scales were fixed? Would comparisons be easier or harder?"
   },
   {
     "objectID": "slides/week4-principles.html#labels-and-legends",
     "href": "slides/week4-principles.html#labels-and-legends",
     "title": "Figure design",
     "section": "Labels and legends",
-    "text": "Labels and legends\nThe most common blunders with regard to labels are:\n\nUse of dataframe column names as labels\nObscure or uninterpretable labels\nToo small or too big\n\n\nFor sizing, it’s important to pay attention to the balance of labels, whitespace, and graphical elements."
+    "text": "Labels and legends\nThe most common blunders with regard to labels are:\n\nUse of dataframe column names as labels\nObscure or uninterpretable labels\nToo small or too big\n\n. . .\nFor sizing, it’s important to pay attention to the balance of labels, whitespace, and graphical elements."
   },
   {
     "objectID": "slides/week4-principles.html#sizing",
     "href": "slides/week4-principles.html#sizing",
     "title": "Figure design",
     "section": "Sizing",
-    "text": "Sizing\nUsually figure defaults look fine on your IDE but render too small when graphics are exported.\n\nThese will be illegible in slide presentations, reports, etc."
+    "text": "Sizing\nUsually figure defaults look fine on your IDE but render too small when graphics are exported.\n\n\n\nThese will be illegible in slide presentations, reports, etc."
   },
   {
     "objectID": "slides/week4-principles.html#sizing-1",
     "href": "slides/week4-principles.html#sizing-1",
     "title": "Figure design",
     "section": "Sizing",
-    "text": "Sizing\nThese labels are legible, but still too small – they take up a minimum of space in the figure.\n\nUnbalanced text/graphic/whitespace"
+    "text": "Sizing\nThese labels are legible, but still too small – they take up a minimum of space in the figure.\n\n\n\nUnbalanced text/graphic/whitespace"
   },
   {
     "objectID": "slides/week4-principles.html#sizing-2",
     "href": "slides/week4-principles.html#sizing-2",
     "title": "Figure design",
     "section": "Sizing",
-    "text": "Sizing\nUse larger labels than you think you’ll need.\n\nBalanced\nNote also the mark size is increased a bit."
+    "text": "Sizing\nUse larger labels than you think you’ll need.\n\n\n\nBalanced\n\n\n. . .\nNote also the mark size is increased a bit."
   },
   {
     "objectID": "slides/week4-principles.html#sizing-3",
     "href": "slides/week4-principles.html#sizing-3",
     "title": "Figure design",
     "section": "Sizing",
-    "text": "Sizing\nDon’t overdo it.\n\nUnbalanced again"
+    "text": "Sizing\nDon’t overdo it.\n\n\n\nUnbalanced again"
   },
   {
     "objectID": "slides/week4-principles.html#sizing-4",
@@ -2244,14 +2244,14 @@
     "href": "slides/week4-principles.html#tidy-graphics",
     "title": "Figure design",
     "section": "Tidy graphics?",
-    "text": "Tidy graphics?\nGraphics should avoid conflating data semantics.\n\nobservational units should be clearly distinguished\ndifferent types of observational units should be shown on different graphics\n\n\nIn addition, they should avoid conflating observed from inferred quantities.\n\naggregated values should be clearly distinguished from individual observations\npredictions, inferred trends, or uncertainty should be shown using a different graphical element than observed data\nunless comparing estimates and observations is the point, make separate graphics"
+    "text": "Tidy graphics?\nGraphics should avoid conflating data semantics.\n\nobservational units should be clearly distinguished\ndifferent types of observational units should be shown on different graphics\n\n. . .\nIn addition, they should avoid conflating observed from inferred quantities.\n\naggregated values should be clearly distinguished from individual observations\npredictions, inferred trends, or uncertainty should be shown using a different graphical element than observed data\nunless comparing estimates and observations is the point, make separate graphics"
   },
   {
     "objectID": "slides/week4-principles.html#an-untidy-plot",
     "href": "slides/week4-principles.html#an-untidy-plot",
     "title": "Figure design",
     "section": "An untidy plot",
-    "text": "An untidy plot\nThe starting plot in lab 3 is actually a bad plot because all years are shown together – so observationational units (countries) are not clearly distinguished."
+    "text": "An untidy plot\nThe starting plot in lab 3 is actually a bad plot because all years are shown together – so observational units (countries) are not clearly distinguished."
   },
   {
     "objectID": "slides/week4-principles.html#a-tidy-plot",
@@ -2265,7 +2265,7 @@
     "href": "slides/week4-principles.html#exploration-or-presentation",
     "title": "Figure design",
     "section": "Exploration or presentation?",
-    "text": "Exploration or presentation?\nIn data exploration, it’s more important to generate lots of figures quickly than put a lot of care into details.\n\ndo not need to be scrupulous about labels, sizing, color scales, proportionality, etc.\ndo need to attend to axis scales and appropriate choice of graphical display (e.g., boxplots vs. densities)\nshould keep plots simple; don’t try to visualize too much information at once\n\n\nIn developing presentation graphics, details matter.\n\nconsider all visualization principles, especially sizing, color, etc.\noptimize for communication"
+    "text": "Exploration or presentation?\nIn data exploration, it’s more important to generate lots of figures quickly than put a lot of care into details.\n\ndo not need to be scrupulous about labels, sizing, color scales, proportionality, etc.\ndo need to attend to axis scales and appropriate choice of graphical display (e.g., boxplots vs. densities)\nshould keep plots simple; don’t try to visualize too much information at once\n\n. . .\nIn developing presentation graphics, details matter.\n\nconsider all visualization principles, especially sizing, color, etc.\noptimize for communication"
   },
   {
     "objectID": "slides/week4-principles.html#presenting-graphics",
@@ -2398,7 +2398,7 @@
     "href": "content.html#week-5",
     "title": "Materials",
     "section": "Week 5",
-    "text": "Week 5\nReadings:\n\nLDS 11.2 Smoothing and aggregating data\nScott, D.W. (2012). Multivariate Density Estimation and Visualization. In: Gentle, J., Härdle, W., Mori, Y. (eds) Handbook of Computational Statistics. [link to chapter]\n\nAssignments:\n\nHW3, Diatom paleoclimatology case study, due Monday, Nov 13 [html]\n\nMonday: Exploratory analysis and density estimation [slides]\nLab sections: Smoothing [html]\nWednesday: Multivariate KDE, mixture models, and scatterplot smoothing [slides]"
+    "text": "Week 5\nReadings:\n\nLDS 11.2 Smoothing and aggregating data\nScott, D.W. (2012). Multivariate Density Estimation and Visualization. In: Gentle, J., HC$rdle, W., Mori, Y. (eds) Handbook of Computational Statistics. [link to chapter]\n\nAssignments:\n\nHW3, Diatom paleoclimatology case study, due Monday, Nov 13 [html]\n\nMonday: Exploratory analysis and density estimation [slides]\nLab sections: Smoothing [html]\nWednesday: Multivariate KDE, mixture models, and scatterplot smoothing [slides][activity html]"
   },
   {
     "objectID": "content.html#week-6",
@@ -5401,7 +5401,7 @@
     "href": "activities/week5-activity-smoothing.html",
     "title": "Smoothing activity",
     "section": "",
-    "text": "import os\nos.environ[\"OMP_NUM_THREADS\"] = \"1\"\nimport numpy as np\nimport pandas as pd\nimport altair as alt\nimport statsmodels.api as sm\nfrom statsmodels.nonparametric.kde import kernel_switch\nfrom sklearn import mixture\nalt.data_transformers.disable_max_rows()\n\nDataTransformerRegistry.enable('default')\nWe’ll work with sustainability index data for US cities to explore density estimation further. These data are imported below\nsust = pd.read_csv('sustainability.csv')\nsust.head()\n\n\n\n\n\n\n\n\nGEOID_MSA\nName\nEcon_Domain\nSocial_Domain\nEnv_Domain\nSustain_Index\n\n\n\n\n0\n310M300US10100\nAberdeen, SD Micro Area\n0.565264\n0.591259\n0.444472\n1.600995\n\n\n1\n310M300US10140\nAberdeen, WA Micro Area\n0.427671\n0.520744\n0.429274\n1.377689\n\n\n2\n310M300US10180\nAbilene, TX Metro Area\n0.481092\n0.496874\n0.454192\n1.432157\n\n\n3\n310M300US10220\nAda, OK Micro Area\n0.466566\n0.526206\n0.425964\n1.418737\n\n\n4\n310M300US10300\nAdrian, MI Micro Area\n0.497908\n0.602440\n0.282499\n1.382847\nThere are 933 distinct cities; each row in the dataset is an observation for one city.\nn, p = sust.shape\nn\n\n933\nsust.Name.unique().shape\n\n(933,)"
+    "text": "import os\nos.environ[\"OMP_NUM_THREADS\"] = \"1\"\nimport numpy as np\nimport pandas as pd\nimport altair as alt\nimport statsmodels.api as sm\nfrom statsmodels.nonparametric.kde import kernel_switch\nfrom sklearn import mixture\nalt.data_transformers.disable_max_rows()\nimport warnings\n\n# Suppress all warnings\nwarnings.filterwarnings(\"ignore\")\nWe’ll work with sustainability index data for US cities to explore density estimation further. These data are imported below\nsust = pd.read_csv('sustainability.csv')\nsust.head()\n\n\n\n\n\n\n\n\nGEOID_MSA\nName\nEcon_Domain\nSocial_Domain\nEnv_Domain\nSustain_Index\n\n\n\n\n0\n310M300US10100\nAberdeen, SD Micro Area\n0.565264\n0.591259\n0.444472\n1.600995\n\n\n1\n310M300US10140\nAberdeen, WA Micro Area\n0.427671\n0.520744\n0.429274\n1.377689\n\n\n2\n310M300US10180\nAbilene, TX Metro Area\n0.481092\n0.496874\n0.454192\n1.432157\n\n\n3\n310M300US10220\nAda, OK Micro Area\n0.466566\n0.526206\n0.425964\n1.418737\n\n\n4\n310M300US10300\nAdrian, MI Micro Area\n0.497908\n0.602440\n0.282499\n1.382847\nThere are 933 distinct cities; each row in the dataset is an observation for one city.\nn, p = sust.shape\nn\n\n933\nsust.Name.unique().shape\n\n(933,)"
   },
   {
     "objectID": "activities/week5-activity-smoothing.html#exploration",
@@ -5444,5 +5444,12 @@
     "title": "Exploratory analysis and density estimation",
     "section": "Drawing a local histogram",
     "text": "Drawing a local histogram\n\\[\n\\text{hist}_\\text{local}(\\color{red}{x}) = \\frac{1}{nb} \\sum_{i = 1}^n \\mathbf{1}\\left\\{|x_i - \\color{red}{x}| &lt; \\frac{b}{2}\\right\\}\n\\]"
+  },
+  {
+    "objectID": "slides/week4-principles.html",
+    "href": "slides/week4-principles.html",
+    "title": "Figure design",
+    "section": "",
+    "text": "DataTransformerRegistry.enable('default')"
   }
 ]

@@ -439,7 +439,7 @@ PSTAT100 Fall 2023
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>sust <span class="op">=</span> pd.read_csv(<span class="st">'data/sustainability.csv'</span>)</span>
 <span id="cb1-2"><a href="#cb1-2"></a>sust.iloc[:, <span class="dv">1</span>:<span class="dv">5</span>].head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="83">
+<div class="cell-output cell-output-display" data-execution_count="56">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -519,16 +519,16 @@ PSTAT100 Fall 2023
 <span id="cb2-20"><a href="#cb2-20"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb2-21"><a href="#cb2-21"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="84">
+<div class="cell-output cell-output-display" data-execution_count="57">
 
 
-<div id="altair-viz-3c8ab2eddedb44c485e59005880b0fe0"></div>
+<div id="altair-viz-39e400b426ba4281a4319dfbc513a68d"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-3c8ab2eddedb44c485e59005880b0fe0") {
-      outputDiv = document.getElementById("altair-viz-3c8ab2eddedb44c485e59005880b0fe0");
+    if (outputDiv.id !== "altair-viz-39e400b426ba4281a4319dfbc513a68d") {
+      outputDiv = document.getElementById("altair-viz-39e400b426ba4281a4319dfbc513a68d");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -611,16 +611,16 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb3-21"><a href="#cb3-21"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb3-22"><a href="#cb3-22"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="85">
+<div class="cell-output cell-output-display" data-execution_count="58">
 
 
-<div id="altair-viz-e260603687fd40eb9c7d16c44f94bb5e"></div>
+<div id="altair-viz-6d1a8fbbf29145c0b69ec2ac4aee73d0"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e260603687fd40eb9c7d16c44f94bb5e") {
-      outputDiv = document.getElementById("altair-viz-e260603687fd40eb9c7d16c44f94bb5e");
+    if (outputDiv.id !== "altair-viz-6d1a8fbbf29145c0b69ec2ac4aee73d0") {
+      outputDiv = document.getElementById("altair-viz-6d1a8fbbf29145c0b69ec2ac4aee73d0");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -678,8 +678,8 @@ b = 1.06 \times s \times n^{-1/5}
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># compute the gaussian KDE using statsmodels</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>kde <span class="op">=</span> sm.nonparametric.KDEUnivariate(sust.Env_Domain)</span>
 <span id="cb4-3"><a href="#cb4-3"></a>kde.fit(bw <span class="op">=</span> bw_scott)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="86">
-<pre><code>&lt;statsmodels.nonparametric.kde.KDEUnivariate at 0x20e80079750&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<pre><code>&lt;statsmodels.nonparametric.kde.KDEUnivariate at 0x213d79a8310&gt;</code></pre>
 </div>
 </div>
 <div class="fragment">
@@ -693,7 +693,7 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb6-4"><a href="#cb6-4"></a>    })</span>
 <span id="cb6-5"><a href="#cb6-5"></a>kde_df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="87">
+<div class="cell-output cell-output-display" data-execution_count="60">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -767,16 +767,16 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb7-18"><a href="#cb7-18"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb7-19"><a href="#cb7-19"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="88">
+<div class="cell-output cell-output-display" data-execution_count="61">
 
 
-<div id="altair-viz-3aabd910fad0421d986e8a5c21a36190"></div>
+<div id="altair-viz-a84eed0253ae4f05bdede439c3af7fd1"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-3aabd910fad0421d986e8a5c21a36190") {
-      outputDiv = document.getElementById("altair-viz-3aabd910fad0421d986e8a5c21a36190");
+    if (outputDiv.id !== "altair-viz-a84eed0253ae4f05bdede439c3af7fd1") {
+      outputDiv = document.getElementById("altair-viz-a84eed0253ae4f05bdede439c3af7fd1");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -861,16 +861,16 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb8-8"><a href="#cb8-8"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb8-9"><a href="#cb8-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="89">
+<div class="cell-output cell-output-display" data-execution_count="62">
 
 
-<div id="altair-viz-19eaced795d94aa5bf20333ec796acaa"></div>
+<div id="altair-viz-a86bb599147b42fa9eb20cb36d3ceaff"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-19eaced795d94aa5bf20333ec796acaa") {
-      outputDiv = document.getElementById("altair-viz-19eaced795d94aa5bf20333ec796acaa");
+    if (outputDiv.id !== "altair-viz-a86bb599147b42fa9eb20cb36d3ceaff") {
+      outputDiv = document.getElementById("altair-viz-a86bb599147b42fa9eb20cb36d3ceaff");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -941,16 +941,16 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb9-12"><a href="#cb9-12"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb9-13"><a href="#cb9-13"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="90">
+<div class="cell-output cell-output-display" data-execution_count="63">
 
 
-<div id="altair-viz-69b0858cbe524b1a8f1f18a4496b61fa"></div>
+<div id="altair-viz-ff55107738664f55aad9a2549b2f9bde"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-69b0858cbe524b1a8f1f18a4496b61fa") {
-      outputDiv = document.getElementById("altair-viz-69b0858cbe524b1a8f1f18a4496b61fa");
+    if (outputDiv.id !== "altair-viz-ff55107738664f55aad9a2549b2f9bde") {
+      outputDiv = document.getElementById("altair-viz-ff55107738664f55aad9a2549b2f9bde");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1021,16 +1021,16 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb10-12"><a href="#cb10-12"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb10-13"><a href="#cb10-13"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="91">
+<div class="cell-output cell-output-display" data-execution_count="64">
 
 
-<div id="altair-viz-982cca5119d64d68a780e79cfa9b94e0"></div>
+<div id="altair-viz-3b32982b0c04484b9be3a6bac1e04ec7"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-982cca5119d64d68a780e79cfa9b94e0") {
-      outputDiv = document.getElementById("altair-viz-982cca5119d64d68a780e79cfa9b94e0");
+    if (outputDiv.id !== "altair-viz-3b32982b0c04484b9be3a6bac1e04ec7") {
+      outputDiv = document.getElementById("altair-viz-3b32982b0c04484b9be3a6bac1e04ec7");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1091,7 +1091,7 @@ b = 1.06 \times s \times n^{-1/5}
 <span id="cb11-4"><a href="#cb11-4"></a><span class="co"># compute KDE</span></span>
 <span id="cb11-5"><a href="#cb11-5"></a>kde <span class="op">=</span> sm.nonparametric.KDEMultivariate(data <span class="op">=</span> fit_ary, var_type <span class="op">=</span> <span class="st">'cc'</span>)</span>
 <span id="cb11-6"><a href="#cb11-6"></a>kde</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="92">
+<div class="cell-output cell-output-display" data-execution_count="65">
 <pre><code>KDE instance
 Number of variables: k_vars = 2
 Number of samples:   nobs = 933
@@ -1135,15 +1135,15 @@ BW selection method: normal_reference</code></pre>
 <span id="cb13-20"><a href="#cb13-20"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb13-21"><a href="#cb13-21"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="93">
+<div class="cell-output cell-output-display" data-execution_count="66">
 
-<div id="altair-viz-3ad23f7779c44c77b2bcec8c808f3803"></div>
+<div id="altair-viz-6baf972468b341c28400795c2a6f616b"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-3ad23f7779c44c77b2bcec8c808f3803") {
-      outputDiv = document.getElementById("altair-viz-3ad23f7779c44c77b2bcec8c808f3803");
+    if (outputDiv.id !== "altair-viz-6baf972468b341c28400795c2a6f616b") {
+      outputDiv = document.getElementById("altair-viz-6baf972468b341c28400795c2a6f616b");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1223,7 +1223,7 @@ BW selection method: normal_reference</code></pre>
 <span id="cb14-20"><a href="#cb14-20"></a><span class="co"># preview, for understanding</span></span>
 <span id="cb14-21"><a href="#cb14-21"></a>grid_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="94">
+<div class="cell-output cell-output-display" data-execution_count="67">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1320,16 +1320,16 @@ BW selection method: normal_reference</code></pre>
 <span id="cb15-27"><a href="#cb15-27"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb15-28"><a href="#cb15-28"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="95">
+<div class="cell-output cell-output-display" data-execution_count="68">
 
 
-<div id="altair-viz-df749dfa429641f7bbab350910d4c690"></div>
+<div id="altair-viz-a355363fac214bae8aef1572bf48a48f"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-df749dfa429641f7bbab350910d4c690") {
-      outputDiv = document.getElementById("altair-viz-df749dfa429641f7bbab350910d4c690");
+    if (outputDiv.id !== "altair-viz-a355363fac214bae8aef1572bf48a48f") {
+      outputDiv = document.getElementById("altair-viz-a355363fac214bae8aef1572bf48a48f");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1416,7 +1416,7 @@ f(x) = a_1 \varphi(x; \mu_1, \sigma_1) + \cdots + a_n \varphi(x; \mu_n, \sigma_n
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>centers <span class="op">=</span> pd.DataFrame(gmm.means_).rename(columns <span class="op">=</span> {<span class="dv">0</span>: <span class="st">'env'</span>, <span class="dv">1</span>: <span class="st">'econ'</span>})</span>
 <span id="cb17-2"><a href="#cb17-2"></a>centers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="97">
+<div class="cell-output cell-output-display" data-execution_count="70">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1501,16 +1501,16 @@ f(x) = a_1 \varphi(x; \mu_1, \sigma_1) + \cdots + a_n \varphi(x; \mu_n, \sigma_n
 <span id="cb20-23"><a href="#cb20-23"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb20-24"><a href="#cb20-24"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="99">
+<div class="cell-output cell-output-display" data-execution_count="72">
 
 
-<div id="altair-viz-e46a45f7bc404ef9bc48d2b13cf05277"></div>
+<div id="altair-viz-81fcfbeb2cce4980bdcdb37f41bc046f"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e46a45f7bc404ef9bc48d2b13cf05277") {
-      outputDiv = document.getElementById("altair-viz-e46a45f7bc404ef9bc48d2b13cf05277");
+    if (outputDiv.id !== "altair-viz-81fcfbeb2cce4980bdcdb37f41bc046f") {
+      outputDiv = document.getElementById("altair-viz-81fcfbeb2cce4980bdcdb37f41bc046f");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1604,7 +1604,7 @@ f(x) = a_1 \varphi(x; \mu_1, \sigma_1) + \cdots + a_n \varphi(x; \mu_n, \sigma_n
 <span id="cb21-16"><a href="#cb21-16"></a></span>
 <span id="cb21-17"><a href="#cb21-17"></a>population_hawks.groupby(<span class="st">'sex'</span>).head(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="100">
+<div class="cell-output cell-output-display" data-execution_count="73">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1654,7 +1654,7 @@ f(x) = a_1 \varphi(x; \mu_1, \sigma_1) + \cdots + a_n \varphi(x; \mu_n, \sigma_n
 <span id="cb22-2"><a href="#cb22-2"></a>samp <span class="op">=</span> population_hawks.sample(n <span class="op">=</span> <span class="dv">500</span>).drop(columns <span class="op">=</span> <span class="st">'sex'</span>)</span>
 <span id="cb22-3"><a href="#cb22-3"></a>samp.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="101">
+<div class="cell-output cell-output-display" data-execution_count="74">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1724,15 +1724,15 @@ f(x) = a_1 \varphi(x; \mu_1, \sigma_1) + \cdots + a_n \varphi(x; \mu_n, \sigma_n
 <span id="cb23-18"><a href="#cb23-18"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb23-19"><a href="#cb23-19"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="102">
+<div class="cell-output cell-output-display" data-execution_count="75">
 
-<div id="altair-viz-86ba28aaad1043a283d9fbf6304e5763"></div>
+<div id="altair-viz-5128c55333364d579fc1fd0a4ffc9a66"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-86ba28aaad1043a283d9fbf6304e5763") {
-      outputDiv = document.getElementById("altair-viz-86ba28aaad1043a283d9fbf6304e5763");
+    if (outputDiv.id !== "altair-viz-5128c55333364d579fc1fd0a4ffc9a66") {
+      outputDiv = document.getElementById("altair-viz-5128c55333364d579fc1fd0a4ffc9a66");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1830,15 +1830,15 @@ population variances by sex:  [8.522606   9.39645762]</code></pre>
 <span id="cb26-14"><a href="#cb26-14"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb26-15"><a href="#cb26-15"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="104">
+<div class="cell-output cell-output-display" data-execution_count="77">
 
-<div id="altair-viz-11b3efc14ffe47deb4d08567f7842975"></div>
+<div id="altair-viz-2421db07133c4a7c8a9226c0bd01b31b"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-11b3efc14ffe47deb4d08567f7842975") {
-      outputDiv = document.getElementById("altair-viz-11b3efc14ffe47deb4d08567f7842975");
+    if (outputDiv.id !== "altair-viz-2421db07133c4a7c8a9226c0bd01b31b") {
+      outputDiv = document.getElementById("altair-viz-2421db07133c4a7c8a9226c0bd01b31b");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1924,15 +1924,15 @@ population variances by sex:  [8.522606   9.39645762]</code></pre>
 <span id="cb27-17"><a href="#cb27-17"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb27-18"><a href="#cb27-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="105">
+<div class="cell-output cell-output-display" data-execution_count="78">
 
-<div id="altair-viz-a4756e37f47c4fc190cbf86ae9f70123"></div>
+<div id="altair-viz-4b86d73f3ea14f989bc2ddc2c8f28f5f"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-a4756e37f47c4fc190cbf86ae9f70123") {
-      outputDiv = document.getElementById("altair-viz-a4756e37f47c4fc190cbf86ae9f70123");
+    if (outputDiv.id !== "altair-viz-4b86d73f3ea14f989bc2ddc2c8f28f5f") {
+      outputDiv = document.getElementById("altair-viz-4b86d73f3ea14f989bc2ddc2c8f28f5f");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -2035,15 +2035,15 @@ population variances by sex:  [8.522606   9.39645762]</code></pre>
 <span id="cb28-29"><a href="#cb28-29"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb28-30"><a href="#cb28-30"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="106">
+<div class="cell-output cell-output-display" data-execution_count="79">
 
-<div id="altair-viz-78c9cc61ba5d4cb894335eddd650abcf"></div>
+<div id="altair-viz-5c58c247f36b4911bd3fcd8814903c12"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-78c9cc61ba5d4cb894335eddd650abcf") {
-      outputDiv = document.getElementById("altair-viz-78c9cc61ba5d4cb894335eddd650abcf");
+    if (outputDiv.id !== "altair-viz-5c58c247f36b4911bd3fcd8814903c12") {
+      outputDiv = document.getElementById("altair-viz-5c58c247f36b4911bd3fcd8814903c12");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -2132,15 +2132,15 @@ population variances by sex:  [8.522606   9.39645762]</code></pre>
 <span id="cb29-23"><a href="#cb29-23"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb29-24"><a href="#cb29-24"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="107">
+<div class="cell-output cell-output-display" data-execution_count="80">
 
-<div id="altair-viz-0986f3880dc14d3a9c0fa177491ed9ae"></div>
+<div id="altair-viz-9a5168f0755b4b59aefb0c0e9d5f35e6"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-0986f3880dc14d3a9c0fa177491ed9ae") {
-      outputDiv = document.getElementById("altair-viz-0986f3880dc14d3a9c0fa177491ed9ae");
+    if (outputDiv.id !== "altair-viz-9a5168f0755b4b59aefb0c0e9d5f35e6") {
+      outputDiv = document.getElementById("altair-viz-9a5168f0755b4b59aefb0c0e9d5f35e6");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -2202,15 +2202,15 @@ population variances by sex:  [8.522606   9.39645762]</code></pre>
 <span id="cb30-3"><a href="#cb30-3"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb30-4"><a href="#cb30-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="108">
+<div class="cell-output cell-output-display" data-execution_count="81">
 
-<div id="altair-viz-76e9b5a08dc542e98b100da6d5bc7a83"></div>
+<div id="altair-viz-372db3dd83694bd4afb9205f3497726c"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-76e9b5a08dc542e98b100da6d5bc7a83") {
-      outputDiv = document.getElementById("altair-viz-76e9b5a08dc542e98b100da6d5bc7a83");
+    if (outputDiv.id !== "altair-viz-372db3dd83694bd4afb9205f3497726c") {
+      outputDiv = document.getElementById("altair-viz-372db3dd83694bd4afb9205f3497726c");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
