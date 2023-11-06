@@ -93,6 +93,24 @@ format: html
 
 **Wednesday**: Multivariate KDE, mixture models, and scatterplot smoothing [[slides](slides/week5-smoothing.qmd)][[activity html](activities/week5-activity-smoothing.ipynb)]
 
+## Week 6
+
+*Readings*:
+
+- LDS 10.2-10.5 [Exploratory data analysis](https://learningds.org/ch/10/eda_distributions.html) 
+- PDSH5.9 [Principal component andalysis](https://jakevdp.github.io/PythonDataScienceHandbook/05.09-principal-component-analysis.html)
+
+*Assignments*:
+
+
+
+**Monday**: Covariance, correlation, and spectral decomposition [[slides](slides/week6-covariation.qmd)]
+
+**Lab sections**: Principal components [[html](labs/lab5-pca/lab5-pca.ipynb)]
+
+**Wednesday**: Principal components [[slides](slides/week6-pca.qmd)]
+
+
 
 
 

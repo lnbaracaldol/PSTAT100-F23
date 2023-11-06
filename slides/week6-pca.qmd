@@ -1,0 +1,829 @@
+---
+title: "Principal components"
+author: "PSTAT100 Fall 2023"
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+        scrollable: true
+        code-fold: true
+jupyter: python3
+execute:
+    echo: true
+---
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+import numpy as np
+import pandas as pd
+import altair as alt
+from sklearn.decomposition import PCA
+from scipy import linalg
+alt.data_transformers.disable_max_rows()
+
+# data import
+city_sust = pd.read_csv('data/uscity-sustainability-indices.csv')
+
+# extract social and economic indices
+x_mx = city_sust.iloc[:, 2:5]
+
+# center and scale
+n = len(x_mx) # sample size
+z_mx = (x_mx - x_mx.mean())/x_mx.std() # (xi - xbar)/sx
+```
+
+## From last time
+
+Facts:
+
+* correlation is a measure of (linear) dependence
+* correlation matrices -- arrays of pairwise correlations -- are a common summary for multivariate data
+* a *basis* can be thought of as an alternative coordinate system
+* the eigendecomposition of a $p \times p$ correlation matrix yields a basis for $\mathbb{R}^p$ on which the standardized data are uncorrelated
+
+## Principal components
+
+Let $\mathbf{X}$ be an $n \times p$ data matrix and $\mathbf{V}$ be the matrix of eigenvectors of $\text{corr}(\mathbf{X})$. 
+
+. . .
+
+The *principal components* (of $\mathbf{X}$) are the coordinates of each observation on the eigenbasis $\mathbf{V}$:
+
+$$
+\text{principal components of }\mathbf{X} = \mathbf{XV}
+$$
+
+. . .
+
+The name comes from the observation that $\mathbf{V}$ gives the 'main directions' of variability in the data.
+
+## A remark
+
+The eigenbasis from the correlation matrix can also be recovered from the *singular value decomposition* of $\mathbf{Z}$.
+
+. . .
+
+$$
+\mathbf{Z} = \mathbf{UDV'} 
+\quad\Longrightarrow\quad
+\mathbf{Z'Z} = \mathbf{V}\underbrace{(\mathbf{D'U'UD})}_{\mathbf{\Lambda}}\mathbf{V'}
+$$
+
+. . .
+
+Most implementations use SVD, so don't be surprised if you see this more often than eigendecomposition.
+
+## PCA in the low-dimensional setting
+
+Let's consider finding the principal components for $p = 2$ variables. Consider:
+$$
+\mathbf{X} = [\mathbf{x}_1 \; \mathbf{x}_2] \qquad\text{where}\qquad \mathbf{x}_1 = \text{social index} \;\text{and}\; \mathbf{x}_2 = \text{economic index}
+$$
+
+. . .
+
+To get the correlation matrix, first compute $\mathbf{Z} = \left\{\frac{x_i - \bar{x}}{s_x}\right\}$.
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+# scatterplot of unscaled data
+raw = alt.Chart(x_mx).mark_point(opacity = 0.1, color = 'black').encode(
+    x = alt.X('Social_Domain', scale = alt.Scale(domain = [0.1, 0.8])),
+    y = alt.Y('Econ_Domain', scale = alt.Scale(domain = [0.1, 0.8]))
+).properties(width = 200, height = 200, title = 'original data (X)')
+
+# mean vector
+mean = alt.Chart(
+    pd.DataFrame(x_mx.mean()).transpose()
+).mark_circle(color = 'red', size = 100).encode(
+    x = alt.X('Social_Domain'),
+    y = alt.Y('Econ_Domain')
+)
+
+# scatterplot of centered and scaled data
+centered = alt.Chart(z_mx).mark_point(opacity = 0.1, color = 'black').encode(
+    x = alt.X('Social_Domain'),
+    y = alt.Y('Econ_Domain')
+).properties(width = 200, height = 200, title = 'centered and scaled (Z)')
+
+# mean vector
+mean_ctr = alt.Chart(
+    pd.DataFrame(z_mx.mean()).transpose()
+).mark_circle(color = 'red', size = 100).encode(
+    x = alt.X('Social_Domain'),
+    y = alt.Y('Econ_Domain')
+)
+
+# lines at zero
+axbase = alt.Chart(
+    pd.DataFrame({'Social_Domain': 0, 'Econ_Domain': 0}, index = [0])
+)
+ax1 = axbase.mark_rule().encode(x = 'Social_Domain')
+ax2 = axbase.mark_rule().encode(y = 'Econ_Domain')
+
+#layer
+fig1 = (raw + mean) | (centered + mean_ctr + ax1 + ax2)
+
+fig1.configure_axis(
+    domain = False,
+    labelFontSize = 14,
+    titleFontSize = 16
+    ).configure_title(
+        fontSize = 16
+    )
+```
+
+## PCA in the low-dimensional setting
+
+Now we'll compute the eigendecomposition.
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+x_mx = x_mx.iloc[:, 0:2]
+z_mx = z_mx.iloc[:, 0:2]
+
+# compute correlation mx
+r_mx = z_mx.transpose().dot(z_mx)/(len(z_mx) - 1)
+
+# eigendecomposition
+r_eig = linalg.eig(r_mx.values)
+
+# show PC directions
+directions = pd.DataFrame(r_eig[1], columns = ['PC1_Direction', 'PC2_Direction'], index = r_mx.columns)
+directions
+```
+
+. . .
+
+The 'principal component directions' are simply the eigenvectors.
+
+## PCA in the low-dimensional setting
+
+Let's plot the principal component directions on the centered and scaled data.
+
+```{python}
+# store directions as dataframe for plotting
+direction_df = pd.DataFrame(
+    np.vstack([np.zeros(2), r_eig[1][:, 0], np.zeros(2), r_eig[1][:, 1]]),
+    columns = ['Econ_Domain', 'Social_Domain']
+).join(
+    pd.Series(np.repeat(['PC1', 'PC2'], 2), name = 'PC direction')
+)
+
+# plot directions as vectors
+eigenbasis = alt.Chart(direction_df).mark_line(order = False).encode(
+    x = 'Social_Domain', 
+    y = 'Econ_Domain', 
+    color = alt.Color('PC direction', scale = alt.Scale(scheme = 'dark2'))
+)
+
+# combine with scatter
+centered_plot = (centered.properties(width = 300, height = 300) + mean_ctr + ax1 + ax2)
+
+(centered_plot + eigenbasis).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_title(
+    fontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+. . .
+
+Where do these directions point relative to the scatter?
+
+## Geometry of PCA
+
+Now scale the directions by the corresponding eigenvalues (plotting $\lambda_1\mathbf{v}_1$ and $\lambda_2\mathbf{v}_2$ instead of $\mathbf{v}_1$ and $\mathbf{v}_2$).
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+# scale directions by eigenvalues
+direction_df = pd.DataFrame(
+    np.vstack([np.zeros(2), r_eig[1][:, 0]*r_eig[0][0].real, np.zeros(2), r_eig[1][:, 1]*r_eig[0][1].real]),
+    columns = ['Econ_Domain', 'Social_Domain']
+).join(
+    pd.Series(np.repeat(['PC1', 'PC2'], 2), name = 'PC direction')
+)
+
+# repeat plot
+eigenbasis = alt.Chart(direction_df).mark_line(order = False).encode(
+    x = 'Social_Domain', 
+    y = 'Econ_Domain', 
+    color = alt.Color('PC direction', scale = alt.Scale(scheme = 'dark2'))
+)
+
+(centered_plot + eigenbasis).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_title(
+    fontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+. . .
+
+*The principal component directions are the axes along which the data vary most, and the eigenvalues give the magnitude of that variation.*
+
+## Projection
+
+So if we wanted to look at just *one* quantity that captures variability in both dimensions we could:
+
+* project the data onto the first principal component direction
+
+* treat the projected values as a new, derived variable
+
+. . .
+
+::: {.columns}
+
+::: {.column width=50%}
+```{python}
+# project data onto pc directions
+pcdata = z_mx.dot(r_eig[1]).rename(columns = {0: 'PC1', 1: 'PC2'})
+
+# scatterplot
+projection = alt.Chart(pcdata).mark_point(opacity = 0.1, color = 'black').encode(
+    x = alt.X('PC1', title = '', axis = None),
+    y = 'PC2'
+).properties(
+    width = 300, 
+    height = 200,
+    title = 'Projected data'
+)
+
+# layer with univariate tick plot of pc1 values
+pc1 = alt.Chart(pcdata).mark_tick(color = '#1B9E77').encode(x = 'PC1').properties(width = 300)
+
+(projection & pc1).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_title(fontSize = 16)
+```
+:::
+
+::: {.column width=50%}
+Is it a problem to just *drop* PC2?
+:::
+
+:::
+
+## Quantifying variation capture/loss
+
+To figure out how much variation/covariation is captured and lost, we need to know how much is available in the first place. 
+
+. . .
+
+One measure of the total variation in $\mathbf{X}$ is given by the determinant of the correlation matrix $\mathbf{R}$:
+
+$$
+\text{total variation} = \text{det}\left(\mathbf{R}\right) = \sum_{i = 1}^p \lambda_i
+$$
+
+. . .
+
+Now let $\mathbf{y}_j = \mathbf{Zv}_j$ be the $j$th principal component. Its variance is:
+
+$$
+\frac{\mathbf{y}_j'\mathbf{y}}{n - 1} = \frac{\mathbf{v}_j'\mathbf{Z'Zv}_j}{n - 1} = \mathbf{v}_j'\mathbf{V'\Lambda Vv}_j = \mathbf{e}_j'\mathbf{\Lambda e}_j = \lambda_j
+$$
+
+## Quantifying variation capture/loss
+
+So the total variation is the sum of the eigenvalues, and the variance of each PC is the corresponding eigenvalue.
+
+. . .
+
+We can therefore define the **proportion of total variation explained** by the $j$th principal component as:
+
+$$
+\frac{\lambda_j}{\sum_{j = 1}^p \lambda_j}
+$$
+
+. . .
+
+This is sometimes also called the *variance ratio* for the $j$th principal component.
+
+## Quantifying variation capture/loss
+
+So in our example, the variance ratios are:
+
+```{python}
+#| code-fold: false
+# compute correlation mx
+r_mx = z_mx.transpose().dot(z_mx)/(len(z_mx) - 1)
+
+# eigendecomposition
+r_eig = linalg.eig(r_mx.values)
+
+# store eigenvalues as real array
+eigenvalues = r_eig[0].real 
+
+# variance ratios
+eigenvalues/eigenvalues.sum() 
+```
+
+* the first principal component captures 77% of total variation
+* the second captures 23% of total variation
+
+## Interpreting principal components
+
+So we have obtained a single derived variable that captures 3/4 of total variation. 
+
+. . .
+
+But what is the meaning of the derived variable? What does it represent in the context of the data?
+
+. . .
+
+The values of the first principal component (green ticks) are given by:
+$$
+\text{PC1}_i = \mathbf{x}_i'\mathbf{v}_1 = 0.7071 \times\text{economic}_i + 0.7071 \times\text{social}_i
+$$
+
+. . .
+
+So the principal component is a linear combination of the underlying variables. 
+
+* the coefficients $(0.7071, 0.7071)$ are known as **loadings**
+* the values are known as principal component **scores**
+
+. . .
+
+> In this case, the PC1 loadings are equal; so this principal component is simply the average of the social and economic indices.
+
+## Interpreting principal components
+
+The loadings for the second component are:
+
+```{python}
+#| code-fold: false
+r_eig[1][:, 0]
+```
+
+. . .
+
+$$
+\text{PC2}_i = \mathbf{x}_i'\mathbf{v}_1 = 0.7071 \times\text{social}_i - 0.7071 \times\text{economic}_i
+$$
+
+. . .
+
+How would you interpret this quantity?
+
+## Packages for PCA
+
+In `scikit-learn`, one must preprocess the data by centering and scaling:
+
+```{python}
+#| code-fold: false
+#| output: false
+from sklearn.decomposition import PCA
+
+# center and scale data
+z_mx = (x_mx - x_mx.mean())/x_mx.std()
+
+# compute principal components
+pca = PCA(n_components = 2)
+pca.fit(z_mx)
+```
+
+. . .
+
+Check that the results are the same:
+
+```{python}
+#| code-fold: false
+# loadings
+pca.components_
+```
+
+. . .
+
+The variance ratios are stored as an attribute:
+
+```{python}
+#| code-fold: false
+# variance ratios
+pca.explained_variance_ratio_
+```
+
+## Packages for PCA
+
+In `scikit-learn`, to retrieve the *scores* -- the coordinates on the principal axes -- one must 'transform' input data:
+
+```{python}
+#| code-fold: false
+# get scores
+pca.transform(z_mx)
+```
+
+* useful if you want to compute PC's from one dataset and then apply the transformation to a new collection of observations
+* inconvenient if all you want are the scores of the input data
+
+## Packages for PCA
+
+In `statsmodels`, the implementation is a bit more streamlined:
+
+```{python}
+#| code-fold: false
+from statsmodels.multivariate.pca import PCA
+pca = PCA(x_mx, normalize = False, standardize = True)
+pca.loadings
+```
+
+* input here is `x_mx` -- no need to preprocess
+* `standardize = True` will center and scale the **input data** `x_mx`
+* `normalize = True` rescales the **scores** (*not* the input data)
+* see [documentation](https://www.statsmodels.org/dev/generated/statsmodels.multivariate.pca.PCA.html) for additional control arguments
+
+## Packages for PCA
+
+For this implementation the scores of the input data are retained as an attribute `.scores`:
+
+```{python}
+#| code-fold: false
+pca.scores.head(3)
+```
+
+. . .
+
+The variance ratios, however, must be calculated manually:
+
+```{python}
+#| code-fold: false
+pca.eigenvals/pca.eigenvals.sum()
+```
+
+## Reconstruction and approximation
+
+Interestingly, `statsmodels` has a `.project()` method, which will compute a *reconstruction* of the original data from a specified number of PC's.
+
+. . . 
+
+If we use both PC's...
+
+```{python}
+#| code-fold: false
+pca.project(ncomp = 2).head(3)
+```
+
+We get the input data back again:
+
+```{python}
+#| code-fold: false
+x_mx.head(3)
+```
+
+## Reconstruction and approximation
+
+If we use only one PC, we get a low-dimensional approximation:
+
+```{python}
+#| code-fold: false
+pca.project(ncomp = 1).head(3)
+```
+
+. . .
+
+Compare with input data:
+
+```{python}
+#| code-fold: false
+x_mx.head(3)
+```
+
+## Effect of standardization
+
+If the data are *not* standardized, then the covariance matrix is decomposed instead of the correlation matrix.
+
+```{python}
+#| code-fold: false
+# refit without standardization
+pca_unscaled = PCA(x_mx, standardize = False, normalize = False)
+
+# examine
+print('variance ratios: ', pca_unscaled.eigenvals.values/pca_unscaled.eigenvals.sum())
+pca_unscaled.loadings
+```
+
+* The economic index gets upweighted significantly
+* The first component captures more variance
+
+## Effect of standardization
+
+When the data are *not* standardized, the method is susceptible to problems of scale. 
+
+In our example, the economic index became more 'important', but this is only because it has a larger variance:
+
+```{python}
+#| code-fold: false
+x_mx.cov()
+```
+
+. . .
+
+So if the *covariance* (not correlation) matrix is decomposed, economic sustainability accounts for more of the total variation measure, because it dominates the variance-covariance matrix, but only because of scale.
+
+## Effect of standardization
+
+Visually, here is the difference.
+
+```{python}
+direction_df = pd.DataFrame(
+    np.vstack([np.zeros(2), r_eig[1][:, 0]*r_eig[0][0].real, np.zeros(2), r_eig[1][:, 1]*r_eig[0][1].real]),
+    columns = ['Econ_Domain', 'Social_Domain']
+).join(
+    pd.Series(np.repeat(['PC1', 'PC2'], 2), name = 'PC direction')
+)
+
+# repeat plot
+eigenbasis = alt.Chart(direction_df).mark_line(order = False).encode(
+    x = 'Social_Domain', 
+    y = 'Econ_Domain', 
+    color = alt.Color('PC direction', scale = alt.Scale(scheme = 'dark2'))
+)
+
+c_eig = linalg.eig(x_mx.cov())
+c_eigenval_std = c_eig[0].real/c_eig[0].real.sum()
+
+direction_df_cov = pd.DataFrame(
+    30*np.vstack([np.zeros(2), c_eig[1][:, 0]*c_eig[0][0].real, np.zeros(2), c_eig[1][:, 1]*c_eig[0][1].real]) + x_mx.mean().values,
+    columns = ['Econ_Domain', 'Social_Domain']
+).join(
+    pd.Series(np.repeat(['PC1', 'PC2'], 2), name = 'PC direction')
+)
+
+eigenbasis_cov = alt.Chart(direction_df_cov).mark_line(order = False).encode(
+    x = 'Social_Domain', 
+    y = 'Econ_Domain', 
+    color = alt.Color('PC direction', scale = alt.Scale(scheme = 'dark2'))
+)
+
+(raw + eigenbasis_cov | centered + eigenbasis).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_title(
+    fontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+
+```
+
+* Principal axes are sensitive to scale
+* If not standardized, the principal components will upweight variables with larger variances
+
+## Terminology
+
+A quick review of PCA terminology:
+
+* the **principal components** are the eigenbasis vectors; the principal axes or directions
+
+* the **loadings** are the eigenvectors; these correspond to the principal axes or principal directions
+
+* the **scores** are the data values projected onto the principal axes
+    + some refer to scores as principal components instead
+
+* the **variance ratios** are the proportions of total variance explained by each component/direction
+
+## PCA in higher dimensions
+
+PCA is rarely used for bivariate data; it is a multivariate technique.
+
+. . .
+
+The technique is this:
+
+* compute all principal components
+* examine the variance ratios
+* select a subset of components that collectively explain 'enough' variance
+
+## PCA in higher dimensions
+
+Now that we've reviewed the basic technique, we can consider cases with a larger number of variables. 
+
+This is really where PCA is most useful.
+
+* It can help answer the question: which variables are driving variation in the data?
+
+* It can help reduce data dimensions by finding combinations of variables that preserve variation.
+
+* It can provide a means of visualizing high-dimensional data.
+
+## Example application
+
+So, let's look at a different example: world development indicators.
+
+```{python}
+#| tags: []
+wdi = pd.read_csv('data/wdi-data.csv').iloc[:, 2:].set_index('country')
+wdi.head(3)
+```
+
+## Computation via sklearn
+
+Recall that this implementation requires centering and scaling the data first 'by hand'.
+
+```{python}
+#| code-fold: false
+#| output: false
+from sklearn.decomposition import PCA
+
+# center and scale
+wdi_ctr = (wdi - wdi.mean())/wdi.std()
+
+# compute principal components
+pca = PCA(31)
+pca.fit(wdi_ctr)
+```
+
+## Variance ratios
+
+Selecting the number of principal components to use is somewhat subjective, but always based on the variance ratios and their cumulative sum:
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+# store proportion of variance explained as a dataframe
+pcvars = pd.DataFrame({'Proportion of variance explained': pca.explained_variance_ratio_})
+
+# add component number as a new column
+pcvars['Component'] = np.arange(1, 32)
+
+# add cumulative variance explained as a new column
+pcvars['Cumulative variance explained'] = pcvars.iloc[:, 0].cumsum(axis = 0)
+
+# encode component axis only as base layer
+base = alt.Chart(pcvars).encode(
+    x = 'Component')
+
+# make a base layer for the proportion of variance explained
+prop_var_base = base.encode(
+    y = alt.Y('Proportion of variance explained',
+              axis = alt.Axis(titleColor = '#57A44C'))
+)
+
+# make a base layer for the cumulative variance explained
+cum_var_base = base.encode(
+    y = alt.Y('Cumulative variance explained', axis = alt.Axis(titleColor = '#5276A7'))
+)
+
+# add points and lines to each base layer
+line = alt.Chart(pd.DataFrame({'Component': [2.5]})).mark_rule(opacity = 0.3, color = 'red').encode(x = 'Component')
+prop_var = prop_var_base.mark_line(stroke = '#57A44C') + prop_var_base.mark_point(color = '#57A44C') + line
+cum_var = cum_var_base.mark_line() + cum_var_base.mark_point() + line
+
+# layer the layers
+variance_plot = alt.layer(prop_var, cum_var).resolve_scale(y = 'independent') 
+
+variance_plot.properties(height = 200, width = 400).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+. . .
+
+In this case, the variance ratios drop off after 2 components. These first two capture about half of total variation in the data.
+
+## Loading plots
+
+Examining the loadings graphically can help to interpret the components.
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+# store the loadings as a data frame with appropriate names
+loading_df = pd.DataFrame(pca.components_).transpose().rename(
+    columns = {0: 'PC1', 1: 'PC2'}
+).loc[:, ['PC1', 'PC2']]
+
+# add a column with the taxon names
+loading_df['indicator'] = wdi_ctr.columns.values
+
+# melt from wide to long
+loading_plot_df = loading_df.melt(
+    id_vars = 'indicator',
+    var_name = 'PC',
+    value_name = 'Loading'
+)
+
+# create base layer with encoding
+base = alt.Chart(loading_plot_df).encode(
+    y = alt.X('indicator', title = ''),
+    x = 'Loading',
+    color = 'PC'
+)
+
+# store horizontal line at zero
+rule = alt.Chart(pd.DataFrame({'Loading': 0}, index = [0])).mark_rule().encode(x = 'Loading', size = alt.value(2))
+
+# layer points + lines + rule to construct loading plot
+loading_plot = base.mark_point() + base.mark_line() + rule
+
+loading_plot.properties(width = 300, height = 400).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Visualization
+
+Finally, we might want to use the first two principal components to visualize the data.
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+# project pcdata onto first two components; store as data frame
+projected_data = pd.DataFrame(pca.fit_transform(wdi_ctr)).iloc[:, 0:2].rename(columns = {0: 'PC1', 1: 'PC2'})
+
+# add index and reset
+projected_data.index = wdi_ctr.index
+projected_data = projected_data.reset_index()
+
+# append one of the original variables
+projected_data['gdppc'] = wdi.gdp_percapita.values
+projected_data['pop'] = wdi.total_pop.values
+
+# base chart
+base = alt.Chart(projected_data)
+
+# data scatter
+scatter = base.mark_point().encode(
+    x = alt.X('PC1:Q', title = 'Mortality'),
+    y = alt.Y('PC2:Q', title = 'Labor'),
+    color = alt.Color('gdppc', 
+                      bin = alt.Bin(maxbins = 6), 
+                      scale = alt.Scale(scheme = 'blues'), 
+                      title = 'GDP per capita'),
+    size = alt.Size('pop',
+                   scale = alt.Scale(type = 'sqrt'),
+                   title = 'Population')
+).properties(width = 400, height = 400)
+
+# text labels
+label = projected_data.sort_values(by = 'gdppc', ascending = False).head(4)
+
+text = alt.Chart(label).mark_text(align = 'left', dx = 3).encode(
+     x = alt.X('PC1:Q', title = 'Mortality'),
+    y = alt.Y('PC2:Q', title = 'Labor'),
+    text = 'country'
+)
+
+(scatter + text).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+* Often it's helpful to merge the principal components with the original data and apply visualization techniques you already know to search for interesting patterns.
+
+## Perspectives on PCA
+
+Now that you know that a *subcollection* of principal components is usually selected, you have a sense that PCA involves projecting multivariate data onto a subspace.
+
+. . .
+
+There are two main perspectives on the meaning of this:
+
+1. Low-rank approximation of the correlation structure
+    + This is the perspective we've taken in this class
+2. Latent regression or optimization problem
+    + Find the axes that maximize variance of projected data
+
+## Other applications of PCA
+
+PCA can also be used as a filtering technique for image data.
+
+. . .
+
+![Noisy handwritten digits](figures/digits-noisy.png)
+
+. . .
+
+![Reconstruction from 12 PC's computed from the pixel values.](figures/digits-filtered.png)
+
+## Other applications of PCA
+
+In a similar vein, it can be used as a compression technique.
+
+. . .
+
+![](figures/eigenfaces.png)
+
+* Full-size images are roughly 3K pixels
+* Projecting pixel values onto 150 PC's and then reconstructing the data from this subset yields a heavily compressed image
