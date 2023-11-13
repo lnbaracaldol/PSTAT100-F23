@@ -2412,7 +2412,7 @@
     "href": "content.html#week-7",
     "title": "Materials",
     "section": "Week 7",
-    "text": "Week 7\nReadings:\n\nLDS 15.1-15.3 Simple linear models\n\nAssignments:\n\nMini project 2, due Tuesday, May 30 [html]\n\nMonday: Modeling concepts; least squares [slides]\nLab sections: Principal components [html]\nWednesday: The simple linear regression model [slides]"
+    "text": "Week 7\nReadings:\n\nLDS 15.1-15.3 Simple linear models\n\nAssignments:\n\nMini project 2, due Tuesday, Nov 22 at 11:59 PM [html]\n\nMonday: Modeling concepts; least squares [slides]\nLab sections Fitting regression models [html]\nWednesday: The simple linear regression model [slides]"
   },
   {
     "objectID": "content.html#week-8",
@@ -4974,7 +4974,7 @@
     "href": "slides/week7-lse.html#calculating-the-least-squares-line",
     "title": "Modeling concepts; least squares",
     "section": "Calculating the least squares line",
-    "text": "Calculating the least squares line\nThe solution \\(\\mathbf{a} = (\\mathbf{X'X})^{-1}\\mathbf{X'y}\\) is known as the ordinarly least squares (OLS) estimate.\nThe sklearn implementation looks like this:\n\n# save explanatory variable and response variable separately as arrays\nx = regdata.log_income.values[:, np.newaxis]\ny = regdata.gap.values\n\n# configure regression module and fit model\nslr = LinearRegression()\nslr.fit(x, y)\n\n# store estimates\nprint('slope: ', slr.coef_[0])\nprint('intercept: ', slr.intercept_)\n\nslope:  0.12105696076155249\nintercept:  -1.3561699570330037"
+    "text": "Calculating the least squares line\nThe solution \\(\\mathbf{a} = (\\mathbf{X'X})^{-1}\\mathbf{X'y}\\) is known as the ordinarly least squares (OLS) estimate.\nThe sklearn implementation looks like this:\n\n# save explanatory variable and response variable separately as arrays\nx = regdata.log_income.values[:, np.newaxis]\ny = regdata.gap.values\n\n# configure regression module and fit model\nslr = LinearRegression()\nslr.fit(x, y)\n\n# store estimates\nprint('slope: ', slr.coef_[0])\nprint('intercept: ', slr.intercept_)\n\nslope:  0.12105696076155241\nintercept:  -1.3561699570330028"
   },
   {
     "objectID": "slides/week7-lse.html#calculating-the-least-squares-line-1",
@@ -5107,7 +5107,7 @@
     "href": "slides/week7-slr.html#computations",
     "title": "Simple linear regression",
     "section": "Computations",
-    "text": "Computations\n\n# retrieve data\nx = sm.tools.add_constant(regdata.log_income.values)\ny = regdata.gap.values\n\n# fit regression model\nslr = sm.OLS(endog = y, exog = x)\n\n# estimates\nbeta_hat = slr.fit().params\n\n# fitted values\nfitted = slr.fit().fittedvalues\n\n# residuals\nresids = slr.fit().resid\n\n# error variance estimate\nsigmasq_hat = slr.fit().scale\n\nprint('coefficient estimates: ', beta_hat)\nprint('error variance estimate: ', sigmasq_hat)\n\ncoefficient estimates:  [-1.35616996  0.12105696]\nerror variance estimate:  0.01317117061613733"
+    "text": "Computations\n\n# retrieve data\nx = sm.tools.add_constant(regdata.log_income.values)\ny = regdata.gap.values\n\n# fit regression model\nslr = sm.OLS(endog = y, exog = x)\n\n# estimates\nbeta_hat = slr.fit().params\n\n# fitted values\nfitted = slr.fit().fittedvalues\n\n# residuals\nresids = slr.fit().resid\n\n# error variance estimate\nsigmasq_hat = slr.fit().scale\n\nprint('coefficient estimates: ', beta_hat)\nprint('error variance estimate: ', sigmasq_hat)\n\ncoefficient estimates:  [-1.35616996  0.12105696]\nerror variance estimate:  0.013171170616137325"
   },
   {
     "objectID": "slides/week7-slr.html#parameter-interpretations-intercept",
@@ -5149,7 +5149,7 @@
     "href": "slides/week7-slr.html#parameter-interpretations-error-variance-1",
     "title": "Simple linear regression",
     "section": "Parameter interpretations: error variance",
-    "text": "Parameter interpretations: error variance\nCompare the estimated ‘raw’ variance in gender gap with the estimated residual variance after accounting for log median income:\n\n\nCode\nprint('raw variance: ', y.var(ddof = 1))\nprint('estimated residual variance: ', sigmasq_hat)\n\n\nraw variance:  0.015355417268162816\nestimated residual variance:  0.01317117061613733\n\n\n\nThe estimated variability in achievement gap diminishes a little after adjusting for log median income. The relative reduction is:\n\\[\n\\frac{\\hat{\\sigma}^2_\\text{raw} - \\hat{\\sigma}^2}{\\hat{\\sigma}^2_\\text{raw}}\n\\]\n\n\nIn the SEDA example, the reduction was about 14%:\n\n\nCode\nprint('relative reduction in variance: ',\n    (y.var(ddof = 1) - sigmasq_hat)/y.var(ddof = 1)\n)\n\n\nrelative reduction in variance:  0.1422459978703541"
+    "text": "Parameter interpretations: error variance\nCompare the estimated ‘raw’ variance in gender gap with the estimated residual variance after accounting for log median income:\n\n\nCode\nprint('raw variance: ', y.var(ddof = 1))\nprint('estimated residual variance: ', sigmasq_hat)\n\n\nraw variance:  0.015355417268162816\nestimated residual variance:  0.013171170616137325\n\n\n\nThe estimated variability in achievement gap diminishes a little after adjusting for log median income. The relative reduction is:\n\\[\n\\frac{\\hat{\\sigma}^2_\\text{raw} - \\hat{\\sigma}^2}{\\hat{\\sigma}^2_\\text{raw}}\n\\]\n\n\nIn the SEDA example, the reduction was about 14%:\n\n\nCode\nprint('relative reduction in variance: ',\n    (y.var(ddof = 1) - sigmasq_hat)/y.var(ddof = 1)\n)\n\n\nrelative reduction in variance:  0.14224599787035444"
   },
   {
     "objectID": "slides/week7-slr.html#parameter-interpretations-variance",
@@ -5170,7 +5170,7 @@
     "href": "slides/week7-slr.html#centering-the-explanatory-variable",
     "title": "Simple linear regression",
     "section": "Centering the explanatory variable",
-    "text": "Centering the explanatory variable\nIf we want the intercept to be meaningful, we could center the explanatory variable and instead fit:\n\\[\ny_i = \\beta_0 + \\beta_1 (x_i - \\bar{x}) + \\epsilon_i\n\\]\n\n\nCode\n# center log median income\nlog_income_ctr = (regdata.log_income - regdata.log_income.mean()).values\n\n# form x matrix\nx_ctr = sm.tools.add_constant(log_income_ctr)\n\n# refit model\nslr_ctr = sm.OLS(endog = y, exog = x_ctr)\nbeta_hat_ctr = slr_ctr.fit().params\n\n# display parameter estimates\nprint('coefficient estimates: ', beta_hat_ctr)\nprint('error variance estimate: ', slr_ctr.fit().scale)\n\n\ncoefficient estimates:  [-0.02105724  0.12105696]\nerror variance estimate:  0.01317117061613733\n\n\n\n\nFor a district with average log median income, the estimated achievement gap favors boys by 0.021 standard deviations from the national average.\n\n\nnote that this is just a location shift so other estimates are unchanged\ncan recover the original intercept estimate as \\(\\hat{\\beta}_0 - \\hat{\\beta}_1 \\bar{x}\\)\n\n\n\n\nbeta_hat_ctr[0] - beta_hat_ctr[1]*regdata.log_income.mean()\n\n-1.3561699570330035"
+    "text": "Centering the explanatory variable\nIf we want the intercept to be meaningful, we could center the explanatory variable and instead fit:\n\\[\ny_i = \\beta_0 + \\beta_1 (x_i - \\bar{x}) + \\epsilon_i\n\\]\n\n\nCode\n# center log median income\nlog_income_ctr = (regdata.log_income - regdata.log_income.mean()).values\n\n# form x matrix\nx_ctr = sm.tools.add_constant(log_income_ctr)\n\n# refit model\nslr_ctr = sm.OLS(endog = y, exog = x_ctr)\nbeta_hat_ctr = slr_ctr.fit().params\n\n# display parameter estimates\nprint('coefficient estimates: ', beta_hat_ctr)\nprint('error variance estimate: ', slr_ctr.fit().scale)\n\n\ncoefficient estimates:  [-0.02105724  0.12105696]\nerror variance estimate:  0.013171170616137325\n\n\n\n\nFor a district with average log median income, the estimated achievement gap favors boys by 0.021 standard deviations from the national average.\n\n\nnote that this is just a location shift so other estimates are unchanged\ncan recover the original intercept estimate as \\(\\hat{\\beta}_0 - \\hat{\\beta}_1 \\bar{x}\\)\n\n\n\n\nbeta_hat_ctr[0] - beta_hat_ctr[1]*regdata.log_income.mean()\n\n-1.356169957033003"
   },
   {
     "objectID": "slides/week7-slr.html#other-transformations",
@@ -5184,7 +5184,7 @@
     "href": "slides/week7-slr.html#other-transformations-1",
     "title": "Simple linear regression",
     "section": "Other transformations",
-    "text": "Other transformations\nUnsurprisingly, estimates are not invariant under arbitrary transformations, so if the meanings of the other parameters change, then so do the estimates:\n\n# center log median income\nincome = np.exp(regdata.log_income) \nincome_shifted = income - income.min()\nlog_income_shifted = np.log(income_shifted + 1)\n\n# form x matrix\nx_shifted = sm.tools.add_constant(log_income_shifted)\n\n# refit model\nslr_shifted = sm.OLS(endog = y, exog = x_shifted)\nbeta_hat_shifted = slr_shifted.fit().params\n\n# display parameter estimates\nprint('coefficient estimates: ', beta_hat_shifted)\nprint('error variance estimate: ', slr_shifted.fit().scale)\n\ncoefficient estimates:  const        -0.544166\nlog_income    0.049851\ndtype: float64\nerror variance estimate:  0.01390497936420638\n\n\n\nNote also it’s not possible to express the old parameters as functions of the new parameters; this is a fundamentally different model."
+    "text": "Other transformations\nUnsurprisingly, estimates are not invariant under arbitrary transformations, so if the meanings of the other parameters change, then so do the estimates:\n\n# center log median income\nincome = np.exp(regdata.log_income) \nincome_shifted = income - income.min()\nlog_income_shifted = np.log(income_shifted + 1)\n\n# form x matrix\nx_shifted = sm.tools.add_constant(log_income_shifted)\n\n# refit model\nslr_shifted = sm.OLS(endog = y, exog = x_shifted)\nbeta_hat_shifted = slr_shifted.fit().params\n\n# display parameter estimates\nprint('coefficient estimates: ', beta_hat_shifted)\nprint('error variance estimate: ', slr_shifted.fit().scale)\n\ncoefficient estimates:  const        -0.544166\nlog_income    0.049851\ndtype: float64\nerror variance estimate:  0.013904979364206382\n\n\n\nNote also it’s not possible to express the old parameters as functions of the new parameters; this is a fundamentally different model."
   },
   {
     "objectID": "slides/week7-slr.html#uncertainty-quantification",

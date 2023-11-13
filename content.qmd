@@ -110,6 +110,22 @@ format: html
 
 **Wednesday**: Principal components [[slides](slides/week6-pca.qmd)]
 
+## Week 7
+
+*Readings*:
+
+- LDS 15.1-15.3 [Simple linear models](https://learningds.org/ch/15/linear_intro.html)
+
+*Assignments*:
+
+- Mini project 2, due Tuesday, Nov 22 at 11:59 PM [[html](projects/mp2/mp2-ncca.ipynb)]
+
+**Monday**: Modeling concepts; least squares [[slides](slides/week7-lse.qmd)]
+
+**Lab sections** Fitting regression models [[html](labs/lab6-regression/lab6-regression.ipynb)]
+
+**Wednesday**: The simple linear regression model [[slides](slides/week7-slr.qmd)]
+
 
 
 

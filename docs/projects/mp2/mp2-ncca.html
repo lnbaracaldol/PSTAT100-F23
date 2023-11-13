@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2023-11-12">
 
-<title>PSTAT100 - Data Science Concepts and Analysis</title>
+<title>PSTAT100 - Mini project 2: primary productivity in coastal waters</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,25 +20,59 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,7 +104,7 @@ gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
 </script>
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -81,7 +114,7 @@ gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">PSTAT100</span>
     </a>
   </div>
@@ -92,11 +125,11 @@ gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html" rel="" target="">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">Course syllabus</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./content.html" rel="" target="">
+    <a class="nav-link" href="../../content.html" rel="" target="">
  <span class="menu-text">Materials</span></a>
   </li>  
 </ul>
@@ -111,14 +144,22 @@ gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-1-data-description" id="toc-part-1-data-description" class="nav-link active" data-scroll-target="#part-1-data-description">Part 1: data description</a></li>
+  <li><a href="#part-2-exploratory-analysis" id="toc-part-2-exploratory-analysis" class="nav-link" data-scroll-target="#part-2-exploratory-analysis">Part 2: exploratory analysis</a></li>
+  <li><a href="#code-appendix" id="toc-code-appendix" class="nav-link" data-scroll-target="#code-appendix">Code appendix</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Science Concepts and Analysis</h1>
+<h1 class="title">Mini project 2: primary productivity in coastal waters</h1>
 </div>
 
 
@@ -126,12 +167,6 @@ gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 12, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -139,9 +174,56 @@ gtag('config', 'G-H3YKZX4J88', { 'anonymize_ip': true});
 
 </header>
 
-<p>This is the course website for UCSB’s Data Science Concepts and Analysis class (PSTAT100). Content is directed towards currently enrolled students. Please ask permission before using course materials in any other capacity. Please do not post any materials obtained or derived from this website on third-party websites.</p>
+<p>In this project you’re again given a dataset and some questions. The data for this project come from the <a href="https://www.epa.gov/national-aquatic-resource-surveys/data-national-aquatic-resource-surveys">EPA’s National Aquatic Resource Surveys</a>, and in particular the National Coastal Condition Assessment (NCCA); broadly, you’ll do an exploratory analysis of primary productivity in coastal waters.</p>
+<p>By way of background, chlorophyll A is often used as a proxy for <a href="https://en.wikipedia.org/wiki/Marine_primary_production">primary productivity in marine ecosystems</a>; primary producers are important because they are at the base of the food web. Nitrogen and phosphorus are key nutrients that stimulate primary production.</p>
+<p>In the data folder you’ll find water chemistry data, site information, and metadata files. It might be helpful to keep the metadata files open when tidying up the data for analysis. It might also be helpful to keep in mind that these datasets contain a considerable amount of information, not all of which is relevant to answering the questions of interest. Notice that the questions pertain somewhat narrowly to just a few variables. It’s recommended that you determine which variables might be useful and drop the rest.</p>
+<p>As in the first mini project, there are accurate answers to each question that are mutually consistent with the data, but there aren’t uniquely correct answers. You will likely notice that you have even more latitude in this project than in the first, as the questions are slightly broader. Since we’ve been emphasizing visual and exploratory techniques in class, you are encouraged (but not required) to support your answers with graphics.</p>
+<p>The broader goal of these mini projects is to cultivate your problem-solving ability in an unstructured setting. Your work will be evaluated based on the following: - approach used to answer questions; - clarity of presentation; - code style and documentation.</p>
+<p>Please write up your results separately from your codes; codes should be included at the end of the notebook.</p>
+<section id="part-1-data-description" class="level2">
+<h2 class="anchored" data-anchor-id="part-1-data-description">Part 1: data description</h2>
+<p>Merge the site information with the chemistry data and tidy it up. Determine which columns to keep based on what you use in answering the questions in part 2; then, print the first few rows here (but <em>do not include your codes used in tidying the data</em>) and write a brief description (1-2 paragraphs) of the dataset conveying what you take to be the key attributes. You do not need to describe preprocessing steps. Direct your description to a reader unfamiliar with the data; ensure that in your data preview the columns are named intelligibly.</p>
+<p><em>Suggestion</em>: export your cleaned data as a separate <code>.csv</code> file and read that directly in below, as in: <code>pd.read_csv('YOUR DATA FILE').head()</code>.</p>
+<div class="cell" data-execution_count="92">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show a few rows of clean data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Write your description here.</em></p>
+</section>
+<section id="part-2-exploratory-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="part-2-exploratory-analysis">Part 2: exploratory analysis</h2>
+<p>Answer each question below and provide a graphic or other quantitative evidence supporting your answer. A description and interpretation of the graphic/evidence should be offered.</p>
+<ul>
+<li><ol type="i">
+<li>What is the apparent relationship between nutrient availability and productivity? <em>Comment</em>: it’s fine to examine each nutrient – nitrogen and phosphorus – separately, but do consider whether they might be related to each other.</li>
+</ol></li>
+<li><ol start="2" type="i">
+<li>Are there any notable differences in available nutrients among U.S. coastal regions?</li>
+</ol></li>
+<li><ol start="3" type="i">
+<li>Based on the 2010 data, does productivity seem to vary geographically in some way? If so, explain how; If not, explain what options you considered and why you ruled them out.</li>
+</ol></li>
+<li><ol start="4" type="i">
+<li>How does primary productivity in California coastal waters change seasonally in 2010, if at all? Does your result make intuitive sense?</li>
+</ol></li>
+<li><ol start="22" type="a">
+<li>Pose and answer one additional question.</li>
+</ol></li>
+</ul>
+<p><em>Write up your answers here.</em></p>
+</section>
+<section id="code-appendix" class="level1">
+<h1>Code appendix</h1>
+<div class="cell" data-execution_count="91">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ncca_raw <span class="op">=</span> pd.read_csv(<span class="st">'data/assessed_ncca2010_waterchem.csv'</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ncca_sites <span class="op">=</span> pd.read_csv(<span class="st">'data/assessed_ncca2010_siteinfo.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
