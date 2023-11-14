@@ -5023,7 +5023,7 @@
     "href": "slides/week7-slr.html#from-last-time-1",
     "title": "Simple linear regression",
     "section": "From last time",
-    "text": "From last time\nA simple linear model is \\(y_i = a x_i + b + e_i\\) where \\(e_i\\) are ‘residuals’ – leftover quantities.\n\nThe least squares line minimizes the sum of squared residuals \\(\\sum_i e_i^2\\) – i.e., the residual variance, assuming the line passes through the mean.\n\\[\n\\begin{align*}\nb &= \\frac{S_x}{S_y} \\text{corr}(x, y) \\\\\na &= \\bar{y} - b\\bar{x}\n\\end{align*}\n\\]"
+    "text": "From last time\nA simple linear model is \\(y_i = a x_i + b + e_i\\) where \\(e_i\\) are ‘residuals’ – leftover quantities.\n\nThe least squares line minimizes the sum of squared residuals \\(\\sum_i e_i^2\\) – i.e., the residual variance, assuming the line passes through the mean.\n\\[\n\\begin{align*}\nb &= \\frac{S_y}{S_x} \\text{corr}(x, y) \\\\\na &= \\bar{y} - b\\bar{x}\n\\end{align*}\n\\]"
   },
   {
     "objectID": "slides/week7-slr.html#visualizing-the-line",

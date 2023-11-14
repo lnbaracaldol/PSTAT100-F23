@@ -55,7 +55,7 @@ The *least squares line* minimizes the sum of squared residuals $\sum_i e_i^2$ -
 
 $$
 \begin{align*}
-b &= \frac{S_x}{S_y} \text{corr}(x, y) \\
+b &= \frac{S_y}{S_x} \text{corr}(x, y) \\
 a &= \bar{y} - b\bar{x}
 \end{align*}
 $$
