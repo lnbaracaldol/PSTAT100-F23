@@ -1,0 +1,573 @@
+---
+title: "Classification"
+author: "PSTAT100 Fall 2023"
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+        scrollable: true
+        code-fold: true
+jupyter: python3
+execute:
+    echo: true
+    eval: true
+---
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+import numpy as np
+import pandas as pd
+import altair as alt
+import statsmodels.api as sm
+alt.data_transformers.disable_max_rows()
+
+## LOOSE ENDS
+np.random.seed(51421)
+
+# read in and subsample data
+trees_raw = pd.read_csv('data/utc-sd.csv').rename(
+    columns = {'fc_in_BG_g': 'tree_cover', 'IncPr': 'mean_income', 'SurfaceTem': 'mean_summer_temp'}
+)
+
+# rename categories for population density
+trees_raw['pop_density'] = trees_raw.PopDensGrp.astype('category').cat.rename_categories({1: 'very low', 2: 'low', 3: 'medium', 4: 'high'})
+
+# retain temp, cover, tract, density, income
+trees_raw = trees_raw.drop(columns = ['TreeTarget', 'IncomeGrp', 'PopDensGrp', 'Name'])
+
+# remove zeroes
+trees_raw = trees_raw[(trees_raw.mean_summer_temp > 0) & (trees_raw.tree_cover > 0)]
+
+# coerce proportion to percentage
+trees_raw['tree_cover'] = trees_raw.tree_cover*100
+
+# draw random sample
+trees = trees_raw.sample(n = 2000)
+
+# arrange for regression
+regdata = trees.loc[:, ['tree_cover', 'mean_income', 'pop_density']]
+regdata['log_cover'] = np.log(regdata.tree_cover)
+regdata['log_income'] = np.log(regdata.mean_income)
+regdata.drop(columns = {'tree_cover', 'mean_income'}, inplace = True)
+
+# create indicator variables
+density_encoded = pd.get_dummies(regdata.pop_density, drop_first = True)
+
+# form explanatory variable matrix
+x_vars = pd.concat([regdata.log_income, density_encoded], axis = 1)
+x = sm.tools.add_constant(x_vars)
+y = regdata.log_cover
+
+# fit model
+mlr = sm.OLS(endog = y, exog = x)
+rslt = mlr.fit()
+
+# summarize fit
+coef_tbl = pd.DataFrame({
+    'estimate': rslt.params,
+    'standard error': np.sqrt(rslt.cov_params().values.diagonal())
+}, index = x.columns.values)
+coef_tbl.loc['error variance', 'estimate'] = rslt.scale
+```
+
+
+## From last time
+
+We fit this model to the tree cover data:
+
+$$
+\log(\text{cover}_i)
+    = \beta_0 + 
+        \beta_1 \log(\text{income}_i) + 
+        \beta_2 \text{low}_i + 
+        \beta_3 \text{med}_i + 
+        \beta_4 \text{high}_i + 
+        \epsilon_i 
+$$ 
+
+. . .
+
+Each level of population density has its own intercept:
+
+$$
+\begin{align*}
+\text{very low density:}\quad &\mathbb{E}\log(\text{cover}) = \beta_0 + \beta_1 \log(\text{income}) \\
+\text{low density:}\quad &\mathbb{E}\log(\text{cover}) = (\beta_0 + \beta_2) + \beta_1 \log(\text{income}) \\
+\text{medium density:}\quad &\mathbb{E}\log(\text{cover}) = (\beta_0 + \beta_3) + \beta_1 \log(\text{income}) \\
+\text{high density:}\quad &\mathbb{E}\log(\text{cover}) = (\beta_0 + \beta_4) + \beta_1 \log(\text{income})
+\end{align*}
+$$
+
+. . .
+
+$\beta_2, \beta_3, \beta_4$ represent the *difference in expected log cover* between very low density and low, medium, high density after accounting for income
+
+## Interpreting estimates
+
+```{python}
+#| echo: false
+coef_tbl
+```
+
+* each doubling of mean income is associated with an estimated 55% increase in median tree cover, after accounting for population density
+* census blocks with higher population densities are estimated as having a median tree canopy up to 50% lower than census blocks with very low population densities, after accounting for mean income
+
+## On log-transforming the response
+
+The model is $\log (y) \sim N(x\beta, \sigma^2)$; so $y$ is what's known as a *lognormal* random variable.
+
+. . .
+
+From the properties of the lognormal distribution:
+
+$$
+e^{x\beta} = \text{median}(y)
+$$
+
+. . .
+
+So when parameters are back-transformed, they should be interpreted in terms of the *median* response.
+
+## Interpretations, again
+
+$$
+55\% \text{ increase in median tree cover}:
+e^{\hat{\beta}_1\log(2)} = 1.549
+$$
+
+Median cover increases by a factor of 1.549, *i.e.*, increases by 54.9%:
+
+* doubling income increments log income by $\log(2)$
+* $\hat{\beta}_1\log(2)$ gives the associated change in mean log cover
+* exponentiating the change in mean log cover gives the multiplicative change in median cover
+
+## Prediction
+
+```{python}
+#| code-fold: false
+#| code-line-numbers: '1'
+x_new = np.array([1, np.log(115000), 0, 1, 0])
+pred = rslt.get_prediction(x_new)
+np.exp(pred.summary_frame())
+```
+
+Fill in the blanks:
+
+* the median tree cover for a _______ density census block with mean income _______ is estimated to be between _______ and _______ percent
+* the tree cover for a _______ density census block with mean income _______ is estimated to be between _______ and _______ percent
+
+## Model checking
+
+The linearity and constant variance assumptions can be assessed by plotting residuals against fitted values:
+
+::: {.columns}
+
+::: {.column width=60%}
+```{python}
+alt.Chart(pd.DataFrame({
+    'fitted': rslt.fittedvalues,
+    'resid': rslt.resid
+})).mark_circle().encode(
+    x = 'fitted',
+    y = 'resid'
+)
+```
+:::
+
+::: {.column width=40%}
+Should see minimal pattern:
+
+* centered at zero
+* even spread in either direction
+:::
+
+:::
+
+## Diabetes data
+
+4831 responses from the 2011-2012 National Health and Nutrition Examination Survey (NHANES):
+```{python}
+#| echo: false
+diabetes = pd.read_csv('data/diabetes.csv')
+diabetes.head(4)
+```
+
+. . .
+
+Is BMI a risk factor for diabetes after adjusting for age and sex?
+
+## Model sketch
+
+Broadly, we can answer the question by estimating the dependence of diabetes status on age, sex, and BMI.
+
+. . .
+
+An additive model might look something like this:
+$$
+\text{diabetes}_i \longleftarrow \beta_1\text{age}_i\;+\; \beta_2\text{male}_i\;+\;\beta_3\text{BMI}_i
+$$
+
+. . .
+
+To answer the question, fit the model and examine $\beta_3$.
+
+## Binary response
+
+Note that the response variable -- whether the respondent has diabetes -- is categorical. 
+
+```{python}
+#| code-fold: false
+diabetes.Diabetes.unique()
+```
+
+. . .
+
+We can encode this using an indicator variable, which results in a binary response:
+
+```{python}
+#| code-fold: false
+y = (diabetes.Diabetes == 'Yes').astype('int')
+y.unique()
+```
+
+. . .
+
+Remember, a statistical model is a probability distribution, so we need to choose one that's appropriate for binary outcomes. Ideas?
+
+## What not to do
+
+One might think:
+
+$$
+\text{diabetes}_i = \beta_0 + \beta_1\text{age}_i +  \beta_2\text{male}_i+\beta_3\text{BMI}_i + \epsilon_i
+$$
+
+. . .
+
+But $\text{diabetes}_i \not\sim N(x\beta, \sigma^2)$
+
+* discrete, not continuous
+* normal model doesn't make sense for a binary response
+
+## What not to do
+
+Note that you *can* still fit this model.
+
+```{python}
+# explanatory variable matrix
+gender_indicator = pd.get_dummies(diabetes.Gender, drop_first = True)
+x_vars = pd.concat([gender_indicator, diabetes.loc[:, ['Age', 'BMI']]], axis = 1)
+x = sm.add_constant(x_vars)
+y = (diabetes.Diabetes == 'Yes').astype('int')
+
+# fit model
+mlr = sm.OLS(endog = y, exog = x)
+mlr.fit().params
+```
+
+So you have to discern that it isn't appropriate. A few ways to tell:
+
+* parameter interpretations won't make sense -- *e.g.* age is associated with a 0.0024 increase in diabetes presence
+* model may yield predictions that are negative or greater than one
+* plots will look odd
+
+## What not to do
+
+Attempts at model visualization will look something like this:
+
+```{python}
+age_grid = x.Age.median()
+male_grid = np.array([1])
+bmi_grid = np.linspace(x.BMI.min(), x.BMI.max(), 100)
+cx, ax, mx, bx = np.meshgrid(np.array([1]), age_grid, male_grid, bmi_grid)
+grid = np.array([cx.ravel(), ax.ravel(), mx.ravel(), bx.ravel()]).T
+grid_df = pd.DataFrame(grid, columns = ['const', 'age', 'male', 'bmi'])
+pred_df = mlr.fit().get_prediction(grid_df).summary_frame()
+pred_df = pd.concat([grid_df, pred_df], axis = 1)
+diabetes['diabetes_indicator'] = y
+
+points = alt.Chart(diabetes).mark_circle().encode(
+    x = alt.X('BMI', title = 'body mass index'),
+    y = alt.Y('diabetes_indicator:Q', title = 'diabetes')
+)
+
+line = alt.Chart(pred_df).mark_line().encode(
+    x = 'bmi',
+    y = 'mean'
+)
+
+(points + line).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Regression with a binary response
+
+For a binary response $Y \in \{0, 1\}$, we model $P(Y = 1)$ as a function of the explanatory variable(s) $x$:
+
+$$
+P(Y = 1) = f(x)
+$$
+
+. . .
+
+Of course, we don't directly observe $P(Y = 1)$ -- but there are various ways around this.
+
+## Logistic regression model
+
+The most common approach to modeling binary responses is *logistic regression*:
+
+$$
+\log\left(\frac{p}{1 - p}\right) = x'\beta
+$$
+
+* $p = P(Y = 1)$
+* $x$ is a vector of explanatory variable(s)
+* $\beta$ is a vector of parameters
+
+. . .
+
+> This model holds that **the log odds of the outcome of interest is a linear function of the explanatory variable(s)**
+
+## Logistic regression model
+
+What does the model imply about the probability (rather than log-odds) of the outcome of interest?
+$$
+\log\left(\frac{p}{1 - p}\right) = x'\beta
+\quad\Longleftrightarrow\quad
+P(Y = 1) = \;??
+$$
+
+## Logistic regression model
+
+The logistic function looks like this:
+
+```{python}
+from scipy.stats import norm
+vals = pd.DataFrame({
+    'x': np.linspace(-5, 5, 200)
+})
+
+vals['pr'] = 1/(1 + np.exp(-vals.x))
+
+alt.Chart(vals).mark_line().encode(
+    x = alt.X('x', title = 'x*beta'),
+    y = alt.Y('pr', title = 'Pr(Y = 1)')
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Assumptions
+
+The model makes two key assumptions:
+
+1. the probability of the outcome changes monotonically with each explanatory variable
+2. observations are independent (used to obtain a joint distribution)
+
+## Estimation
+
+The model is fit by maximum likelihood: find the parameters for which the observed data are most likely. The likelihood (joint distribution) is constructed from the model and the Bernoulli distribution.
+
+```{python}
+#| code-fold: false
+#| code-line-numbers: '2-3'
+# fit model
+model = sm.Logit(endog = y, exog = x)
+fit = model.fit()
+
+# parameter estimates
+coef_tbl = pd.DataFrame({
+    'estimate': fit.params,
+    'standard error': np.sqrt(fit.cov_params().values.diagonal())},
+    index = x.columns
+)
+coef_tbl
+```
+
+## Parameter interpretations
+
+Similar to linear regression, coefficients give the change in log-odds associated with incremental changes in the explanatory variables.
+
+. . .
+
+On the scale of the linear predictor:
+
+> A one-unit increase in BMI is associated with an estimated 0.1 increase in log odds of diabetes after adjusting for age and sex
+
+. . .
+
+On the scale of the odds:
+
+> A one-unit increase in BMI is associated with an estimated 10% increase in the odds of diabetes after adjusting for age and sex
+
+. . .
+
+On the probability scale, the increase depends on the starting value of BMI.
+
+## Confidence intervals
+
+One can also give confidence intervals. These are based on large-sample approximations.
+
+```{python}
+#| code-fold: false
+# confidence intervals
+ci = fit.conf_int().rename(columns = {0:'lower',1:'upper'})
+np.exp(ci.loc['BMI'])
+```
+
+. . .
+
+> With 95% confidence, each 1-unit increase in BMI is associated with an estimated increase in odds of diabetes between 8.9% and 12.3% after adjusting for age and sex
+
+## Fitted values
+
+The fitted values for logistic regression are fitted *probabilities* (not outcomes).
+
+$$
+\hat{p}_i = \frac{1}{1 + e^{-x_i'\hat{\beta}}}
+$$
+
+. . .
+
+`statsmodels` returns estimated log odds instead of fitted probabilities. 
+
+```{python}
+#| code-fold: false
+# log odds
+fit.fittedvalues
+```
+
+## Fitted values
+
+To obtain probabilities, one could manually back-transform:
+
+```{python}
+#| code-fold: false
+# compute fitted probabilities 'by hand'
+fitted_probs = 1/(1 + np.exp(-fit.fittedvalues))
+fitted_probs.head(5)
+```
+
+. . .
+
+Or use the `.predict()` method:
+
+```{python}
+#| code-fold: false
+# fitted probabilities
+fit.predict(x).head(5)
+```
+
+## Classification
+
+For each observation (or new observations), probabilities can be computed directly from the fitted model:
+
+$$
+\hat{p}_i = \frac{1}{1 + e^{-x_i'\hat{\beta}}}
+$$
+
+. . .
+
+But what if we want to classify a person as diabetic or not diabetic? Should we declare a case when...
+
+* more probable than not: $\hat{p} > 0.5$?
+* highly probable, say $\hat{p} > 0.8$?
+* somewhat probable, say $\hat{p} > 0.2$?
+
+## Sensitivity
+
+If we use a *low* threshold for classification, say:
+
+$$
+\hat{Y} = 1 
+\quad\Longleftrightarrow\quad 
+\hat{p} > 0.1
+$$
+
+. . .
+
+Then the classifications will be more *sensitive* to cases -- most cases of diabetes will be correctly classified.
+
+## Specificity
+
+If we use a *high* threshold instead, say:
+
+$$
+\hat{Y} = 1 
+\quad\Longleftrightarrow\quad 
+\hat{p} > 0.9
+$$
+
+. . .
+
+Then the classification will not be very sensitive to cases, but they will be fairly *specific* -- classifications will be correct for most people without diabetes.
+
+## Cross-tabulation
+
+For any given classification threshold, we can cross-tabulate the classifications with the observed outcomes:
+
+```{python}
+#| code-fold: false
+# confusion matrix
+fit.pred_table(0.5)
+```
+
+* rows are observed outcomes
+* columns are predicted outcomes
+
+. . .
+
+Using the more-likely-than-not criterion is very *specific* (high true negative rate) but not at all *sensitive* (low true positive rate).
+
+## Overall accuracy is misleading
+
+The proportion of correctly classified observations is:
+
+```{python}
+#| code-fold: false
+# proportion of correctly classified observations
+fit.pred_table().diagonal().sum()/len(y)
+```
+
+. . .
+
+This looks really good, but any method that classifies all or most observations as non-diabetic will achieve high accuracy because of the case imbalance in the data.
+
+```{python}
+#| code-fold: false
+# proportion of non-diabetic respondents
+np.mean(y == 0)
+```
+
+## Use class-wise error rates
+
+Examining class-wise error rates reveals how asymmetric the classifications are:
+
+```{python}
+(fit.pred_table(0.5).T/fit.pred_table(0.5).sum(axis = 1)).T
+```
+
+* same layout as confusion matrix, but with entries divided by the total number of outcomes in each class
+* note 97.8% error rate among diabetes cases
+
+## A better classifier
+
+In this case we can do better by choosing a low classification threshold $\hat{p} > 0.1$:
+```{python}
+fit.pred_table(0.1)
+```
+
+* higher overall error rate $\frac{1097}{4831} = 0.227$
+* but about 70% accurate within each class (diabetic and non-diabetic)
+
+. . .
+
+Class-wise errors:
+```{python}
+(fit.pred_table(0.1).T/fit.pred_table(0.1).sum(axis = 1)).T
+```

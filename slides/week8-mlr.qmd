@@ -1,0 +1,766 @@
+---
+title: "Multiple regression"
+author: "PSTAT100 Fall 2023"
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+        scrollable: true
+        code-fold: true
+jupyter: python3
+execute:
+    echo: true
+    eval: true
+---
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+import numpy as np
+import pandas as pd
+import altair as alt
+import statsmodels.api as sm
+alt.data_transformers.disable_max_rows()
+
+## LOOSE ENDS
+# import grade-aggregated seda data from hw2
+seda = pd.read_csv('data/seda.csv')
+
+# filter to math and remove NaNs
+regdata = seda[seda.subject == 'math'].dropna().drop(columns = 'subject').set_index('id')
+
+# retrieve data
+x = sm.tools.add_constant(regdata.log_income.values)
+y = regdata.gap.values
+
+# fit regression model
+slr = sm.OLS(endog = y, exog = x)
+
+## MULTIPLE REGRESSION
+np.random.seed(51421)
+
+# read in and subsample data
+trees_raw = pd.read_csv('data/utc-sd.csv').rename(
+    columns = {'fc_in_BG_g': 'tree_cover', 'IncPr': 'mean_income', 'SurfaceTem': 'mean_summer_temp'}
+)
+
+# rename categories for population density
+trees_raw['pop_density'] = trees_raw.PopDensGrp.astype('category').cat.rename_categories({1: 'very low', 2: 'low', 3: 'medium', 4: 'high'})
+
+# retain temp, cover, tract, density, income
+trees_raw = trees_raw.drop(columns = ['TreeTarget', 'IncomeGrp', 'PopDensGrp', 'Name'])
+
+# remove zeroes
+trees_raw = trees_raw[(trees_raw.mean_summer_temp > 0) & (trees_raw.tree_cover > 0)]
+
+# coerce proportion to percentage
+trees_raw['tree_cover'] = trees_raw.tree_cover*100
+
+# draw random sample
+trees = trees_raw.sample(n = 2000)
+
+# read in lab 6 data
+fertility = pd.read_csv('data/lab6-fertility-data.csv').set_index('Country')
+```
+
+
+## Loose ends
+
+The standard measure of predictive accuracy in regression is *mean square error* (MSE):
+
+$$
+MSE(y, \hat{y}) = \frac{1}{n}\sum_i (y_i - \hat{y}_i)^2
+$$
+
+* estimates expected squared error, $\mathbb{E}(y - \hat{y})^2$
+* biased (underestimate on average) if fitted values are used
+* unbiased if new observations are used
+
+. . .
+
+To avoid bias, it is common practice to partition data into nonoverlapping subsets:
+
+* one used to fit the model ('training' partition)
+* another used to evaluate predictions ('testing' or 'validation' partition)
+
+## Measuring predictive accuracy
+
+Partition the data:
+```{python}
+#| code-fold: false
+# hold out 100 randomly selected rows
+np.random.seed(51823)
+idx = np.random.choice(regdata.index.values, size = 100, replace = False).tolist()
+test = regdata.loc[idx]
+train = regdata.drop(index = idx)
+```
+
+. . .
+
+Fit to the training partition:
+```{python}
+#| code-fold: false
+# fit model to training subset
+x_train = sm.tools.add_constant(train.log_income)
+y_train = train.gap
+slr = sm.OLS(endog = y_train, exog = x_train)
+```
+
+. . .
+
+Evaluate on the test/validation partition:
+```{python}
+#| code-fold: false
+# compute predictions
+x_test = sm.tools.add_constant(test.log_income)
+preds = slr.fit().get_prediction(x_test)
+y_hat = preds.predicted_mean
+
+# mean square error
+pred_errors = test.gap - y_hat
+mse = (pred_errors**2).mean()
+print('root mean square error: ', np.sqrt(mse))
+```
+
+## Interpreting MSE
+
+Interpretation:
+
+> The model predictions vary about observed values with a standard deviation of 0.144 (SD of national average).
+
+## (Don't use) training MSE
+
+Compare with MSE computed using fitted values:
+
+```{python}
+# note, these are just model residuals
+fit_errors = train.gap - slr.fit().fittedvalues
+
+# training rmse
+print('rmse on training partition: ',np.sqrt((fit_errors**2).mean()))
+print('rmse on test partition: ', np.sqrt(mse))
+```
+
+* training MSE is overly 'optimistic' -- smaller than the proper estimate
+* *won't* always be the case, but *will* be an underestimate on average across samples 
+
+. . .
+
+Note also that this is simply the estimate of the error variance, rescaled by $\frac{n - 2}{n}$.
+
+```{python}
+#| code-fold: false
+n, p = train.shape
+np.sqrt(slr.fit().scale*(n - 2)/n)
+```
+
+. . .
+
+Since the model is fit by minimizing this quantity, out-of-sample predictions are absolutely necessary to get a good sense of the predictive reliability.
+
+## Multiple regression
+
+The simple linear regression model has just one explanatory variable:
+
+$$
+(\text{SLR}) \qquad
+y_i = \beta_0 + \beta_1 x_i + \epsilon_i \quad\begin{cases} i = 1, \dots, n \\\epsilon_i \sim N\left(0,\sigma^2\right)\end{cases}
+$$
+
+. . .
+
+The multiple linear regression model is a direct extension of the simple linear model to $p - 1$ variables $x_{i1}, \dots, x_{i, p - 1}$:
+
+$$
+(\text{MLR})\qquad
+y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_{p - 1} x_{i, p - 1} + \epsilon_i \qquad\begin{cases} \epsilon_i \sim N(0, \sigma^2) \\ i = 1, \dots, n\end{cases}
+$$
+
+* $p$ is the number of (mean) parameters
+* $p = 2$ is SLR
+* $p > 2$ is MLR
+* What's $p = 1$??
+
+## The model in matrix form
+
+The model in matrix form is $\mathbf{y} = \mathbf{X}\beta + \epsilon$, where:
+
+$$
+\mathbf{y}: \left[\begin{array}{c} y_1 \\ y_2 \\ \vdots \\ y_n \end{array}\right] \; = \;
+    \mathbf{X}: \left[\begin{array}{cccc} 
+        1 &x_{11} &\cdots &x_{1, p - 1} \\
+        1 &x_{21} &\cdots &x_{2, p - 1} \\
+        \vdots &\vdots &\ddots &\vdots \\
+        1 &x_{n1} &\cdots &x_{n, p - 1}
+        \end{array}\right] \; \times \;
+    \beta: \left[\begin{array}{c} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_{p - 1} \end{array} \right] \; + \;
+    \epsilon: \left[\begin{array}{c} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{array}\right]
+$$   
+
+. . .
+
+Carrying out the arithmetic on the right-hand side:
+
+$$
+\left[\begin{array}{c} y_1 \\ y_2 \\ \vdots \\ y_n \end{array}\right]_{\;n \times 1} \quad = \quad
+    \left[\begin{array}{c} 
+        \beta_0 + \beta_1 x_{11} + \cdots + \beta_{p - 1} x_{1, p - 1} + \epsilon_1 \\
+        \beta_0 + \beta_1 x_{21} + \cdots + \beta_{p - 1} x_{2, p - 1} + \epsilon_2 \\
+        \vdots \\
+        \beta_0 + \beta_1 x_{n1} + \cdots + \beta_{p - 1} x_{n, p - 1} + \epsilon_n
+        \end{array}\right]_{\;n \times 1}
+$$   
+
+. . .
+
+This is exactly the model relationship as written before, enumerated for each $i$.
+
+## Example
+
+Let's consider the model you fit in lab:
+
+$$
+(\text{fertility rate})_i = \beta_0 + \beta_1 (\text{HDI})_i + \beta_2 (\text{education})_i + \epsilon_i
+$$
+
+```{python}
+#| code-fold: false
+x_vars = fertility.loc[:, ['educ_expected_yrs_f', 'hdi']]
+x = sm.tools.add_constant(x_vars)
+y = fertility.fertility_total
+
+mlr = sm.OLS(endog = y, exog = x)
+```
+
+## Model estimation
+
+Estimation and uncertainty quantification are *exactly the same as in the simple linear model*.
+
+. . .
+
+The least squares estimates are:
+$$
+\hat{\beta} = \left[\begin{array}{c}\hat{\beta}_0 \\ \vdots \\ \hat{\beta}_{p - 1} \end{array}\right] = \left(\mathbf{X'X}\right)^{-1}\mathbf{X'y}
+$$
+
+```{python}
+#| code-fold: false
+# retrieve coefficient estimates
+mlr.fit().params
+```
+
+. . .
+
+This is the unique minimizer of the residual variance:
+
+$$
+\hat{\beta} = \text{argmin}_{\beta \in \mathbb{R}^p}\left\{ (\mathbf{y} - \mathbf{X}\beta)'(\mathbf{y} - \mathbf{X}\beta)\right\}
+$$
+
+## Model estimation
+
+An estimate of the error variance is:
+$$
+\hat{\sigma}^2 
+    = \frac{1}{n - p} \sum_{i = 1}^n \underbrace{\left(y_i - \hat{\beta}_0 - \hat{\beta}_1 x_{i1} - \cdots - \hat{\beta}_{p - 1}x_{i, p - 1}\right)^2}_{i\text{th squared model residual}}
+$$
+
+```{python}
+#| code-fold: false
+# retrieve error variance estimate
+mlr.fit().scale
+```
+
+. . .
+
+There are several alternative ways of writing the estimator $\hat{\sigma}^2$.
+
+* $\frac{1}{n - p} \sum_i (y_i - \hat{y}_i)^2$
+* $\frac{1}{n - p} \sum_i e_i^2$
+* $\frac{1}{n - p}\left(\mathbf{y} - \mathbf{X}\hat{\beta}\right)'\left(\mathbf{y} - \mathbf{X}\hat{\beta}\right)$
+* $\frac{RSS}{n - p}$
+
+## Variability of estimates
+
+The variances and covariances of the coefficient estimates are found in exactly the same way as before, only now yield a $p \times p$ (instead of $2\times 2$) matrix:
+
+$$
+\mathbf{V} 
+= \left[\begin{array}{cccc} 
+    \text{var}\hat{\beta}_0 
+        &\text{cov}\left(\hat{\beta}_0, \hat{\beta}_1\right) 
+        &\cdots &\text{cov}\left(\hat{\beta}_0, \hat{\beta}_{p - 1}\right) \\ 
+    \text{cov}\left(\hat{\beta}_0, \hat{\beta}_1\right) 
+        &\text{var}\hat{\beta}_1
+        &\cdots &\text{cov}\left(\hat{\beta}_1, \hat{\beta}_{p - 1}\right) \\
+    \vdots &\vdots &\ddots &\vdots \\
+    \text{cov}\left(\hat{\beta}_0, \hat{\beta}_{p - 1}\right)
+        &\text{cov}\left(\hat{\beta}_1, \hat{\beta}_{p - 1}\right)
+        &\cdots
+        &\text{var}\hat{\beta}_{p - 1}
+    \end{array}\right]
+   = \sigma^2 \left(\mathbf{X'X}\right)^{-1}
+$$
+   
+## Variability of estimates
+
+This matrix is again estimated by plugging in $\color{red}{\hat{\sigma}^2}$ (the estimate) for $\sigma^2$:
+$$\hat{\mathbf{V}} 
+    = \left[\begin{array}{cccc} 
+        \color{blue}{\hat{v}_{11}} & \hat{v}_{12} & \cdots & \hat{v}_{1p} \\ 
+        \hat{v}_{21} & \color{blue}{\hat{v}_{22}} & \cdots & \hat{v}_{2p} \\
+        \vdots &\vdots &\ddots &\vdots \\
+        \hat{v}_{p1} & \hat{v}_{p2} &\cdots &\color{blue}{\hat{v}_{pp}} \\
+        \end{array}\right]
+    = \color{red}{\hat{\sigma}^2}\left(\mathbf{X'X}\right)^{-1}
+$$
+
+```{python}
+#| code-fold: false
+# retrieve parameter variance-covariance estimate
+mlr.fit().cov_params()
+```
+
+## Standard errors
+
+The square roots of the diagonal elements give *standard errors*:
+$$
+\text{SE}(\hat{\beta}_0) = \sqrt{\color{blue}{\hat{v}_{11}}} 
+    \;,\quad
+    \text{SE}(\hat{\beta}_1) = \sqrt{\color{blue}{\hat{v}_{22}}} 
+    \;,\quad \cdots \quad
+    \text{SE}(\hat{\beta}_{p - 1}) = \sqrt{\color{blue}{\hat{v}_{pp}}}
+$$
+
+```{python}
+#| code-fold: false
+np.sqrt(mlr.fit().cov_params().values.diagonal())
+```
+
+## Model fit summary
+
+Just as before, a table is helpful:
+```{python}
+rslt = mlr.fit()
+coef_tbl = pd.DataFrame({'estimate': rslt.params.values,
+              'standard error': np.sqrt(rslt.cov_params().values.diagonal())},
+              index = x.columns)
+coef_tbl.loc['error variance', 'estimate'] = rslt.scale
+
+coef_tbl
+```
+
+## Variance explained
+
+The $R^2$ statistic -- proportion of variance explained -- is computed the same as before:
+$$
+\frac{\hat{\sigma}_\text{raw}^2 - \frac{n - 1}{n - p}\hat{\sigma}^2}{\hat{\sigma}_\text{raw}^2}
+$$
+```{python}
+#| code-fold: false
+rslt.rsquared
+```
+
+## Interpretation
+
+While the computations are essentially unchanged, the presence of multiple predictors alters the interpretation of the parameters.
+
+. . .
+
+Incrementing, say, HDI by one unit to get an estimated change *assumes the other variable is held constant*:
+$$
+\mathbb{E}(\text{fertility}) + \beta_2 = \beta_0 + \beta_1 (\text{education}) + \beta_2 \left[(\text{HDI}) + 1\right]
+$$
+
+* if education also changes, then the estimated change in fertility is no longer $\beta_2$
+
+. . .
+
+So now the interpretation is: a 0.1 increase in HDI is associated with an estimated decrease in fertility rate of 0.413, *after accounting for education*.
+
+## Inference
+
+Confidence intervals are the same as before. A 95% interval is: 
+
+$$
+\hat{\beta}_j \pm 2 SE(\hat{\beta}_j)
+$$
+
+. . .
+
+```{python}
+#| code-fold: false
+mlr.fit().conf_int().rename(columns = {0: 'lwr', 1: 'upr'})
+```
+
+## Prediction
+
+Ditto predictions.
+
+* $\hat{y} = \mathbf{x}'\hat{\beta}$
+* 95% interval for the mean: $\widehat{\mathbb{E}y} \pm 2 SE\left(\widehat{\mathbb{E}y}\right)$
+* 95% interval for a predicted observation: $\hat{y} \pm 2SE(\hat{y})$
+
+. . .
+
+```{python}
+#| code-fold: false
+x_new = np.array([1, 10, 0.5])
+mlr.fit().get_prediction(x_new).summary_frame()
+```
+
+## Model visualizations
+
+Visualization gets a bit trickier because of the presence of that second variable. Here I plotted the marginal relationship with HDI for three quantiles of education.
+
+```{python}
+# set coordinates for grid mesh
+educ_gridpts = fertility.educ_expected_yrs_f.quantile([0.2, 0.5, 0.8]).values
+hdi_gridpts = np.linspace(fertility.hdi.min(), fertility.hdi.max(), num = 100)
+
+# create prediction grid
+g1, g2 = np.meshgrid(educ_gridpts, hdi_gridpts)
+grid = np.array([g1.ravel(), g2.ravel()]).T
+grid_df = pd.DataFrame(grid, columns = ['educ', 'hdi'])
+
+# format for input to get_prediction()
+x_pred = sm.tools.add_constant(grid_df)
+
+# compute predictions
+pred_df = mlr.fit().get_prediction(x_pred).summary_frame()
+
+# append to grid
+pred_df = pd.concat([grid_df, pred_df], axis = 1)
+
+# plot
+scatter = alt.Chart(fertility).mark_circle(opacity = 0.5).encode(
+    x = alt.X('hdi', 
+        scale = alt.Scale(zero = False),
+        title = 'Human development index'),
+    y = alt.Y('fertility_total',
+        title = 'Fertility rate'),
+    color = alt.Color('educ_expected_yrs_f',
+        title = 'Education')
+)
+
+model = alt.Chart(pred_df).mark_line().encode(
+    x = 'hdi',
+    y = 'mean',
+    color = 'educ'
+)
+
+(scatter + model).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Urban tree cover data
+
+Tree canopy is thought to reduce summer temperatures in urban areas. Consider tree cover and a few other variables measured on a random sample of ~2K census blocks with some canpoy cover in San Diego:
+
+```{python}
+trees.head(3)
+```
+
+. . .
+
+
+> McDonald RI, Biswas T, Sachar C, Housman I, Boucher TM, Balk D, et al. (2021) The tree cover and temperature disparity in US urbanized areas: Quantifying the association with income across 5,723 communities. PLoS ONE 16(4). [doi:10.1371/journal.pone.0249715](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0249715).
+
+## Simple regression analysis
+
+Is higher tree cover associated with lower summer temperatures?
+
+::: {.columns}
+
+::: {.column width=60%}
+```{python}
+alt.Chart(trees).mark_circle(opacity = 0.3).encode(
+    x = alt.X('tree_cover', 
+        title = 'Tree canopy cover (percent)'),
+    y = alt.Y('mean_summer_temp', 
+        scale = alt.Scale(zero = False),
+        title = 'Average summer temperature (C)')
+).configure_axis(
+    titleFontSize = 16,
+    labelFontSize = 14
+)
+```
+:::
+
+::: {.column width=40%}
+
+* weak negative association
+* linear approximation seems reasonable
+* lots of census blocks with low (<10%) cover
+
+:::
+
+:::
+
+## Simple regression analysis
+
+We can use SLR to quantify the association:
+
+```{python}
+#| code-fold: false
+# explanatory and response variables
+x = sm.tools.add_constant(trees.tree_cover)
+y = trees.mean_summer_temp
+
+# fit temp ~ cover
+slr = sm.OLS(endog = y, exog = x)
+slr.fit().params
+```
+
+. . .
+
+Each 13.7% increase in tree canopy cover is associated with an estimated 1-degree decrease in mean summer surface temperatures.
+
+. . .
+
+(How did I get 13.7%?)
+
+## Simple regression analysis 
+
+Confidence intervals:
+```{python}
+slr.fit().conf_int().rename(columns = {0: 'lwr', 1: 'upr'})
+```
+
+. . .
+
+> Interpretation: with 95% confidence, a 10% increase in tree cover is associated with an estimated decrease in mean summer surface temperatures between 0.6 and 0.8 degrees celsius.
+
+## Considering more variables
+
+Is tree cover associated with affluence and population density?
+
+::: {.columns}
+
+::: {.column width=60%}
+```{python}
+alt.Chart(trees).mark_circle(opacity = 0.3).encode(
+    x = alt.X('mean_income', 
+        scale = alt.Scale(type = 'log'),
+        title = 'Mean income (USD)'),
+    y = alt.Y('tree_cover', 
+        scale = alt.Scale(type = 'log'),
+        title = 'Tree cover (percent)')
+).configure_axis(
+    titleFontSize = 16,
+    labelFontSize = 14
+)
+```
+:::
+
+::: {.column width=40%}
+
+* maybe with income, not clear about density
+* to answer exactly, want to model `tree_cover` as a function of `mean_income` and `pop_density`
+
+:::
+
+:::
+
+## Handling categorical variables
+
+The population density is recorded as a categorical variable:
+```{python}
+regdata = trees.loc[:, ['tree_cover', 'mean_income', 'pop_density']]
+regdata['log_cover'] = np.log(regdata.tree_cover)
+regdata['log_income'] = np.log(regdata.mean_income)
+regdata.drop(columns = {'tree_cover', 'mean_income'}, inplace = True)
+regdata.head(4)
+```
+
+. . .
+
+On face value, it might seem we could simply fit this model:
+$$
+\underbrace{\log(\text{cover}_i)}_{y_i} 
+    = \beta_0 + 
+        \beta_1 \underbrace{\log(\text{income}_i)}_{x_{i1}} + 
+        \beta_2 \underbrace{\text{density}_i}_{x_{i2}} + \epsilon_i 
+    \qquad i = 1, \dots, 2000
+$$ 
+    
+. . .
+
+But this doesn't quite make sense, because the *values* of $\text{density}_i$ would be *words*!
+
+## Indicator variable encoding
+
+The solution to this issue is to encode each level of the categorical variable separately using a set of _**indicator**_ variables.
+
+. . .
+
+For instance, to indicate whether a census block is of low population density, we can use the indicator:
+
+$$
+I(\text{density $=$ low}) = \begin{cases} 1 \text{ if population density is low} \\ 0 \text{ otherwise}\end{cases}
+$$
+
+. . .
+
+We can encode the levels of `pop_density` using a collection of indicators:
+
+```{python}
+#| code-line-numbers: '2'
+# create indicator variables
+density_encoded = pd.get_dummies(regdata.pop_density, drop_first = True)
+
+# display example values corresponding to categorical variable
+pd.concat([regdata[['pop_density']], density_encoded], axis = 1).groupby('pop_density').head(2)
+```
+
+## The MLR model with indicators
+
+The model with the encoded population density variable is:
+
+$$
+\underbrace{\log(\text{cover}_i)}_{y_i} 
+    = \beta_0 + 
+        \beta_1 \underbrace{\log(\text{income}_i)}_{x_{i1}} + 
+        \beta_2 \underbrace{\text{low}_i}_{x_{i2}} + 
+        \beta_3 \underbrace{\text{med}_i}_{x_{i3}} + 
+        \beta_4 \underbrace{\text{high}_i}_{x_{i4}} + 
+        \epsilon_i 
+$$ 
+    
+. . .
+
+The effect is that the model has different intercepts for each population density.
+
+$$
+\begin{align*}
+\text{density $=$ very low} 
+    &\quad\Longrightarrow\quad 
+    \mathbb{E}\log(\text{cover}_i)
+        = \underbrace{\beta_0}_\text{intercept} + \beta_1\log(\text{income}_i) \\
+\text{density $=$ low} 
+    &\quad\Longrightarrow\quad 
+    \mathbb{E}\log(\text{cover}_i) 
+        = \underbrace{\beta_0 + \beta_2}_\text{intercept} + \beta_1\log(\text{income}_i) \\
+\text{density $=$ medium} 
+    &\quad\Longrightarrow\quad 
+    \mathbb{E}\log(\text{cover}_i) 
+        = \underbrace{\beta_0 + \beta_3}_\text{intercept} + \beta_1\log(\text{income}_i) \\
+\text{density $=$ high} 
+    &\quad\Longrightarrow\quad 
+    \mathbb{E}\log(\text{cover}_i) 
+        = \underbrace{\beta_0 + \beta_4}_\text{intercept} + \beta_1\log(\text{income}_i)
+\end{align*}
+$$
+
+## In matrix form
+
+The explanatory variable matrix $\mathbf{X}$ for this model will be of the form:
+
+$$
+\mathbf{X} = \left[\begin{array}{c:cccc}
+    1 &\log(\text{income}_{1}) &\text{low}_1 &\text{med}_1 &\text{high}_1 \\
+    1 &\log(\text{income}_{2}) &\text{low}_2 &\text{med}_2 &\text{high}_2 \\
+    \vdots &\vdots &\vdots &\vdots &\vdots \\
+    1 &\log(\text{income}_{2000}) &\text{low}_{2000} &\text{med}_{2000} &\text{high}_{2000}
+    \end{array}\right]
+$$
+
+. . .
+
+```{python}
+# form explanatory variable matrix
+x_vars = pd.concat([regdata.log_income, density_encoded], axis = 1)
+x = sm.tools.add_constant(x_vars)
+x.head(4)
+```
+
+## Fit summary
+
+The remaining calculations are all the same as before. Here is the model fit summary:
+
+```{python}
+# form explanatory variable matrix
+x_vars = pd.concat([regdata.log_income, density_encoded], axis = 1)
+x = sm.tools.add_constant(x_vars)
+y = regdata.log_cover
+
+# fit model
+mlr = sm.OLS(endog = y, exog = x)
+rslt = mlr.fit()
+
+# summarize fit
+coef_tbl = pd.DataFrame({
+    'estimate': rslt.params,
+    'standard error': np.sqrt(rslt.cov_params().values.diagonal())
+}, index = x.columns.values)
+coef_tbl.loc['error variance', 'estimate'] = rslt.scale
+
+coef_tbl
+```
+
+* income is positively associated with tree cover
+* but how do you interpret the coefficients for the indicator variables?
+
+## Interpreting indicator coefficients
+
+Each level of the categorical variable has its own intercept:
+
+$$
+\begin{align*}
+\text{very low density:}\quad &\mathbb{E}\log(\text{cover}) = \beta_0 + \beta_1 \log(\text{income}) \\
+\text{low density:}\quad &\mathbb{E}\log(\text{cover}) = (\beta_0 + \beta_2) + \beta_1 \log(\text{income}) \\
+\text{medium density:}\quad &\mathbb{E}\log(\text{cover}) = (\beta_0 + \beta_3) + \beta_1 \log(\text{income}) \\
+\text{high density:}\quad &\mathbb{E}\log(\text{cover}) = (\beta_0 + \beta_4) + \beta_1 \log(\text{income})
+\end{align*}
+$$
+
+* $\beta_0$ is the intercept when density is very low -- this gets called the **reference** level
+* $\beta_2, \beta_3, \beta_4$ are interpreted relative to the reference level:
+    + $\beta_2$ is the difference in expected log cover between low density and very low density blocks, after accounting for income
+    + $\beta_3$ is the difference in expected log cover between medium density and very low density blocks, after accounting for income
+    + $\beta_4$ is the difference in expected log cover between high density and very low density blocks, after accounting for income
+
+## Interpreting estimates
+
+```{python}
+#| echo: false
+coef_tbl
+```
+
+* each doubling of mean income is associated with an estimated 55% increase in median tree cover, after accounting for population density
+* census blocks with higher population densities are estimated as having a median tree canopy up to 50% lower than census blocks with very low population densities, after accounting for mean income
+
+## Prediction
+
+Prediction works the same way, but we need to supply the indicator encoding rather than the categorical variable level.
+
+```{python}
+#| code-fold: false
+#| code-line-numbers: '1'
+x_new = np.array([1, np.log(115000), 0, 1, 0])
+pred = rslt.get_prediction(x_new)
+np.exp(pred.summary_frame())
+```
+
+Check your understanding and fill in the blanks:
+
+* the median tree cover for a _______ density census block with mean income _______ is estimated to be between _______ and _______ percent
+* the tree cover for a _______ density census block with mean income _______ is estimated to be between _______ and _______ percent
+
+## Comments on scope of inference
+
+The data in this case study are from a *random sample* of census blocks in the San Diego urban area.
+
+. . .
+
+They are therefore representative of all census blocks in the San Diego urban area.
+
+. . .
+
+> The model approximates the *actual* associations between summer temperatures, tree cover, income, and population density in the region.

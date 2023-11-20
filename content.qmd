@@ -118,7 +118,7 @@ format: html
 
 *Assignments*:
 
-- Mini project 2, due Tuesday, Nov 22 at 11:59 PM [[html](projects/mp2/mp2-ncca.ipynb)]
+- Mini project 2, due Tuesday, Nov 21 at 11:59 PM [[html](projects/mp2/mp2-ncca.ipynb)]
 
 **Monday**: Modeling concepts; least squares [[slides](slides/week7-lse.qmd)]
 
@@ -126,6 +126,41 @@ format: html
 
 **Wednesday**: The simple linear regression model [[slides](slides/week7-slr.qmd)]
 
+## Week 8
+
+*Readings*:
+
+- LDS 17.5 [Basics of prediction intervals](https://learningds.org/ch/17/inf_pred_gen_PI.html)
+- LDS 15.4 [Multiple regression](https://learningds.org/ch/15/linear_multi.html)
+
+*Assignments*: 
+
+- HW4, Discrimination in disability benefit allocation, due Tuesday, Nov 28 [[html](hw/hw4-dds/hw4-dds.ipynb)]
+
+**Monday**: (No in-person Class, Class will be recorded and posted) Prediction [[slides](slides/week8-prediction.qmd)]
+
+_**NO lab sections this week**_
+
+**Monday**: NO CLASS
+
+
+
+
+## Week 9
+
+*Readings*:
+
+- LDS 19.1 -- 19.3 and 19.5 [Classification](https://learningds.org/ch/19/class_intro.html)
+
+*Assignments*:
+
+- Course project due Wednesday, Dec 13 [[html](projects/cp/project-guidelines.ipynb)]
+
+**Monday**: Multiple regression [[slides](slides/week8-mlr.qmd)]
+
+
+
+**Wednesday**: Classification [[slides](slides/week9-classification.qmd)]
 
 
 

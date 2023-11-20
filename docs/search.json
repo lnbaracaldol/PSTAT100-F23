@@ -1250,7 +1250,7 @@
     "href": "slides/week9-classification.html#model-checking",
     "title": "Classification",
     "section": "Model checking",
-    "text": "Model checking\nThe linearity and constant variance assumptions can be assessed by plotting residuals against fitted values:\n\n\n\n\nCode\nalt.Chart(pd.DataFrame({\n    'fitted': rslt.fittedvalues,\n    'resid': rslt.resid\n})).mark_circle().encode(\n    x = 'fitted',\n    y = 'resid'\n)\n\n\n\n\n\n\n\n\n\nShould see minimal pattern:\n\ncentered at zero\neven spread in either direction"
+    "text": "Model checking\nThe linearity and constant variance assumptions can be assessed by plotting residuals against fitted values:\n\n\n\n\nCode\nalt.Chart(pd.DataFrame({\n    'fitted': rslt.fittedvalues,\n    'resid': rslt.resid\n})).mark_circle().encode(\n    x = 'fitted',\n    y = 'resid'\n)\n\n\n\n\n\n\n\n\nShould see minimal pattern:\n\ncentered at zero\neven spread in either direction"
   },
   {
     "objectID": "slides/week9-classification.html#diabetes-data",
@@ -1880,7 +1880,7 @@
     "href": "slides/week8-prediction.html#computing-standard-errors",
     "title": "Prediction",
     "section": "Computing standard errors",
-    "text": "Computing standard errors\nThe .get_prediction() returns a prediction object with several attributes, including standard errors. This is recommended over .predict() for most purposes.\n\npred = slr.fit().get_prediction(newobs)\npred\n\n&lt;statsmodels.regression._prediction.PredictionResults at 0x280b5af90&gt;\n\n\n\nThe value of the prediction is stored as .predicted_mean:\n\npred.predicted_mean\n\narray([0.01929165])"
+    "text": "Computing standard errors\nThe .get_prediction() returns a prediction object with several attributes, including standard errors. This is recommended over .predict() for most purposes.\n\npred = slr.fit().get_prediction(newobs)\npred\n\n&lt;statsmodels.regression._prediction.PredictionResults at 0x23abaa594d0&gt;\n\n\n\nThe value of the prediction is stored as .predicted_mean:\n\npred.predicted_mean\n\narray([0.01929165])"
   },
   {
     "objectID": "slides/week8-prediction.html#standard-errors-in-matrix-form",
@@ -1964,14 +1964,14 @@
     "href": "slides/week8-prediction.html#check-your-understanding",
     "title": "Prediction",
     "section": "Check your understanding",
-    "text": "Check your understanding\nWhich is the prediction band and which is the mean? Why?\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.05)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'mean_ci_lower',\n    y2 = 'mean_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.05)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'obs_ci_lower',\n    y2 = 'obs_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)"
+    "text": "Check your understanding\nWhich is the prediction band and which is the mean? Why?\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.05)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'mean_ci_lower',\n    y2 = 'mean_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.05)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'obs_ci_lower',\n    y2 = 'obs_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)"
   },
   {
     "objectID": "slides/week8-prediction.html#check-your-understanding-1",
     "href": "slides/week8-prediction.html#check-your-understanding-1",
     "title": "Prediction",
     "section": "Check your understanding",
-    "text": "Check your understanding\nWhich is the 99% band and which is the 85% band? Why?\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.01)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'mean_ci_lower',\n    y2 = 'mean_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.15)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'mean_ci_lower',\n    y2 = 'mean_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)"
+    "text": "Check your understanding\nWhich is the 99% band and which is the 85% band? Why?\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.01)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'mean_ci_lower',\n    y2 = 'mean_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)\n\n\n\n\n\n\n\n\n\n\nCode\n# construct prediction grid\nincome_grid = np.logspace(start = 10, stop = 12.5, num = 200, base = np.e)\nx_grid = sm.tools.add_constant(np.log(income_grid))\n\n# compute predictions\npreds = slr.fit().get_prediction(x_grid)\npred_df = preds.summary_frame(alpha = 0.15)\npred_df['log_income'] = np.log(income_grid)\n\n# visualization\ntrend = alt.Chart(pred_df).mark_line(\n    color = 'black'\n    ).encode(\n        x = 'log_income',\n        y = 'mean'\n    )\n\nband = alt.Chart(pred_df).mark_area(\n    opacity = 0.3, color = 'black'\n    ).encode(\n    x = 'log_income',\n    y = 'mean_ci_lower',\n    y2 = 'mean_ci_upper'\n)\n\n(scatter + trend + band).configure_axis(\n    labelFontSize = 14,\n    titleFontSize = 16\n)"
   },
   {
     "objectID": "slides/week8-prediction.html#predictive-accuracy",
@@ -2412,21 +2412,21 @@
     "href": "content.html#week-7",
     "title": "Materials",
     "section": "Week 7",
-    "text": "Week 7\nReadings:\n\nLDS 15.1-15.3 Simple linear models\n\nAssignments:\n\nMini project 2, due Tuesday, Nov 22 at 11:59 PM [html]\n\nMonday: Modeling concepts; least squares [slides]\nLab sections Fitting regression models [html]\nWednesday: The simple linear regression model [slides]"
+    "text": "Week 7\nReadings:\n\nLDS 15.1-15.3 Simple linear models\n\nAssignments:\n\nMini project 2, due Tuesday, Nov 21 at 11:59 PM [html]\n\nMonday: Modeling concepts; least squares [slides]\nLab sections Fitting regression models [html]\nWednesday: The simple linear regression model [slides]"
   },
   {
     "objectID": "content.html#week-8",
     "href": "content.html#week-8",
     "title": "Materials",
     "section": "Week 8",
-    "text": "Week 8\nReadings:\n\nLDS 17.5 Basics of prediction intervals\nLDS 15.4 Multiple regression\n\nAssignments:\n\nHW4, Discrimination in disability benefit allocation, due Wednesday, June 7 [html]\n\nMonday: Prediction [slides]\nLab sections Fitting regression models [html]\nWednesday: Multiple regression [slides]"
+    "text": "Week 8\nReadings:\n\nLDS 17.5 Basics of prediction intervals\nLDS 15.4 Multiple regression\n\nAssignments:\n\nHW4, Discrimination in disability benefit allocation, due Tuesday, Nov 28 [html]\n\nMonday: (No in-person Class, Class will be recorded and posted) Prediction [slides]\nNO lab sections this week\nMonday: NO CLASS"
   },
   {
     "objectID": "content.html#week-9",
     "href": "content.html#week-9",
     "title": "Materials",
     "section": "Week 9",
-    "text": "Week 9\nReadings:\n\nLDS 19.1 – 19.3 and 19.5 Classification\n\nAssignments:\n\nCourse project due Friday, June 16 [html]\n\nNo class or lab sections Monday\nWednesday: Classification [slides]"
+    "text": "Week 9\nReadings:\n\nLDS 19.1 – 19.3 and 19.5 Classification\n\nAssignments:\n\nCourse project due Wednesday, Dec 13 [html]\n\nMonday: Multiple regression [slides]\nWednesday: Classification [slides]"
   },
   {
     "objectID": "content.html#week-10",
@@ -3665,7 +3665,7 @@
     "href": "slides/week8-mlr.html#dont-use-training-mse",
     "title": "Multiple regression",
     "section": "(Don’t use) training MSE",
-    "text": "(Don’t use) training MSE\nCompare with MSE computed using fitted values:\n\n\nCode\n# note, these are just model residuals\nfit_errors = train.gap - slr.fit().fittedvalues\n\n# training rmse\nprint('rmse on training partition: ',np.sqrt((fit_errors**2).mean()))\nprint('rmse on test partition: ', np.sqrt(mse))\n\n\nrmse on training partition:  0.10843963485562962\nrmse on test partition:  0.14377667235816582\n\n\n\ntraining MSE is overly ‘optimistic’ – smaller than the proper estimate\nwon’t always be the case, but will be an underestimate on average across samples\n\n\nNote also that this is simply the estimate of the error variance, rescaled by \\(\\frac{n - 2}{n}\\).\n\nn, p = train.shape\nnp.sqrt(slr.fit().scale*(n - 2)/n)\n\n0.10843963485562962\n\n\n\n\nSince the model is fit by minimizing this quantity, out-of-sample predictions are absolutely necessary to get a good sense of the predictive reliability."
+    "text": "(Don’t use) training MSE\nCompare with MSE computed using fitted values:\n\n\nCode\n# note, these are just model residuals\nfit_errors = train.gap - slr.fit().fittedvalues\n\n# training rmse\nprint('rmse on training partition: ',np.sqrt((fit_errors**2).mean()))\nprint('rmse on test partition: ', np.sqrt(mse))\n\n\nrmse on training partition:  0.10843963485562963\nrmse on test partition:  0.14377667235816582\n\n\n\ntraining MSE is overly ‘optimistic’ – smaller than the proper estimate\nwon’t always be the case, but will be an underestimate on average across samples\n\n\nNote also that this is simply the estimate of the error variance, rescaled by \\(\\frac{n - 2}{n}\\).\n\nn, p = train.shape\nnp.sqrt(slr.fit().scale*(n - 2)/n)\n\n0.10843963485562962\n\n\n\n\nSince the model is fit by minimizing this quantity, out-of-sample predictions are absolutely necessary to get a good sense of the predictive reliability."
   },
   {
     "objectID": "slides/week8-mlr.html#multiple-regression",
@@ -3700,7 +3700,7 @@
     "href": "slides/week8-mlr.html#model-estimation-1",
     "title": "Multiple regression",
     "section": "Model estimation",
-    "text": "Model estimation\nAn estimate of the error variance is: \\[\n\\hat{\\sigma}^2\n    = \\frac{1}{n - p} \\sum_{i = 1}^n \\underbrace{\\left(y_i - \\hat{\\beta}_0 - \\hat{\\beta}_1 x_{i1} - \\cdots - \\hat{\\beta}_{p - 1}x_{i, p - 1}\\right)^2}_{i\\text{th squared model residual}}\n\\]\n\n# retrieve error variance estimate\nmlr.fit().scale\n\n0.34690893559915764\n\n\n\nThere are several alternative ways of writing the estimator \\(\\hat{\\sigma}^2\\).\n\n\\(\\frac{1}{n - p} \\sum_i (y_i - \\hat{y}_i)^2\\)\n\\(\\frac{1}{n - p} \\sum_i e_i^2\\)\n\\(\\frac{1}{n - p}\\left(\\mathbf{y} - \\mathbf{X}\\hat{\\beta}\\right)'\\left(\\mathbf{y} - \\mathbf{X}\\hat{\\beta}\\right)\\)\n\\(\\frac{RSS}{n - p}\\)"
+    "text": "Model estimation\nAn estimate of the error variance is: \\[\n\\hat{\\sigma}^2\n    = \\frac{1}{n - p} \\sum_{i = 1}^n \\underbrace{\\left(y_i - \\hat{\\beta}_0 - \\hat{\\beta}_1 x_{i1} - \\cdots - \\hat{\\beta}_{p - 1}x_{i, p - 1}\\right)^2}_{i\\text{th squared model residual}}\n\\]\n\n# retrieve error variance estimate\nmlr.fit().scale\n\n0.3469089355991577\n\n\n\nThere are several alternative ways of writing the estimator \\(\\hat{\\sigma}^2\\).\n\n\\(\\frac{1}{n - p} \\sum_i (y_i - \\hat{y}_i)^2\\)\n\\(\\frac{1}{n - p} \\sum_i e_i^2\\)\n\\(\\frac{1}{n - p}\\left(\\mathbf{y} - \\mathbf{X}\\hat{\\beta}\\right)'\\left(\\mathbf{y} - \\mathbf{X}\\hat{\\beta}\\right)\\)\n\\(\\frac{RSS}{n - p}\\)"
   },
   {
     "objectID": "slides/week8-mlr.html#variability-of-estimates",
@@ -3777,7 +3777,7 @@
     "href": "slides/week8-mlr.html#simple-regression-analysis",
     "title": "Multiple regression",
     "section": "Simple regression analysis",
-    "text": "Simple regression analysis\nIs higher tree cover associated with lower summer temperatures?\n\n\n\n\nCode\nalt.Chart(trees).mark_circle(opacity = 0.3).encode(\n    x = alt.X('tree_cover', \n        title = 'Tree canopy cover (percent)'),\n    y = alt.Y('mean_summer_temp', \n        scale = alt.Scale(zero = False),\n        title = 'Average summer temperature (C)')\n).configure_axis(\n    titleFontSize = 16,\n    labelFontSize = 14\n)\n\n\n\n\n\n\n\n\n\n\nweak negative association\nlinear approximation seems reasonable\nlots of census blocks with low (&lt;10%) cover"
+    "text": "Simple regression analysis\nIs higher tree cover associated with lower summer temperatures?\n\n\n\n\nCode\nalt.Chart(trees).mark_circle(opacity = 0.3).encode(\n    x = alt.X('tree_cover', \n        title = 'Tree canopy cover (percent)'),\n    y = alt.Y('mean_summer_temp', \n        scale = alt.Scale(zero = False),\n        title = 'Average summer temperature (C)')\n).configure_axis(\n    titleFontSize = 16,\n    labelFontSize = 14\n)\n\n\n\n\n\n\n\n\n\nweak negative association\nlinear approximation seems reasonable\nlots of census blocks with low (&lt;10%) cover"
   },
   {
     "objectID": "slides/week8-mlr.html#simple-regression-analysis-1",
@@ -3798,7 +3798,7 @@
     "href": "slides/week8-mlr.html#considering-more-variables",
     "title": "Multiple regression",
     "section": "Considering more variables",
-    "text": "Considering more variables\nIs tree cover associated with affluence and population density?\n\n\n\n\nCode\nalt.Chart(trees).mark_circle(opacity = 0.3).encode(\n    x = alt.X('mean_income', \n        scale = alt.Scale(type = 'log'),\n        title = 'Mean income (USD)'),\n    y = alt.Y('tree_cover', \n        scale = alt.Scale(type = 'log'),\n        title = 'Tree cover (percent)')\n).configure_axis(\n    titleFontSize = 16,\n    labelFontSize = 14\n)\n\n\n\n\n\n\n\n\n\n\nmaybe with income, not clear about density\nto answer exactly, want to model tree_cover as a function of mean_income and pop_density"
+    "text": "Considering more variables\nIs tree cover associated with affluence and population density?\n\n\n\n\nCode\nalt.Chart(trees).mark_circle(opacity = 0.3).encode(\n    x = alt.X('mean_income', \n        scale = alt.Scale(type = 'log'),\n        title = 'Mean income (USD)'),\n    y = alt.Y('tree_cover', \n        scale = alt.Scale(type = 'log'),\n        title = 'Tree cover (percent)')\n).configure_axis(\n    titleFontSize = 16,\n    labelFontSize = 14\n)\n\n\n\n\n\n\n\n\n\nmaybe with income, not clear about density\nto answer exactly, want to model tree_cover as a function of mean_income and pop_density"
   },
   {
     "objectID": "slides/week8-mlr.html#handling-categorical-variables",
@@ -5465,5 +5465,12 @@
     "title": "Covariance and correlation",
     "section": "",
     "text": "import numpy as np\nimport pandas as pd\nimport altair as alt\nfrom sklearn.decomposition import PCA\nfrom scipy import linalg\nalt.data_transformers.disable_max_rows()\n\ncity_sust = pd.read_csv('data/uscity-sustainability-indices.csv')"
+  },
+  {
+    "objectID": "slides/week8-mlr.html",
+    "href": "slides/week8-mlr.html",
+    "title": "Multiple regression",
+    "section": "",
+    "text": "import numpy as np\nimport pandas as pd\nimport altair as alt\nimport statsmodels.api as sm\nalt.data_transformers.disable_max_rows()\n\n## LOOSE ENDS\n# import grade-aggregated seda data from hw2\nseda = pd.read_csv('data/seda.csv')\n\n# filter to math and remove NaNs\nregdata = seda[seda.subject == 'math'].dropna().drop(columns = 'subject').set_index('id')\n\n# retrieve data\nx = sm.tools.add_constant(regdata.log_income.values)\ny = regdata.gap.values\n\n# fit regression model\nslr = sm.OLS(endog = y, exog = x)\n\n## MULTIPLE REGRESSION\nnp.random.seed(51421)\n\n# read in and subsample data\ntrees_raw = pd.read_csv('data/utc-sd.csv').rename(\n    columns = {'fc_in_BG_g': 'tree_cover', 'IncPr': 'mean_income', 'SurfaceTem': 'mean_summer_temp'}\n)\n\n# rename categories for population density\ntrees_raw['pop_density'] = trees_raw.PopDensGrp.astype('category').cat.rename_categories({1: 'very low', 2: 'low', 3: 'medium', 4: 'high'})\n\n# retain temp, cover, tract, density, income\ntrees_raw = trees_raw.drop(columns = ['TreeTarget', 'IncomeGrp', 'PopDensGrp', 'Name'])\n\n# remove zeroes\ntrees_raw = trees_raw[(trees_raw.mean_summer_temp &gt; 0) & (trees_raw.tree_cover &gt; 0)]\n\n# coerce proportion to percentage\ntrees_raw['tree_cover'] = trees_raw.tree_cover*100\n\n# draw random sample\ntrees = trees_raw.sample(n = 2000)\n\n# read in lab 6 data\nfertility = pd.read_csv('data/lab6-fertility-data.csv').set_index('Country')"
   }
 ]
