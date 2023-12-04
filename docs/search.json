@@ -1047,7 +1047,7 @@
     "href": "slides/week10-clustering.html#announcements",
     "title": "Clustering",
     "section": "Announcements",
-    "text": "Announcements\n\nLab 7 optional, turn in by end of day Friday 6/9\nHW4 due Wednesday 6/7 with late submissions by Friday 6/9\nCourse project due Friday 6/16; groups preferred, max of 3\nExtra OH Tuesday 1-3pm (scheduled final time)?"
+    "text": "Announcements\n\nCourse project due Wednesday 12/13.\nExtra OH Wednesday 9:30-11:30am."
   },
   {
     "objectID": "slides/week10-clustering.html#last-time",
@@ -1089,7 +1089,7 @@
     "href": "slides/week10-clustering.html#probit-fit-to-diabetes-data",
     "title": "Clustering",
     "section": "Probit fit to diabetes data",
-    "text": "Probit fit to diabetes data\nHere are the estimates from the probit model:\n\n\nCode\n# fit model\nmodel_probit = sm.Probit(endog = y, exog = x)\nfit_probit = model_probit.fit()\n\n# parameter estimates\ncoef_tbl_probit = pd.DataFrame({\n    'estimate': fit_probit.params,\n    'standard error': np.sqrt(fit_probit.cov_params().values.diagonal())},\n    index = x.columns\n)\ncoef_tbl_probit\n\n\nOptimization terminated successfully.\n         Current function value: 0.214265\n         Iterations 8\n\n\n\n\n\n\n\n\n\nestimate\nstandard error\n\n\n\n\nconst\n-4.215812\n0.172291\n\n\nmale\n0.116145\n0.061036\n\n\nAge\n0.025876\n0.001733\n\n\nBMI\n0.051143\n0.004201\n\n\n\n\n\n\n\n\nTrickier to interpret coefficients directly, since \\(\\Phi^{-1}(p)\\) is not a natural quantity"
+    "text": "Probit fit to diabetes data\nHere are the estimates from the probit model:\n\n\nCode\n# fit model\nmodel_probit = sm.Probit(endog = y, exog = x.astype(float))\nfit_probit = model_probit.fit()\n\n# parameter estimates\ncoef_tbl_probit = pd.DataFrame({\n    'estimate': fit_probit.params,\n    'standard error': np.sqrt(fit_probit.cov_params().values.diagonal())},\n    index = x.columns\n)\ncoef_tbl_probit\n\n\nOptimization terminated successfully.\n         Current function value: 0.214265\n         Iterations 8\n\n\n\n\n\n\n\n\n\nestimate\nstandard error\n\n\n\n\nconst\n-4.215812\n0.172291\n\n\nmale\n0.116145\n0.061036\n\n\nAge\n0.025876\n0.001733\n\n\nBMI\n0.051143\n0.004201\n\n\n\n\n\n\n\n\nTrickier to interpret coefficients directly, since \\(\\Phi^{-1}(p)\\) is not a natural quantity"
   },
   {
     "objectID": "slides/week10-clustering.html#challenges-of-interpretation",
@@ -1103,7 +1103,7 @@
     "href": "slides/week10-clustering.html#centering-for-interpretability",
     "title": "Clustering",
     "section": "Centering for interpretability",
-    "text": "Centering for interpretability\nIf explanatory variables are centered, then the change in estimated probability associated with a 1-unit change from the mean (and reference level(s)) is:\n\\[\n\\Phi\\left(\\hat{\\beta}_0 + \\hat{\\beta}_j\\right) - \\Phi\\left(\\hat{\\beta}_0\\right)\n\\]\n\nRefitting the model after centering age and BMI and computing the above yields:\n\n\nCode\n# center explanatory variables\nx_vars_ctr = x_vars - x.mean()\nx_ctr = pd.concat([x.loc[:, ['const', 'male']], x_vars_ctr.loc[:, ['Age', 'BMI']]], axis = 1)\n\n# fit model\nmodel_probit_ctr = sm.Probit(endog = y, exog = x_ctr)\nfit_probit_ctr = model_probit_ctr.fit()\n\n# baseline\nprobit_baseline = norm.cdf(fit_probit_ctr.params[0])\n\n# changes in estimated probabilities associated with one-unit change from mean, keeping other variables at mean/reference\nprob_diffs = norm.cdf(fit_probit_ctr.params[1:4] + fit_probit_ctr.params[0]) - probit_baseline\n\n# print\npd.DataFrame({'change in probability': prob_diffs}, index = np.array(['male', 'age', 'BMI']))\n\n\nOptimization terminated successfully.\n         Current function value: 0.214265\n         Iterations 8\n\n\n\n\n\n\n\n\n\nchange in probability\n\n\n\n\nmale\n0.008659\n\n\nage\n0.001772\n\n\nBMI\n0.003587"
+    "text": "Centering for interpretability\nIf explanatory variables are centered, then the change in estimated probability associated with a 1-unit change from the mean (and reference level(s)) is:\n\\[\n\\Phi\\left(\\hat{\\beta}_0 + \\hat{\\beta}_j\\right) - \\Phi\\left(\\hat{\\beta}_0\\right)\n\\]\n\nRefitting the model after centering age and BMI and computing the above yields:\n\n\nCode\n# center explanatory variables\nx_vars_ctr = x_vars - x.mean()\nx_ctr = pd.concat([x.loc[:, ['const', 'male']], x_vars_ctr.loc[:, ['Age', 'BMI']]], axis = 1)\n\n# fit model\nmodel_probit_ctr = sm.Probit(endog = y, exog = x_ctr.astype(float))\nfit_probit_ctr = model_probit_ctr.fit()\n\n# baseline\nprobit_baseline = norm.cdf(fit_probit_ctr.params[0])\n\n# changes in estimated probabilities associated with one-unit change from mean, keeping other variables at mean/reference\nprob_diffs = norm.cdf(fit_probit_ctr.params[1:4] + fit_probit_ctr.params[0]) - probit_baseline\n\n# print\npd.DataFrame({'change in probability': prob_diffs}, index = np.array(['male', 'age', 'BMI']))\n\n\nOptimization terminated successfully.\n         Current function value: 0.214265\n         Iterations 8\n\n\n\n\n\n\n\n\n\nchange in probability\n\n\n\n\nmale\n0.008659\n\n\nage\n0.001772\n\n\nBMI\n0.003587"
   },
   {
     "objectID": "slides/week10-clustering.html#centering-for-interpretation",
@@ -1250,7 +1250,7 @@
     "href": "slides/week9-classification.html#model-checking",
     "title": "Classification",
     "section": "Model checking",
-    "text": "Model checking\nThe linearity and constant variance assumptions can be assessed by plotting residuals against fitted values:\n\n\n\n\nCode\nalt.Chart(pd.DataFrame({\n    'fitted': rslt.fittedvalues,\n    'resid': rslt.resid\n})).mark_circle().encode(\n    x = 'fitted',\n    y = 'resid'\n)\n\n\n\n\n\n\n\n\nShould see minimal pattern:\n\ncentered at zero\neven spread in either direction"
+    "text": "Model checking\nThe linearity and constant variance assumptions can be assessed by plotting residuals against fitted values:\n\n\n\n\nCode\nalt.Chart(pd.DataFrame({\n    'fitted': rslt.fittedvalues,\n    'resid': rslt.resid\n})).mark_circle().encode(\n    x = 'fitted',\n    y = 'resid'\n)\n\n\n\n\n\n\n\n\n\nShould see minimal pattern:\n\ncentered at zero\neven spread in either direction"
   },
   {
     "objectID": "slides/week9-classification.html#diabetes-data",
@@ -1285,7 +1285,7 @@
     "href": "slides/week9-classification.html#what-not-to-do-1",
     "title": "Classification",
     "section": "What not to do",
-    "text": "What not to do\nNote that you can still fit this model.\n\n\nCode\n# explanatory variable matrix\ngender_indicator = pd.get_dummies(diabetes.Gender, drop_first = True)\nx_vars = pd.concat([gender_indicator, diabetes.loc[:, ['Age', 'BMI']]], axis = 1)\nx = sm.add_constant(x_vars)\ny = (diabetes.Diabetes == 'Yes').astype('int')\n\n# fit model\nmlr = sm.OLS(endog = y, exog = x)\nmlr.fit().params\n\n\nconst   -0.169002\nmale     0.010837\nAge      0.002425\nBMI      0.005602\ndtype: float64\n\n\nSo you have to discern that it isn’t appropriate. A few ways to tell:\n\nparameter interpretations won’t make sense – e.g. age is associated with a 0.0024 increase in diabetes presence\nmodel may yield predictions that are negative or greater than one\nplots will look odd"
+    "text": "What not to do\nNote that you can still fit this model.\n\n\nCode\n# explanatory variable matrix\ngender_indicator = pd.get_dummies(diabetes.Gender, drop_first = True)\nx_vars = pd.concat([gender_indicator, diabetes.loc[:, ['Age', 'BMI']]], axis = 1)\nx = sm.add_constant(x_vars)\ny = (diabetes.Diabetes == 'Yes').astype('int')\n\n# fit model\nmlr = sm.OLS(endog = y, exog = x.astype(float))\nmlr.fit().params\n\n\nconst   -0.169002\nmale     0.010837\nAge      0.002425\nBMI      0.005602\ndtype: float64\n\n\nSo you have to discern that it isn’t appropriate. A few ways to tell:\n\nparameter interpretations won’t make sense – e.g. age is associated with a 0.0024 increase in diabetes presence\nmodel may yield predictions that are negative or greater than one\nplots will look odd"
   },
   {
     "objectID": "slides/week9-classification.html#what-not-to-do-2",
@@ -1334,7 +1334,7 @@
     "href": "slides/week9-classification.html#estimation",
     "title": "Classification",
     "section": "Estimation",
-    "text": "Estimation\nThe model is fit by maximum likelihood: find the parameters for which the observed data are most likely. The likelihood (joint distribution) is constructed from the model and the Bernoulli distribution.\n\n# fit model\nmodel = sm.Logit(endog = y, exog = x)\nfit = model.fit()\n\n# parameter estimates\ncoef_tbl = pd.DataFrame({\n    'estimate': fit.params,\n    'standard error': np.sqrt(fit.cov_params().values.diagonal())},\n    index = x.columns\n)\ncoef_tbl\n\nOptimization terminated successfully.\n         Current function value: 0.213931\n         Iterations 8\n\n\n\n\n\n\n\n\n\nestimate\nstandard error\n\n\n\n\nconst\n-8.199231\n0.357565\n\n\nmale\n0.270378\n0.117799\n\n\nAge\n0.053200\n0.003512\n\n\nBMI\n0.100607\n0.007862"
+    "text": "Estimation\nThe model is fit by maximum likelihood: find the parameters for which the observed data are most likely. The likelihood (joint distribution) is constructed from the model and the Bernoulli distribution.\n\n# fit model\nmodel = sm.Logit(endog = y, exog = x.astype(float))\nfit = model.fit()\n\n# parameter estimates\ncoef_tbl = pd.DataFrame({\n    'estimate': fit.params,\n    'standard error': np.sqrt(fit.cov_params().values.diagonal())},\n    index = x.columns\n)\ncoef_tbl\n\nOptimization terminated successfully.\n         Current function value: 0.213931\n         Iterations 8\n\n\n\n\n\n\n\n\n\nestimate\nstandard error\n\n\n\n\nconst\n-8.199231\n0.357565\n\n\nmale\n0.270378\n0.117799\n\n\nAge\n0.053200\n0.003512\n\n\nBMI\n0.100607\n0.007862"
   },
   {
     "objectID": "slides/week9-classification.html#parameter-interpretations",
@@ -1362,7 +1362,7 @@
     "href": "slides/week9-classification.html#fitted-values-1",
     "title": "Classification",
     "section": "Fitted values",
-    "text": "Fitted values\nTo obtain probabilities, one could manually back-transform:\n\n# compute fitted probabilities 'by hand'\nfitted_probs = 1/(1 + np.exp(-fit.fittedvalues))\nfitted_probs.head(5)\n\n0    0.004305\n1    0.071663\n2    0.434803\n3    0.434803\n4    0.002516\ndtype: float64\n\n\n\nOr use the .predict() method:\n\n# fitted probabilities\nfit.predict(x).head(5)\n\n0    0.004305\n1    0.071663\n2    0.434803\n3    0.434803\n4    0.002516\ndtype: float64"
+    "text": "Fitted values\nTo obtain probabilities, one could manually back-transform:\n\n# compute fitted probabilities 'by hand'\nfitted_probs = 1/(1 + np.exp(-fit.fittedvalues))\nfitted_probs.head(5)\n\n0    0.004305\n1    0.071663\n2    0.434803\n3    0.434803\n4    0.002516\ndtype: float64\n\n\n\nOr use the .predict() method:\n\n# fitted probabilities\nfit.predict(x.astype(float)).head(5)\n\n0    0.004305\n1    0.071663\n2    0.434803\n3    0.434803\n4    0.002516\ndtype: float64"
   },
   {
     "objectID": "slides/week9-classification.html#classification",
@@ -2426,14 +2426,14 @@
     "href": "content.html#week-9",
     "title": "Materials",
     "section": "Week 9",
-    "text": "Week 9\nReadings:\n\nLDS 19.1 – 19.3 and 19.5 Classification\n\nAssignments:\n\nCourse project due Wednesday, Dec 13 [html]\n\nMonday: Multiple regression [slides]\nWednesday: Classification [slides]"
+    "text": "Week 9\nReadings:\n\nLDS 19.1 – 19.3 and 19.5 Classification\n\nAssignments:\n\nCourse project due Wednesday, Dec 13 [html]\n\nMonday: Multiple regression [slides]\nWednesday: Classification [slides]\nLab sections: Logistic regression [html]"
   },
   {
     "objectID": "content.html#week-10",
     "href": "content.html#week-10",
     "title": "Materials",
     "section": "Week 10",
-    "text": "Week 10\nNo readings or new assignments\nNo class Monday\nLab sections: Logistic regression (submission is optional) [html]\nWendesday: Clustering [slides]"
+    "text": "Week 10\nNo readings or new assignments\nMonday: Clustering [slides]\nLab sections: No Lab activity but Extra office Hour\nWednesday: No Class (but extra Office hours: 9:30-11:30 in person)"
   },
   {
     "objectID": "hw/hw4-dds/hw4-dds-soln.html",

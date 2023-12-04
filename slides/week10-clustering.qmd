@@ -1,0 +1,447 @@
+---
+title: "Clustering"
+author: "PSTAT100 Fall 2023"
+format: 
+    revealjs:
+        smaller: true
+        incremental: true
+        slide-number: true
+        scrollable: true
+        code-fold: true
+jupyter: python3
+execute:
+    echo: true
+    eval: true
+---
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+import numpy as np
+import pandas as pd
+import altair as alt
+import statsmodels.api as sm
+alt.data_transformers.disable_max_rows()
+
+## LOOSE ENDS
+diabetes = pd.read_csv('data/diabetes.csv')
+gender_indicator = pd.get_dummies(diabetes.Gender, drop_first = True)
+x_vars = pd.concat([gender_indicator, diabetes.loc[:, ['Age', 'BMI']]], axis = 1)
+x = sm.add_constant(x_vars)
+y = (diabetes.Diabetes == 'Yes').astype('int')
+model = sm.Logit(endog = y, exog = x.astype(float))
+fit = model.fit()
+fitted_probs = 1/(1 + np.exp(-fit.fittedvalues))
+```
+
+## Announcements
+
+* Course project due Wednesday 12/13.
+* Extra OH Wednesday 9:30-11:30am.
+
+
+## Last time
+
+We fit the logistic regression model:
+
+$$
+\log\left(\frac{Pr(\text{diabetic}_i)}{1 - Pr(\text{diabetic}_i)}\right) = \beta_0 + \beta_1\text{age}_i +  \beta_2\text{male}_i+\beta_3\text{BMI}_i
+$$
+
+And discussed:
+
+* model specification
+* parameter estimation
+* parameter interpretation
+
+## Last time
+
+The logistic regression model can be employed as a *classifier* by articulating a rule:
+
+$$
+\text{classify as diabetic} 
+\quad\Longleftrightarrow\quad
+\widehat{Pr}(\text{diabetic}) > c
+$$
+
+where $\widehat{Pr}(\text{diabetic})$ is computed from the fitted logistic regression model.
+
+. . .
+
+Any classifier has some:
+
+* sensitivity (true positive rate)
+* specificity (true negative rate)
+
+. . .
+
+These rates vary depending on $c$.
+
+## ROC Curves
+
+A plot of sensitivity against specificity across all unique classification thresholds is known as a *receiver operating characteristic* (ROC) curve.
+
+::: {.columns}
+
+::: {.column width=50%}
+```{python}
+# compute 
+from sklearn import metrics
+fpr, tpr, thresh = metrics.roc_curve(y, fitted_probs)
+
+roc = pd.DataFrame({
+    'fpr': fpr,
+    'tpr': tpr,
+    'thresh': thresh
+})
+
+roc_opt_ix = [(roc.tpr - roc.fpr).argmax(), ((1 - roc.tpr)**2 + roc.fpr**2).argmin()]
+roc_opt = roc.loc[roc_opt_ix]
+
+roc_plot = alt.Chart(roc).mark_line().encode(
+    x = alt.X('fpr', title = '1 - specificity'),
+    y = alt.Y('tpr', title = 'sensitivity')
+)
+
+roc_pts = alt.Chart(roc_opt).mark_circle(
+    fill = 'red',
+    size = 100
+).encode(
+    x = 'fpr',
+    y = 'tpr'
+)
+
+(roc_plot + roc_pts).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+:::
+
+::: {.column width=50%}
+
+* closer to the upper left corner $\longrightarrow$ less trade-off $\longrightarrow$ better classifier
+* area under the curve often used as an accuracy metric
+* two common choices for $c$ highlighted:
+    + the point closest to the upper left corner
+    + the point that maximizes sensitivity + specificity (sometimes called *Youden's J statistic*)
+
+:::
+
+:::
+
+## Probit regression model
+
+Logistic regression is not the only regression model for binary data. One common alternative  is *probit regression*, where:
+
+$$
+P(Y = 1) = \Phi\left(x'\beta\right)
+$$
+
+* $\Phi$ is the standard normal CDF
+* similar assumptions to logistic regression -- independence and monotonicity
+
+## Probit v. logit
+
+The logistic function has heavier tails.
+
+```{python}
+from scipy.stats import norm
+# grid of values
+vals = pd.DataFrame({
+    'x': np.linspace(-5, 5, 200)
+})
+
+# compute probit and logit
+vals['logit'] = 1/(1 + np.exp(-vals.x))
+vals['probit'] = norm.cdf(vals.x)
+vals = vals.melt(id_vars = 'x', var_name = 'model', value_name = 'pr')
+
+# plot
+alt.Chart(vals).mark_line().encode(
+    x = alt.X('x', title = 'x*beta'),
+    y = alt.Y('pr', title = 'Pr(Y = 1)'),
+    color = 'model',
+    stroke = 'model'
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Probit fit to diabetes data
+
+Here are the estimates from the probit model:
+```{python}
+#| code-line-numbers: '2-3'
+# fit model
+model_probit = sm.Probit(endog = y, exog = x.astype(float))
+fit_probit = model_probit.fit()
+
+# parameter estimates
+coef_tbl_probit = pd.DataFrame({
+    'estimate': fit_probit.params,
+    'standard error': np.sqrt(fit_probit.cov_params().values.diagonal())},
+    index = x.columns
+)
+coef_tbl_probit
+```
+
+. . .
+
+Trickier to interpret coefficients directly, since $\Phi^{-1}(p)$ is not a natural quantity
+
+## Challenges of interpretation
+
+The effect of incremental changes in explanatory variables on predicted probabilities depends on your starting point.
+
+```{python}
+#| code-fold: false
+# means of explanatory variables
+x1 = x.mean()
+
+# increment bmi twice
+x2 = x1 + np.array([0, 0, 0, 1])
+x3 = x2 + np.array([0, 0, 0, 1])
+x_pred = pd.concat([x1, x2, x3], axis = 1).T
+x_pred['male'] = np.array([0, 0, 0])
+
+# compute predictions and differences in probability
+preds = fit_probit.predict(x_pred)
+preds.diff()
+```
+
+* a one-unit increase in BMI from 26.45 (sample mean) for a 37.6 year old woman is associated with an estimated change in probability of diabetes of 0.0036
+* a one-unit increase in BMI from 27.45 (sample mean plus one) for a 37.6 year old woman is associated with an estimated change in probability of diabetes of 0.0039
+
+## Centering for interpretability
+
+If explanatory variables are centered, then the change in estimated probability associated with a 1-unit change from the mean (and reference level(s)) is:
+
+$$
+\Phi\left(\hat{\beta}_0 + \hat{\beta}_j\right) - \Phi\left(\hat{\beta}_0\right)
+$$
+
+. . .
+
+Refitting the model after centering age and BMI and computing the above yields:
+
+```{python}
+# center explanatory variables
+x_vars_ctr = x_vars - x.mean()
+x_ctr = pd.concat([x.loc[:, ['const', 'male']], x_vars_ctr.loc[:, ['Age', 'BMI']]], axis = 1)
+
+# fit model
+model_probit_ctr = sm.Probit(endog = y, exog = x_ctr.astype(float))
+fit_probit_ctr = model_probit_ctr.fit()
+
+# baseline
+probit_baseline = norm.cdf(fit_probit_ctr.params[0])
+
+# changes in estimated probabilities associated with one-unit change from mean, keeping other variables at mean/reference
+prob_diffs = norm.cdf(fit_probit_ctr.params[1:4] + fit_probit_ctr.params[0]) - probit_baseline
+
+# print
+pd.DataFrame({'change in probability': prob_diffs}, index = np.array(['male', 'age', 'BMI']))
+```
+
+
+## Centering for interpretation
+
+Now the coefficent interpretations are:
+
+* the estimated probability that a woman of average age and BMI has diabetes is 0.029 
+    + $\Phi(\hat{\beta}_0)$
+* among people of average age and BMI, men are more likely than women to be diabetic with an estimated difference in probability of 0.009 
+    + $0.008659 = \Phi(\hat{\beta}_0 + \hat{\beta}_1) - \Phi(\hat{\beta}_0)$
+* a one-year increase from the average age is associated with a change in the estimated probability that a woman of average BMI is diabetic of 0.002 
+    + $0.001772 = \Phi(\hat{\beta}_0 + \hat{\beta}_2) - \Phi(\hat{\beta}_0)$
+* a one-unit increase in BMI from the average is associated with a change in the estimated probability that a woman of average age is diabetic of 0.004 
+    + $0.003587 = \Phi(\hat{\beta}_0 + \hat{\beta}_3) - \Phi(\hat{\beta}_0)$
+
+## Un/Supervised problems
+
+Regression and classification are known as 'supervised' problems:
+
+* the response variable/outcome is observed
+* the modeling of data is guided by observation
+
+. . . 
+
+By contrast, in 'unsupervised' problems:
+
+* the response variable/outcome is *not* observed
+* no ground truth to guide/supervise the modeling process
+
+## Clustering
+
+Clustering is the unsupervised version of classification:
+
+> *Can we classify observations into two or more groups based on $p$ variables without knowing the true grouping structure?*
+
+* can think of this as modeling an unobserved response
+* however, not necessary that there exist subpopulations in the data -- often a useful exploratory technique for exploring multimodal distributions
+
+## Voting records, 116th House
+
+Roll call votes of the 116th House of Representatives on bills and resolutions:
+
+```{python}
+members = pd.read_csv('data/members.csv').set_index('name_id')
+votes = pd.read_csv('data/votes-clean.csv').set_index('name_id')
+vote_info = pd.read_csv('data/votes-info.csv').set_index('rollcall_id')
+
+votes.head(3)
+```
+
+* each column is a roll call ($p = 144$ total)
+* each row is a representative ($n = 430$ total)
+* 1 is a "yes" vote; 0 is an abstention; -1 is a "no" vote
+
+## Clustering voting data
+
+> Question: *Can we identify groups of representatives that voted similarly?*
+
+* Can cluster the representatives according to roll call votes
+* But how many clusters to expect?
+
+## EDA with PCA
+
+Projecting the data onto the first few principal components provides a way to visualize the data:
+
+::: {.columns}
+
+::: {.column width=60%}
+```{python}
+pca = sm.PCA(votes)
+alt.Chart(pca.scores).mark_circle(opacity = 0.5).encode(
+    x = alt.X('comp_000', title = 'PC1'),
+    y = alt.Y('comp_001', title = 'PC2')
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+:::
+
+::: {.column width=40%}
+
+* can see at least two clusters
+
+:::
+
+:::
+
+## Clustering with $K$-means
+
+The most widely used clustering method is known as $K$-means.
+
+::: {.columns}
+
+::: {.column width=40%}
+![](figures/kmeans.PNG)
+:::
+
+::: {.column width=60%}
+
+* cluster labels are based on shortest Euclidean distance to one of $K$ centers
+* centers are found by minimizing the variance within each cluster
+
+:::
+
+:::
+
+## Clustering with $K$-means
+
+Technically, given $n$ observations of $p$ variables $\mathbf{X} = \{x_{ij}\}$, the $k$-means problem is:
+
+$$
+\text{minimize}_{C_1, \dots, C_K} \left\{
+    \sum_{k = 1}^K |C_k|^{-1} \sum_{i, i' \in C_k} \sum_{j = 1}^p (x_{ij} - x_{i'j})^2
+\right\}
+$$
+
+. . .
+
+A local solution is found by starting with random cluster assignments and then interatively:
+
+1. Update the cluster centers
+2. Reassign the cluster labels
+
+## Clustering voting data
+
+The method is very easy to implement:
+```{python}
+#| output: false
+#| code-fold: false
+from sklearn.cluster import KMeans
+np.random.seed(60623)
+
+clust = KMeans(n_clusters = 2)
+clust.fit(votes)
+clust_labels = clust.predict(votes)
+```
+
+. . .
+
+Cluster labels will be returned in the same order as the rows input to `.predict()`
+
+. . .
+
+Initialization is random, so solutions may differ from run to run (usually just permutes labels).
+
+## Clustering voting data
+
+We could again visualize the clusters using PCA:
+
+```{python}
+plot_df = pca.scores.iloc[:, 0:2].copy()
+plot_df['cluster'] = clust_labels
+
+alt.Chart(plot_df).mark_circle(opacity = 0.5).encode(
+    x = alt.X('comp_000', title = 'PC1'),
+    y = alt.Y('comp_001', title = 'PC2'),
+    color = 'cluster:N'
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_legend(
+    labelFontSize = 14,
+    titleFontSize = 16
+)
+```
+
+## Cluster composition by party
+
+We could also cross-tabulate the cluster labels with party affiliations: 
+
+```{python}
+label_df = pd.DataFrame({'cluster': clust_labels}, index = votes.index)
+
+pd.merge(members, label_df, left_index = True, right_index = True).groupby(['current_party', 'cluster']).size().reset_index().pivot(columns = 'current_party', index = 'cluster')
+```
+
+## Cluster composition by party
+
+Who are those three representatives that vote with the democrats?
+
+```{python}
+members_labeled = pd.merge(members, label_df, left_index = True, right_index = True)
+
+members_labeled[(members_labeled.cluster == 0) & (members_labeled.current_party == 'Republican')]
+```
+
+## Further possible questions
+
+We could use the same technique to explore a variety of additional questions:
+
+* identify voting blocs by issue or policy area (use a subset of columns)
+* find within-party voting blocs (increase $K$)
+* identify representatives that *don't* tend to vote together with others (assign a score based on how 'quickly' a representative is isolated)

@@ -162,6 +162,16 @@ _**NO lab sections this week**_
 
 **Wednesday**: Classification [[slides](slides/week9-classification.qmd)]
 
+**Lab sections**: Logistic regression [[html](labs/lab7-classification/lab7-classification.ipynb)]
 
 
+## Week 10
+
+*No readings or new assignments*
+
+**Monday**: Clustering [[slides](slides/week10-clustering.qmd)]
+
+**Lab sections**: *No Lab activity but Extra office Hour*
+
+**Wednesday**:  *No Class (but extra Office hours: 9:30-11:30 in person)*
 

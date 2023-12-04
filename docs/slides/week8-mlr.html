@@ -504,7 +504,7 @@ rmse on test partition:  0.14377667235816582</code></pre>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>n, p <span class="op">=</span> train.shape</span>
 <span id="cb7-2"><a href="#cb7-2"></a>np.sqrt(slr.fit().scale<span class="op">*</span>(n <span class="op">-</span> <span class="dv">2</span>)<span class="op">/</span>n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="33">
 <pre><code>0.10843963485562962</code></pre>
 </div>
 </div>
@@ -588,7 +588,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_{p - 1} x_{i, p - 1} + \epsilon_
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># retrieve coefficient estimates</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a>mlr.fit().params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="35">
 <pre><code>const                  7.960371
 educ_expected_yrs_f   -0.201996
 hdi                   -4.132623
@@ -612,7 +612,7 @@ dtype: float64</code></pre>
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># retrieve error variance estimate</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a>mlr.fit().scale</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="36">
 <pre><code>0.3469089355991577</code></pre>
 </div>
 </div>
@@ -661,7 +661,7 @@ dtype: float64</code></pre>
 <div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># retrieve parameter variance-covariance estimate</span></span>
 <span id="cb14-2"><a href="#cb14-2"></a>mlr.fit().cov_params()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="37">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -723,7 +723,7 @@ dtype: float64</code></pre>
 \]</span></p>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>np.sqrt(mlr.fit().cov_params().values.diagonal())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="38">
 <pre><code>array([0.24493942, 0.042194  , 0.68015545])</code></pre>
 </div>
 </div>
@@ -742,7 +742,7 @@ dtype: float64</code></pre>
 <span id="cb17-6"><a href="#cb17-6"></a></span>
 <span id="cb17-7"><a href="#cb17-7"></a>coef_tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="39">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -801,7 +801,7 @@ dtype: float64</code></pre>
 \]</span></p>
 <div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>rslt.rsquared</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="40">
 <pre><code>0.7827796420988886</code></pre>
 </div>
 </div>
@@ -830,7 +830,7 @@ dtype: float64</code></pre>
 <div class="fragment">
 <div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>mlr.fit().conf_int().rename(columns <span class="op">=</span> {<span class="dv">0</span>: <span class="st">'lwr'</span>, <span class="dv">1</span>: <span class="st">'upr'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="41">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -890,7 +890,7 @@ dtype: float64</code></pre>
 <div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>x_new <span class="op">=</span> np.array([<span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">0.5</span>])</span>
 <span id="cb21-2"><a href="#cb21-2"></a>mlr.fit().get_prediction(x_new).summary_frame()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="42">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -985,15 +985,15 @@ dtype: float64</code></pre>
 <span id="cb22-41"><a href="#cb22-41"></a>    titleFontSize <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb22-42"><a href="#cb22-42"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="43">
 
-<div id="altair-viz-a3ba7dc8e7a248feb3a3627775048ca8"></div>
+<div id="altair-viz-98f6a93774504be591b344390cb219b5"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-a3ba7dc8e7a248feb3a3627775048ca8") {
-      outputDiv = document.getElementById("altair-viz-a3ba7dc8e7a248feb3a3627775048ca8");
+    if (outputDiv.id !== "altair-viz-98f6a93774504be591b344390cb219b5") {
+      outputDiv = document.getElementById("altair-viz-98f6a93774504be591b344390cb219b5");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1052,7 +1052,7 @@ dtype: float64</code></pre>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>trees.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell-output cell-output-display" data-execution_count="44">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1135,15 +1135,15 @@ dtype: float64</code></pre>
 <span id="cb24-9"><a href="#cb24-9"></a>    labelFontSize <span class="op">=</span> <span class="dv">14</span></span>
 <span id="cb24-10"><a href="#cb24-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="45">
 
-<div id="altair-viz-b7dfca6bf2314949abd0b42b70ba8d22"></div>
+<div id="altair-viz-f41aa64e7f444c15a1fb07873242718e"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-b7dfca6bf2314949abd0b42b70ba8d22") {
-      outputDiv = document.getElementById("altair-viz-b7dfca6bf2314949abd0b42b70ba8d22");
+    if (outputDiv.id !== "altair-viz-f41aa64e7f444c15a1fb07873242718e") {
+      outputDiv = document.getElementById("altair-viz-f41aa64e7f444c15a1fb07873242718e");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1213,7 +1213,7 @@ dtype: float64</code></pre>
 <span id="cb25-5"><a href="#cb25-5"></a><span class="co"># fit temp ~ cover</span></span>
 <span id="cb25-6"><a href="#cb25-6"></a>slr <span class="op">=</span> sm.OLS(endog <span class="op">=</span> y, exog <span class="op">=</span> x)</span>
 <span id="cb25-7"><a href="#cb25-7"></a>slr.fit().params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="46">
 <pre><code>const         34.994336
 tree_cover    -0.073114
 dtype: float64</code></pre>
@@ -1234,7 +1234,7 @@ dtype: float64</code></pre>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a>slr.fit().conf_int().rename(columns <span class="op">=</span> {<span class="dv">0</span>: <span class="st">'lwr'</span>, <span class="dv">1</span>: <span class="st">'upr'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="47">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1301,15 +1301,15 @@ dtype: float64</code></pre>
 <span id="cb28-10"><a href="#cb28-10"></a>    labelFontSize <span class="op">=</span> <span class="dv">14</span></span>
 <span id="cb28-11"><a href="#cb28-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="48">
 
-<div id="altair-viz-958c57e1f0a54966b17118245f1c2b65"></div>
+<div id="altair-viz-24f1dad92eef4a889acfa8642dc7b8f0"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-958c57e1f0a54966b17118245f1c2b65") {
-      outputDiv = document.getElementById("altair-viz-958c57e1f0a54966b17118245f1c2b65");
+    if (outputDiv.id !== "altair-viz-24f1dad92eef4a889acfa8642dc7b8f0") {
+      outputDiv = document.getElementById("altair-viz-24f1dad92eef4a889acfa8642dc7b8f0");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -1379,7 +1379,7 @@ dtype: float64</code></pre>
 <span id="cb29-4"><a href="#cb29-4"></a>regdata.drop(columns <span class="op">=</span> {<span class="st">'tree_cover'</span>, <span class="st">'mean_income'</span>}, inplace <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb29-5"><a href="#cb29-5"></a>regdata.head(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="49">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1468,7 +1468,7 @@ I(\text{density $=$ low}) = \begin{cases} 1 \text{ if population density is low}
 <span id="cb30-4"><a href="#cb30-4"></a><span class="co"># display example values corresponding to categorical variable</span></span>
 <span id="cb30-5"><a href="#cb30-5"></a>pd.concat([regdata[[<span class="st">'pop_density'</span>]], density_encoded], axis <span class="op">=</span> <span class="dv">1</span>).groupby(<span class="st">'pop_density'</span>).head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="50">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1615,7 +1615,7 @@ I(\text{density $=$ low}) = \begin{cases} 1 \text{ if population density is low}
 <span id="cb31-3"><a href="#cb31-3"></a>x <span class="op">=</span> sm.tools.add_constant(x_vars)</span>
 <span id="cb31-4"><a href="#cb31-4"></a>x.head(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="51">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1707,7 +1707,7 @@ I(\text{density $=$ low}) = \begin{cases} 1 \text{ if population density is low}
 <span id="cb32-16"><a href="#cb32-16"></a></span>
 <span id="cb32-17"><a href="#cb32-17"></a>coef_tbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="52">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1797,7 +1797,7 @@ I(\text{density $=$ low}) = \begin{cases} 1 \text{ if population density is low}
 <section id="interpreting-estimates" class="slide level2">
 <h2>Interpreting estimates</h2>
 <div class="cell" data-execution_count="26">
-<div class="cell-output cell-output-display" data-execution_count="26">
+<div class="cell-output cell-output-display" data-execution_count="53">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1870,7 +1870,7 @@ I(\text{density $=$ low}) = \begin{cases} 1 \text{ if population density is low}
 <div class="sourceCode cell-code" id="cb33" data-code-line-numbers="1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a>x_new <span class="op">=</span> np.array([<span class="dv">1</span>, np.log(<span class="dv">115000</span>), <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
 <span id="cb33-2"><a href="#cb33-2"></a>pred <span class="op">=</span> rslt.get_prediction(x_new)</span>
 <span id="cb33-3"><a href="#cb33-3"></a>np.exp(pred.summary_frame())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
+<div class="cell-output cell-output-display" data-execution_count="54">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {

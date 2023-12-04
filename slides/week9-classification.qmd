@@ -61,7 +61,7 @@ x = sm.tools.add_constant(x_vars)
 y = regdata.log_cover
 
 # fit model
-mlr = sm.OLS(endog = y, exog = x)
+mlr = sm.OLS(endog = y, exog = x.astype(float))
 rslt = mlr.fit()
 
 # summarize fit
@@ -263,7 +263,7 @@ x = sm.add_constant(x_vars)
 y = (diabetes.Diabetes == 'Yes').astype('int')
 
 # fit model
-mlr = sm.OLS(endog = y, exog = x)
+mlr = sm.OLS(endog = y, exog = x.astype(float))
 mlr.fit().params
 ```
 
@@ -377,7 +377,7 @@ The model is fit by maximum likelihood: find the parameters for which the observ
 #| code-fold: false
 #| code-line-numbers: '2-3'
 # fit model
-model = sm.Logit(endog = y, exog = x)
+model = sm.Logit(endog = y, exog = x.astype(float))
 fit = model.fit()
 
 # parameter estimates
@@ -460,7 +460,7 @@ Or use the `.predict()` method:
 ```{python}
 #| code-fold: false
 # fitted probabilities
-fit.predict(x).head(5)
+fit.predict(x.astype(float)).head(5)
 ```
 
 ## Classification
